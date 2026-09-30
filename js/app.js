@@ -611,8 +611,22 @@ const App = {
             </div>
           </div>
 
+          <!-- Channel Subscription Card inside Article -->
+          <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/40 dark:to-teal-950/40 rounded-2xl p-5 border border-emerald-200 dark:border-emerald-800/60 flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+            <div class="flex items-center gap-3 text-center sm:text-left">
+              <span class="text-3xl">📢</span>
+              <div>
+                <h4 class="font-bold text-gray-900 dark:text-white text-sm sm:text-base">Get Breaking News Alerts on WhatsApp</h4>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Join the official TrendPulse 360 News channel on WhatsApp.</p>
+              </div>
+            </div>
+            <a href="https://whatsapp.com/channel/0029Vb9ILQT6RGJFRiIuu80T" target="_blank" rel="noopener" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all hover:scale-105 flex items-center gap-1.5 flex-shrink-0">
+              <span>💬</span> Follow Channel
+            </a>
+          </div>
+
           <!-- Big Bottom Exit Button -->
-          <div class="pt-4 pb-12">
+          <div class="pt-2 pb-12">
             <button onclick="App.closeArticleModal()" class="w-full py-4 px-6 rounded-2xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-bold text-base flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.01]">
               <span class="text-lg">←</span>
               <span>Back to All News (वापस मुख्य पेज पर जाएं)</span>
