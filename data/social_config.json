@@ -1,0 +1,14 @@
+{
+  "telegram": {
+    "enabled": false,
+    "bot_token": "YOUR_TELEGRAM_BOT_TOKEN_HERE",
+    "channel_username": "@YourTelegramChannel"
+  },
+  "whatsapp_webhook": {
+    "enabled": false,
+    "webhook_url": "YOUR_MAKE_OR_PABBLY_WEBHOOK_URL_HERE"
+  },
+  "website_url": "https://trendpulse-live.web.app",
+  "whatsapp_channel_url": "https://whatsapp.com/channel/0029Vb9ILQT6RGJFRiIuu80T",
+  "max_posts_per_run": 2
+}

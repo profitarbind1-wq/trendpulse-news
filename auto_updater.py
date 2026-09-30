@@ -375,6 +375,13 @@ def run():
     generate_robots_txt()
     generate_rss_xml(all_articles)
 
+    # Auto-Post Fresh Top Stories to Telegram / WhatsApp
+    try:
+        from auto_social_poster import run_autoposter
+        run_autoposter()
+    except Exception as e:
+        print(f"  [Social Poster Notice] {e}")
+
     print("=" * 60)
     print("  All news categories updated & SEO artifacts ready!")
     print("=" * 60)
