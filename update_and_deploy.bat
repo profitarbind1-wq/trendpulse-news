@@ -26,6 +26,6 @@ if %ERRORLEVEL% NEQ 0 (
 echo.
 echo ============================================================
 echo   SUCCESS! Your news website has been updated and is live at:
-echo   https://trendpulse-news-14886.web.app
+echo   https://trendpulse-live.web.app
 echo ============================================================
 timeout /t 5

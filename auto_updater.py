@@ -33,7 +33,7 @@ DATA_DIR = os.path.join(BASE_DIR, 'data')
 os.makedirs(DATA_DIR, exist_ok=True)
 
 # Domain URL for SEO sitemaps (can be updated to custom domain or firebaseapp.com)
-SITE_URL = "https://trendpulse-news-14886.web.app"
+SITE_URL = "https://trendpulse-live.web.app"
 SITE_NAME = "TrendPulse 360 - Worldwide Trending News"
 
 CATEGORIES = [
