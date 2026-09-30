@@ -494,75 +494,151 @@ const App = {
     const isSaved = this.isBookmarked(article.id);
 
     content.innerHTML = `
-      <div class="relative bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl max-w-2xl w-full mx-4 border border-gray-200 dark:border-gray-700 max-h-[90vh] flex flex-col">
-        <button onclick="App.closeArticleModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black transition-colors font-bold text-lg">
-          ✕
-        </button>
-        <div class="relative h-64 sm:h-72 w-full overflow-hidden bg-gray-900 flex-shrink-0">
-          <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-          <div class="absolute bottom-4 left-6 right-6">
-            <span class="inline-flex items-center px-2.5 py-1 rounded text-xs font-bold bg-red-600 text-white mb-2">
-              ${article.categoryName}
-            </span>
-            <div class="text-xs text-gray-300 font-mono">${article.source} • ${article.publishedAt}</div>
-          </div>
-        </div>
-        <div class="p-6 sm:p-8 overflow-y-auto flex-1">
-          <h1 class="font-serif-headline text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mb-4 leading-tight">
-            ${article.title}
-          </h1>
-          <p class="text-gray-700 dark:text-gray-300 text-base leading-relaxed mb-6 font-normal">
-            ${article.summary}
-          </p>
-          <div class="bg-gray-50 dark:bg-gray-900/60 rounded-2xl p-5 border border-gray-100 dark:border-gray-700/60 mb-6">
-            <h4 class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mb-2">What you need to know:</h4>
-            <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-              ${(article.bullets || []).map(b => `<li class="flex items-start gap-2.5"><span class="text-red-500 font-bold mt-1">✔</span> <span>${b}</span></li>`).join('')}
-            </ul>
-          </div>
-          <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-            <div class="flex items-center gap-2">
-              <button onclick="App.playAudio('${article.id}', event)" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium text-gray-800 dark:text-gray-200">
-                🔊 <span>Listen</span>
+      <div class="min-h-screen bg-white dark:bg-gray-950 flex flex-col text-gray-900 dark:text-gray-100">
+        <!-- Sticky Top Navigation Header -->
+        <header class="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm py-3 px-4 sm:px-8">
+          <div class="max-w-5xl mx-auto flex items-center justify-between gap-3">
+            
+            <!-- Left: Back Button & Category -->
+            <div class="flex items-center gap-2 sm:gap-3">
+              <button onclick="App.closeArticleModal()" class="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-bold text-xs sm:text-sm transition-all shadow-sm group">
+                <span class="text-base sm:text-lg group-hover:-translate-x-1 transition-transform">←</span>
+                <span>Back to News</span>
               </button>
-              <button id="modal-bookmark-btn" onclick="App.toggleBookmark('${article.id}', event)" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium ${isSaved ? 'text-amber-500' : 'text-gray-700 dark:text-gray-300'}">
+              <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400">
+                ${article.categoryIcon || '🔥'} ${article.categoryName}
+              </span>
+            </div>
+
+            <!-- Right: Quick Actions (Audio, Bookmark, WhatsApp, Share, Big Close) -->
+            <div class="flex items-center gap-1.5 sm:gap-2.5">
+              <button onclick="App.playAudio('${article.id}', event)" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs sm:text-sm font-semibold text-gray-800 dark:text-gray-200" title="Listen to Article">
+                🔊 <span class="hidden md:inline">Listen</span>
+              </button>
+              <button id="modal-bookmark-btn" onclick="App.toggleBookmark('${article.id}', event)" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs sm:text-sm font-semibold ${isSaved ? 'text-amber-500' : 'text-gray-700 dark:text-gray-300'}" title="Save Article">
                 ${isSaved ? '★ Saved' : '☆ Save'}
               </button>
+              <button onclick="App.shareToWhatsApp('${article.id}')" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold text-xs sm:text-sm shadow-sm" title="Share on WhatsApp">
+                💬 <span>WhatsApp</span>
+              </button>
+              <button onclick="App.shareArticle('${article.id}', event)" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm" title="Share Link">
+                <span>↗ Share</span>
+              </button>
+              
+              <!-- Big Clear Red Close Button -->
+              <button onclick="App.closeArticleModal()" class="w-10 h-10 rounded-xl bg-red-100 hover:bg-red-200 dark:bg-red-950/80 dark:hover:bg-red-900/80 text-red-600 dark:text-red-400 flex items-center justify-center font-black text-xl transition-all shadow-sm ml-1" title="Close (बंद करें)">
+                ✕
+              </button>
             </div>
-            <div class="flex items-center gap-2">
-              <button onclick="App.shareToWhatsApp('${article.id}')" class="p-2.5 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold text-sm" title="Share on WhatsApp">
+
+          </div>
+        </header>
+
+        <!-- Main Reading Area (Full Window Editorial View) -->
+        <article class="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          
+          <!-- Category & Source Metadata -->
+          <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm font-semibold text-gray-500 dark:text-gray-400 mb-4">
+            <span class="text-indigo-600 dark:text-indigo-400 font-bold uppercase tracking-wider">${article.source}</span>
+            <span>•</span>
+            <span>${article.publishedAt}</span>
+            <span>•</span>
+            <span>${article.readTime || '1 min read'}</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 ml-auto">
+              Trending: ${article.trendingScore}%
+            </span>
+          </div>
+
+          <!-- Main Article Headline (Large, Impactful, Serif) -->
+          <h1 class="font-serif-headline text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white leading-tight mb-6">
+            ${article.title}
+          </h1>
+
+          <!-- Hero Image (Full-Width High-Res) -->
+          <div class="relative w-full h-72 sm:h-96 lg:h-[480px] rounded-3xl overflow-hidden shadow-2xl mb-8 bg-gray-900">
+            <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div class="absolute bottom-4 left-6 right-6 flex items-center justify-between text-xs text-white/90">
+              <span class="font-medium bg-black/60 backdrop-blur-md px-3 py-1 rounded-full">
+                📸 Coverage: ${article.categoryName}
+              </span>
+              <span class="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full">
+                Verified Global Wire
+              </span>
+            </div>
+          </div>
+
+          <!-- Summary Body Text -->
+          <div class="prose prose-lg dark:prose-invert max-w-none mb-8">
+            <p class="text-lg sm:text-xl text-gray-800 dark:text-gray-200 leading-relaxed font-normal">
+              ${article.summary}
+            </p>
+          </div>
+
+          <!-- Key Takeaways & Highlights Box -->
+          <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900/90 dark:to-gray-800/80 rounded-3xl p-6 sm:p-8 border border-gray-200 dark:border-gray-700/80 shadow-md mb-8">
+            <div class="flex items-center gap-2 mb-4">
+              <span class="text-xl">⚡</span>
+              <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white uppercase tracking-wider">
+                What you need to know (मुख्य बिंदु):
+              </h3>
+            </div>
+            <ul class="space-y-3 text-sm sm:text-base text-gray-700 dark:text-gray-300">
+              ${(article.bullets || []).map(b => `
+                <li class="flex items-start gap-3">
+                  <span class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✔</span>
+                  <span class="leading-relaxed">${b}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+
+          <!-- Publisher Link & Share Strip -->
+          <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+            <div class="text-center sm:text-left">
+              <div class="text-xs uppercase font-bold text-gray-400 tracking-wider">Original Source</div>
+              <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="text-sm sm:text-base font-bold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1.5 mt-0.5">
+                Read full detailed coverage on ${article.source} ↗
+              </a>
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-center">
+              <button onclick="App.shareToWhatsApp('${article.id}')" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm">
                 💬 WhatsApp
               </button>
-              <button onclick="App.shareArticle('${article.id}', event)" class="p-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm">
-                Share ↗
+              <button onclick="App.shareArticle('${article.id}', event)" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm">
+                ↗ Share
               </button>
             </div>
           </div>
-          <div class="text-center mt-6">
-            <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 underline">
-              View original report on ${article.source} ↗
-            </a>
+
+          <!-- Big Bottom Exit Button -->
+          <div class="pt-4 pb-12">
+            <button onclick="App.closeArticleModal()" class="w-full py-4 px-6 rounded-2xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-bold text-base flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.01]">
+              <span class="text-lg">←</span>
+              <span>Back to All News (वापस मुख्य पेज पर जाएं)</span>
+            </button>
           </div>
-        </div>
+
+        </article>
       </div>
     `;
 
     modal.classList.remove('hidden');
-    modal.classList.add('flex');
     document.body.style.overflow = 'hidden';
+    modal.scrollTo({ top: 0, behavior: 'instant' });
   },
 
-  closeArticleModal() {
+  closeArticleModal(updateHash = true) {
     const modal = document.getElementById('article-modal');
     if (modal) {
       modal.classList.add('hidden');
-      modal.classList.remove('flex');
     }
     document.body.style.overflow = 'auto';
     this.data.activeArticleModal = null;
     this.stopAudio();
-    window.location.hash = this.data.activeCategory ? `category=${this.data.activeCategory}` : '';
+    if (updateHash) {
+      window.location.hash = this.data.activeCategory ? `category=${this.data.activeCategory}` : '';
+    }
   },
 
   updateModalBookmarkBtn() {
@@ -655,9 +731,14 @@ const App = {
     if (hash.startsWith('news=')) {
       const artId = hash.replace('news=', '');
       this.openArticleModal(artId);
-    } else if (hash.startsWith('category=')) {
-      const catId = hash.replace('category=', '');
-      this.setCategory(catId);
+    } else {
+      if (this.data.activeArticleModal) {
+        this.closeArticleModal(false);
+      }
+      if (hash.startsWith('category=')) {
+        const catId = hash.replace('category=', '');
+        this.setCategory(catId);
+      }
     }
   },
 
