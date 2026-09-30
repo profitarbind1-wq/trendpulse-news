@@ -1,8 +1,8 @@
 {
   "telegram": {
-    "enabled": false,
-    "bot_token": "YOUR_TELEGRAM_BOT_TOKEN_HERE",
-    "channel_username": "@YourTelegramChannel"
+    "enabled": true,
+    "bot_token": "8738845275:AAEWcU9g6lnBK2dRJDRgQ5UnrQR36M2QbZk",
+    "channel_username": "@trendpulse360_news"
   },
   "whatsapp_webhook": {
     "enabled": false,
