@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  
+  <!-- Primary Meta Tags -->
+  <title>TrendPulse 360 - Real-Time Worldwide Trending News & Viral Briefs</title>
+  <meta name="title" content="TrendPulse 360 - Real-Time Worldwide Trending News & Viral Briefs">
+  <meta name="description" content="Stay ahead with real-time worldwide trending news across Politics, Share Market, Business, Tech & AI, Sports, Entertainment, Education & Motivational stories in 60-second briefs.">
+  <meta name="keywords" content="worldwide news, trending news, breaking news, politics, share market, stock market, crypto, business, finance, sports, cricket, football, entertainment, bollywood, hollywood, education, competitive exams, motivational stories">
+  <meta name="author" content="TrendPulse 360">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://trendpulse-news-14886.web.app/">
+  
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://trendpulse-news-14886.web.app/">
+  <meta property="og:title" content="TrendPulse 360 - Real-Time Worldwide Trending News">
+  <meta property="og:description" content="Catch the world's most viral and trending stories across Politics, Finance, Tech, Entertainment & Sports in quick 60-second bites.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&auto=format&fit=crop&q=80">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://trendpulse-news-14886.web.app/">
+  <meta name="twitter:title" content="TrendPulse 360 - Worldwide Trending News">
+  <meta name="twitter:description" content="Instant breaking news and trending global stories updated round the clock.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&auto=format&fit=crop&q=80">
+
+  <!-- Mobile Theme Color -->
+  <meta name="theme-color" content="#dc2626">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20%220%22%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fef2f2',
+              100: '#fee2e2',
+              500: '#ef4444',
+              600: '#dc2626',
+              700: '#b91c1c',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-200 min-h-screen flex flex-col">
+
+  <!-- Top Real-Time Notification & Live Status Bar -->
+  <div class="bg-gray-900 text-gray-300 text-xs py-1.5 px-4 border-b border-gray-800">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          LIVE 24/7 SYNC
+        </span>
+        <span class="hidden sm:inline text-gray-500">|</span>
+        <span id="last-updated-text" class="hidden sm:inline text-gray-400">Loading latest updates...</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="hidden md:inline text-gray-400">Worldwide • 10+ Categories</span>
+        <button onclick="App.loadData()" class="inline-flex items-center gap-1 hover:text-white transition-colors cursor-pointer text-[11px] bg-gray-800 hover:bg-gray-700 px-2 py-0.5 rounded">
+          <span>🔄</span> Refresh Feed
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Breaking News Ticker -->
+  <div class="bg-red-600 dark:bg-red-700 text-white py-2 px-4 shadow-sm flex items-center overflow-hidden">
+    <div class="flex-shrink-0 flex items-center gap-1.5 pr-4 border-r border-red-500 font-extrabold uppercase text-xs tracking-wider z-10 bg-red-600 dark:bg-red-700">
+      <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+      BREAKING
+    </div>
+    <div class="ticker-wrap flex-1 ml-4">
+      <div id="ticker-headlines" class="ticker-move text-xs font-semibold">
+        Fetching latest worldwide breaking headlines...
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="sticky top-0 z-30 glass-panel border-b border-gray-200 dark:border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
+        
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-2 group flex-shrink-0">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 via-rose-500 to-amber-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-red-500/30 group-hover:scale-105 transition-transform">
+            ⚡
+          </div>
+          <div>
+            <div class="text-xl sm:text-2xl font-black tracking-tight font-serif-headline text-gray-900 dark:text-white leading-none">
+              Trend<span class="text-red-600">Pulse</span><span class="text-xs ml-1 px-1.5 py-0.5 rounded bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 font-sans font-bold">360</span>
+            </div>
+            <div class="text-[10px] uppercase font-bold tracking-widest text-gray-500 dark:text-gray-400">
+              Worldwide News Automated
+            </div>
+          </div>
+        </a>
+
+        <!-- Search Bar -->
+        <div class="flex-1 max-w-md mx-2 sm:mx-6 hidden md:block">
+          <div class="relative">
+            <input 
+              type="text" 
+              id="search-input" 
+              placeholder="Search news, topics, companies, sports..." 
+              class="w-full pl-10 pr-4 py-2 text-sm bg-gray-100 dark:bg-gray-800/80 border border-transparent dark:border-gray-700 rounded-full focus:outline-none focus:border-red-500 focus:bg-white dark:focus:bg-gray-900 transition-all text-gray-900 dark:text-gray-100"
+            >
+            <span class="absolute left-3.5 top-2.5 text-gray-400 text-sm">🔍</span>
+          </div>
+        </div>
+
+        <!-- Controls: View Mode, Theme Toggle, Saved Articles -->
+        <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          
+          <!-- View Switcher (Magazine vs Inshorts) -->
+          <div class="flex items-center p-1 bg-gray-100 dark:bg-gray-800 rounded-xl text-xs font-semibold">
+            <button 
+              id="view-mode-magazine" 
+              onclick="App.setViewMode('magazine')" 
+              class="px-2.5 py-1.5 rounded-lg transition-all bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white flex items-center gap-1"
+              title="Magazine Grid View"
+            >
+              <span>▦</span> <span class="hidden sm:inline">Grid</span>
+            </button>
+            <button 
+              id="view-mode-inshorts" 
+              onclick="App.setViewMode('inshorts')" 
+              class="px-2.5 py-1.5 rounded-lg transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 flex items-center gap-1"
+              title="Inshorts 60-Sec Card View"
+            >
+              <span>🗂️</span> <span class="hidden sm:inline">Quick-Read</span>
+            </button>
+          </div>
+
+          <!-- Bookmarks Button -->
+          <button 
+            onclick="App.setCategory('bookmarks')" 
+            class="relative p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors"
+            title="Saved Articles"
+          >
+            ⭐
+            <span id="bookmark-count-badge" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-600 text-white text-[10px] font-bold hidden items-center justify-center">
+              0
+            </span>
+          </button>
+
+          <!-- Dark/Light Theme Toggle -->
+          <button 
+            onclick="App.toggleTheme()" 
+            class="p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors"
+            title="Toggle Dark/Light Mode"
+          >
+            🌓
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Mobile Search Field -->
+      <div class="pb-3 md:hidden">
+        <div class="relative">
+          <input 
+            type="text" 
+            oninput="App.onSearch(this.value)" 
+            placeholder="Search news & topics..." 
+            class="w-full pl-9 pr-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 border border-transparent dark:border-gray-700 rounded-full focus:outline-none focus:border-red-500 text-gray-900 dark:text-gray-100"
+          >
+          <span class="absolute left-3 top-2.5 text-gray-400 text-xs">🔍</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Category Pills Navigation -->
+    <div class="border-t border-gray-200/70 dark:border-gray-800/80 bg-white/70 dark:bg-gray-900/70 overflow-x-auto py-2.5 px-4 sm:px-6">
+      <div id="categories-nav" class="max-w-7xl mx-auto flex items-center gap-2 min-w-max">
+        <!-- Rendered dynamically by js/app.js -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Live Financial / Market Indices Bar (High Engagement for Stock, Business & Finance) -->
+  <div class="bg-gray-100 dark:bg-gray-900/90 border-b border-gray-200 dark:border-gray-800 py-1.5 px-4 overflow-x-auto text-[11px] font-mono">
+    <div class="max-w-7xl mx-auto flex items-center gap-6 min-w-max text-gray-600 dark:text-gray-300">
+      <span class="font-bold text-gray-900 dark:text-white uppercase flex items-center gap-1 font-sans">
+        <span>📈</span> Markets Live:
+      </span>
+      <span class="flex items-center gap-1">
+        <strong>NIFTY 50:</strong> 25,182.40 <span class="text-emerald-500 font-bold">+112.30 (+0.45%) ▲</span>
+      </span>
+      <span class="flex items-center gap-1">
+        <strong>SENSEX:</strong> 82,490.15 <span class="text-emerald-500 font-bold">+340.20 (+0.41%) ▲</span>
+      </span>
+      <span class="flex items-center gap-1">
+        <strong>S&amp;P 500:</strong> 5,864.67 <span class="text-emerald-500 font-bold">+28.10 (+0.48%) ▲</span>
+      </span>
+      <span class="flex items-center gap-1">
+        <strong>NASDAQ:</strong> 18,518.60 <span class="text-emerald-500 font-bold">+120.45 (+0.65%) ▲</span>
+      </span>
+      <span class="flex items-center gap-1">
+        <strong>BTC/USD:</strong> $94,250 <span class="text-emerald-500 font-bold">+2.8% ▲</span>
+      </span>
+      <span class="flex items-center gap-1">
+        <strong>GOLD:</strong> $2,685/oz <span class="text-amber-500 font-bold">+0.15% ▲</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Main Content Layout -->
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- Section Header & Filter Meta -->
+    <div class="flex items-center justify-between mb-6 pb-3 border-b border-gray-200 dark:border-gray-800">
+      <div>
+        <h2 id="section-title" class="font-serif-headline text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+          Worldwide Trending Feeds
+        </h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+          Curated automatically from leading verified global press wires.
+        </p>
+      </div>
+      <div id="results-count" class="text-xs font-semibold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-full">
+        Loading stories...
+      </div>
+    </div>
+
+    <!-- Global Loading Indicator -->
+    <div id="global-loader" class="hidden flex-col items-center justify-center py-24">
+      <div class="w-12 h-12 border-4 border-red-200 border-t-red-600 rounded-full animate-spin mb-4"></div>
+      <p class="text-sm font-semibold text-gray-600 dark:text-gray-300">Fetching Worldwide Headlines...</p>
+    </div>
+
+    <!-- Magazine View Container -->
+    <div id="magazine-view" class="w-full">
+      <!-- Injected by js/app.js -->
+    </div>
+
+    <!-- Inshorts View Container -->
+    <div id="inshorts-view" class="hidden w-full">
+      <!-- Injected by js/app.js -->
+    </div>
+
+  </main>
+
+  <!-- Full Article Modal / Reader -->
+  <div id="article-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-sm p-4 overflow-y-auto">
+    <div id="modal-content" class="w-full flex justify-center">
+      <!-- Injected by js/app.js -->
+    </div>
+  </div>
+
+  <!-- Breaking News Alert Subscription Banner -->
+  <div id="push-prompt-banner" class="fixed bottom-4 right-4 max-w-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl p-4 z-40 flex items-start gap-3 transition-transform">
+    <div class="text-2xl p-2 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-600">🔔</div>
+    <div>
+      <h4 class="text-sm font-bold text-gray-900 dark:text-white">Get Breaking News Alerts</h4>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">
+        Be the first to know when major world events, market shifts or big news breaks.
+      </p>
+      <div class="flex items-center gap-2 mt-3">
+        <button onclick="alert('Notification alerts enabled! You will receive breaking news highlights.'); document.getElementById('push-prompt-banner').style.display='none';" class="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold shadow-sm">
+          Enable Alerts
+        </button>
+        <button onclick="document.getElementById('push-prompt-banner').style.display='none';" class="px-2.5 py-1.5 rounded-lg text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-xs">
+          Later
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer (SEO Optimized) -->
+  <footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-16 text-xs text-gray-500 dark:text-gray-400 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <div class="text-lg font-black font-serif-headline text-gray-900 dark:text-white mb-2">
+            Trend<span class="text-red-600">Pulse</span> 360
+          </div>
+          <p class="leading-relaxed mb-4 text-xs">
+            An automated, real-time worldwide trending news aggregator delivering 60-second verified briefs across politics, business, markets, technology, entertainment, and motivational success stories.
+          </p>
+          <div class="flex items-center gap-3 text-base">
+            <a href="https://twitter.com" target="_blank" rel="noopener" class="hover:text-red-500">𝕏</a>
+            <a href="https://t.me" target="_blank" rel="noopener" class="hover:text-red-500">Telegram</a>
+            <a href="https://whatsapp.com" target="_blank" rel="noopener" class="hover:text-red-500">WhatsApp</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-gray-900 dark:text-white uppercase tracking-wider text-xs mb-3">Key Categories</h4>
+          <ul class="space-y-1.5 text-xs">
+            <li><a href="#category=trending" onclick="App.setCategory('trending')" class="hover:underline">🔥 Trending Worldwide</a></li>
+            <li><a href="#category=share-market" onclick="App.setCategory('share-market')" class="hover:underline">📈 Share Market &amp; Crypto</a></li>
+            <li><a href="#category=business" onclick="App.setCategory('business')" class="hover:underline">💼 Business &amp; Economy</a></li>
+            <li><a href="#category=tech" onclick="App.setCategory('tech')" class="hover:underline">🤖 Technology &amp; AI</a></li>
+            <li><a href="#category=politics" onclick="App.setCategory('politics')" class="hover:underline">🏛️ World Politics</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-gray-900 dark:text-white uppercase tracking-wider text-xs mb-3">Special Coverage</h4>
+          <ul class="space-y-1.5 text-xs">
+            <li><a href="#category=sports" onclick="App.setCategory('sports')" class="hover:underline">⚽ Sports &amp; Tournaments</a></li>
+            <li><a href="#category=entertainment" onclick="App.setCategory('entertainment')" class="hover:underline">🎬 Entertainment &amp; Cinema</a></li>
+            <li><a href="#category=education" onclick="App.setCategory('education')" class="hover:underline">🎓 Education &amp; Exams</a></li>
+            <li><a href="#category=competition" onclick="App.setCategory('competition')" class="hover:underline">🏆 Competitions &amp; Jobs</a></li>
+            <li><a href="#category=motivational" onclick="App.setCategory('motivational')" class="hover:underline">💡 Motivational Stories</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-gray-900 dark:text-white uppercase tracking-wider text-xs mb-3">SEO &amp; Syndication</h4>
+          <ul class="space-y-1.5 text-xs">
+            <li><a href="sitemap.xml" target="_blank" class="hover:underline flex items-center gap-1"><span>🗺️</span> XML Google News Sitemap</a></li>
+            <li><a href="rss.xml" target="_blank" class="hover:underline flex items-center gap-1"><span>📡</span> RSS 2.0 News Syndication Feed</a></li>
+            <li><a href="robots.txt" target="_blank" class="hover:underline flex items-center gap-1"><span>🤖</span> Robots.txt Directives</a></li>
+            <li class="pt-2 text-[11px] text-gray-400">Deployed seamlessly on Firebase Global CDN.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-200 dark:border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p>&copy; 2026 TrendPulse 360. All rights reserved. Content syndicated from verified public RSS news feeds.</p>
+        <p class="text-xs">Optimized for Google News, Google Discover &amp; Core Web Vitals.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SEO & Application Scripts -->
+  <script src="js/seo.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Sitemap: https://trendpulse-news-14886.web.app/sitemap.xml
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+User-agent: Bingbot
+Allow: /

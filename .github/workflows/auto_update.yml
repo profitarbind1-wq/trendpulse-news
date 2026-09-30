@@ -1,0 +1,39 @@
+name: Auto Update Worldwide News & Deploy to Firebase
+
+on:
+  schedule:
+    # Runs every 30 minutes automatically 24/7
+    - cron: '*/30 * * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI anytime
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Ingest Worldwide Trending News
+        run: |
+          python auto_updater.py
+
+      - name: Commit & Push Updated News Cache & Sitemaps
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "TrendPulse Auto Bot"
+          git add data/news.json sitemap.xml robots.txt rss.xml
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update worldwide trending news [skip ci]" && git push)
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TRENDPULSE }}'
+          channelId: live
+          projectId: trendpulse360
