@@ -3,84 +3,102 @@
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
     <loc>https://trendpulse-live.web.app/</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>always</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#category=trending</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <loc>https://trendpulse-live.web.app/about.html</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/privacy.html</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/contact.html</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?category=trending</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#category=world</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <loc>https://trendpulse-live.web.app/?category=world</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#category=politics</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <loc>https://trendpulse-live.web.app/?category=politics</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#category=business</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <loc>https://trendpulse-live.web.app/?category=business</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#category=share-market</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <loc>https://trendpulse-live.web.app/?category=share-market</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#category=finance</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <loc>https://trendpulse-live.web.app/?category=finance</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#category=entertainment</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <loc>https://trendpulse-live.web.app/?category=entertainment</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#category=sports</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <loc>https://trendpulse-live.web.app/?category=sports</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#category=tech</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <loc>https://trendpulse-live.web.app/?category=tech</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#category=education</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <loc>https://trendpulse-live.web.app/?category=education</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#category=competition</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <loc>https://trendpulse-live.web.app/?category=competition</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#category=motivational</loc>
-    <lastmod>2026-10-01T09:58:26Z</lastmod>
+    <loc>https://trendpulse-live.web.app/?category=motivational</loc>
+    <lastmod>2026-10-01T10:19:01Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=trending-0-6337</loc>
+    <loc>https://trendpulse-live.web.app/?news=trending-0-6337</loc>
     <news:news>
       <news:publication>
         <news:name>NBC News</news:name>
@@ -91,7 +109,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=world-0-331835</loc>
+    <loc>https://trendpulse-live.web.app/?news=world-0-331835</loc>
     <news:news>
       <news:publication>
         <news:name>AP News</news:name>
@@ -102,7 +120,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=politics-0-240666</loc>
+    <loc>https://trendpulse-live.web.app/?news=politics-0-240666</loc>
     <news:news>
       <news:publication>
         <news:name>Axios</news:name>
@@ -113,7 +131,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=business-0-996947</loc>
+    <loc>https://trendpulse-live.web.app/?news=business-0-996947</loc>
     <news:news>
       <news:publication>
         <news:name>Barron&#x27;s</news:name>
@@ -124,7 +142,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=share-market-0-52436</loc>
+    <loc>https://trendpulse-live.web.app/?news=share-market-0-52436</loc>
     <news:news>
       <news:publication>
         <news:name>The Economic Times</news:name>
@@ -135,7 +153,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=finance-0-251576</loc>
+    <loc>https://trendpulse-live.web.app/?news=finance-0-251576</loc>
     <news:news>
       <news:publication>
         <news:name>U.S. Bank</news:name>
@@ -146,7 +164,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=entertainment-0-982819</loc>
+    <loc>https://trendpulse-live.web.app/?news=entertainment-0-982819</loc>
     <news:news>
       <news:publication>
         <news:name>Deadline</news:name>
@@ -157,7 +175,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=sports-0-452228</loc>
+    <loc>https://trendpulse-live.web.app/?news=sports-0-452228</loc>
     <news:news>
       <news:publication>
         <news:name>CBS Sports</news:name>
@@ -168,7 +186,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=tech-0-603938</loc>
+    <loc>https://trendpulse-live.web.app/?news=tech-0-603938</loc>
     <news:news>
       <news:publication>
         <news:name>The Verge</news:name>
@@ -179,7 +197,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=education-0-290983</loc>
+    <loc>https://trendpulse-live.web.app/?news=education-0-290983</loc>
     <news:news>
       <news:publication>
         <news:name>Shiksha.com</news:name>
@@ -190,7 +208,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=competition-0-67572</loc>
+    <loc>https://trendpulse-live.web.app/?news=competition-0-67572</loc>
     <news:news>
       <news:publication>
         <news:name>Adda247</news:name>
@@ -201,7 +219,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=motivational-0-244914</loc>
+    <loc>https://trendpulse-live.web.app/?news=motivational-0-244914</loc>
     <news:news>
       <news:publication>
         <news:name>outlookbusiness.com</news:name>
@@ -212,7 +230,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=trending-1-649992</loc>
+    <loc>https://trendpulse-live.web.app/?news=trending-1-649992</loc>
     <news:news>
       <news:publication>
         <news:name>The New York Times</news:name>
@@ -223,7 +241,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=world-1-749250</loc>
+    <loc>https://trendpulse-live.web.app/?news=world-1-749250</loc>
     <news:news>
       <news:publication>
         <news:name>The Washington Post</news:name>
@@ -234,7 +252,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=politics-1-673966</loc>
+    <loc>https://trendpulse-live.web.app/?news=politics-1-673966</loc>
     <news:news>
       <news:publication>
         <news:name>USA Today</news:name>
@@ -245,7 +263,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=business-1-571051</loc>
+    <loc>https://trendpulse-live.web.app/?news=business-1-571051</loc>
     <news:news>
       <news:publication>
         <news:name>Reuters</news:name>
@@ -256,7 +274,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=share-market-1-249003</loc>
+    <loc>https://trendpulse-live.web.app/?news=share-market-1-249003</loc>
     <news:news>
       <news:publication>
         <news:name>Business Standard</news:name>
@@ -267,7 +285,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=finance-1-622811</loc>
+    <loc>https://trendpulse-live.web.app/?news=finance-1-622811</loc>
     <news:news>
       <news:publication>
         <news:name>RBC Wealth Management</news:name>
@@ -278,7 +296,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=entertainment-1-935714</loc>
+    <loc>https://trendpulse-live.web.app/?news=entertainment-1-935714</loc>
     <news:news>
       <news:publication>
         <news:name>Los Angeles Times</news:name>
@@ -289,7 +307,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=sports-1-2412</loc>
+    <loc>https://trendpulse-live.web.app/?news=sports-1-2412</loc>
     <news:news>
       <news:publication>
         <news:name>ESPN</news:name>
@@ -300,7 +318,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=tech-1-465525</loc>
+    <loc>https://trendpulse-live.web.app/?news=tech-1-465525</loc>
     <news:news>
       <news:publication>
         <news:name>PhoneArena</news:name>
@@ -311,7 +329,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=education-1-378582</loc>
+    <loc>https://trendpulse-live.web.app/?news=education-1-378582</loc>
     <news:news>
       <news:publication>
         <news:name>Modern Adhyapak</news:name>
@@ -322,7 +340,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=competition-1-347349</loc>
+    <loc>https://trendpulse-live.web.app/?news=competition-1-347349</loc>
     <news:news>
       <news:publication>
         <news:name>Outlook India</news:name>
@@ -333,7 +351,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=motivational-1-308870</loc>
+    <loc>https://trendpulse-live.web.app/?news=motivational-1-308870</loc>
     <news:news>
       <news:publication>
         <news:name>PW</news:name>
@@ -344,7 +362,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=trending-2-235506</loc>
+    <loc>https://trendpulse-live.web.app/?news=trending-2-235506</loc>
     <news:news>
       <news:publication>
         <news:name>Axios</news:name>
@@ -355,7 +373,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=world-2-248462</loc>
+    <loc>https://trendpulse-live.web.app/?news=world-2-248462</loc>
     <news:news>
       <news:publication>
         <news:name>BBC</news:name>
@@ -366,7 +384,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=politics-2-154554</loc>
+    <loc>https://trendpulse-live.web.app/?news=politics-2-154554</loc>
     <news:news>
       <news:publication>
         <news:name>AP News</news:name>
@@ -377,7 +395,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=business-2-157383</loc>
+    <loc>https://trendpulse-live.web.app/?news=business-2-157383</loc>
     <news:news>
       <news:publication>
         <news:name>Bloomberg.com</news:name>
@@ -388,7 +406,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=share-market-2-568790</loc>
+    <loc>https://trendpulse-live.web.app/?news=share-market-2-568790</loc>
     <news:news>
       <news:publication>
         <news:name>ts2.tech</news:name>
@@ -399,7 +417,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=finance-2-145306</loc>
+    <loc>https://trendpulse-live.web.app/?news=finance-2-145306</loc>
     <news:news>
       <news:publication>
         <news:name>investopedia.com</news:name>
@@ -410,7 +428,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=entertainment-2-87548</loc>
+    <loc>https://trendpulse-live.web.app/?news=entertainment-2-87548</loc>
     <news:news>
       <news:publication>
         <news:name>TVLine</news:name>
@@ -421,7 +439,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=sports-2-938921</loc>
+    <loc>https://trendpulse-live.web.app/?news=sports-2-938921</loc>
     <news:news>
       <news:publication>
         <news:name>MLB.com</news:name>
@@ -432,7 +450,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=tech-2-416728</loc>
+    <loc>https://trendpulse-live.web.app/?news=tech-2-416728</loc>
     <news:news>
       <news:publication>
         <news:name>9to5Mac</news:name>
@@ -443,7 +461,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=education-2-826464</loc>
+    <loc>https://trendpulse-live.web.app/?news=education-2-826464</loc>
     <news:news>
       <news:publication>
         <news:name>Hindustan Times</news:name>
@@ -454,7 +472,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=competition-2-278723</loc>
+    <loc>https://trendpulse-live.web.app/?news=competition-2-278723</loc>
     <news:news>
       <news:publication>
         <news:name>Careers360</news:name>
@@ -465,7 +483,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=motivational-2-153284</loc>
+    <loc>https://trendpulse-live.web.app/?news=motivational-2-153284</loc>
     <news:news>
       <news:publication>
         <news:name>Education Today</news:name>
@@ -476,7 +494,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=trending-3-536524</loc>
+    <loc>https://trendpulse-live.web.app/?news=trending-3-536524</loc>
     <news:news>
       <news:publication>
         <news:name>The Guardian</news:name>
@@ -487,7 +505,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=world-3-846076</loc>
+    <loc>https://trendpulse-live.web.app/?news=world-3-846076</loc>
     <news:news>
       <news:publication>
         <news:name>WSJ</news:name>
@@ -498,7 +516,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=politics-3-291789</loc>
+    <loc>https://trendpulse-live.web.app/?news=politics-3-291789</loc>
     <news:news>
       <news:publication>
         <news:name>Reuters</news:name>
@@ -509,7 +527,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=business-3-588668</loc>
+    <loc>https://trendpulse-live.web.app/?news=business-3-588668</loc>
     <news:news>
       <news:publication>
         <news:name>CNBC</news:name>
@@ -520,7 +538,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=share-market-3-297597</loc>
+    <loc>https://trendpulse-live.web.app/?news=share-market-3-297597</loc>
     <news:news>
       <news:publication>
         <news:name>ts2.tech</news:name>
@@ -531,7 +549,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=finance-3-740384</loc>
+    <loc>https://trendpulse-live.web.app/?news=finance-3-740384</loc>
     <news:news>
       <news:publication>
         <news:name>Yahoo Finance</news:name>
@@ -542,7 +560,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=entertainment-3-836826</loc>
+    <loc>https://trendpulse-live.web.app/?news=entertainment-3-836826</loc>
     <news:news>
       <news:publication>
         <news:name>The Hollywood Reporter</news:name>
@@ -553,7 +571,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=sports-3-236133</loc>
+    <loc>https://trendpulse-live.web.app/?news=sports-3-236133</loc>
     <news:news>
       <news:publication>
         <news:name>Bad Left Hook</news:name>
@@ -564,7 +582,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=tech-3-375314</loc>
+    <loc>https://trendpulse-live.web.app/?news=tech-3-375314</loc>
     <news:news>
       <news:publication>
         <news:name>9to5Mac</news:name>
@@ -575,7 +593,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=education-3-549522</loc>
+    <loc>https://trendpulse-live.web.app/?news=education-3-549522</loc>
     <news:news>
       <news:publication>
         <news:name>Shiksha.com</news:name>
@@ -586,7 +604,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=competition-3-643379</loc>
+    <loc>https://trendpulse-live.web.app/?news=competition-3-643379</loc>
     <news:news>
       <news:publication>
         <news:name>Adda247</news:name>
@@ -597,7 +615,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=motivational-3-533872</loc>
+    <loc>https://trendpulse-live.web.app/?news=motivational-3-533872</loc>
     <news:news>
       <news:publication>
         <news:name>Pioneer Daily</news:name>
@@ -608,7 +626,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=trending-4-395861</loc>
+    <loc>https://trendpulse-live.web.app/?news=trending-4-395861</loc>
     <news:news>
       <news:publication>
         <news:name>Politico</news:name>
@@ -619,7 +637,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=world-4-252184</loc>
+    <loc>https://trendpulse-live.web.app/?news=world-4-252184</loc>
     <news:news>
       <news:publication>
         <news:name>AP News</news:name>
@@ -630,7 +648,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=politics-4-880423</loc>
+    <loc>https://trendpulse-live.web.app/?news=politics-4-880423</loc>
     <news:news>
       <news:publication>
         <news:name>Deseret News</news:name>
@@ -641,7 +659,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=business-4-398242</loc>
+    <loc>https://trendpulse-live.web.app/?news=business-4-398242</loc>
     <news:news>
       <news:publication>
         <news:name>Variety</news:name>
@@ -652,7 +670,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=share-market-4-544066</loc>
+    <loc>https://trendpulse-live.web.app/?news=share-market-4-544066</loc>
     <news:news>
       <news:publication>
         <news:name>ts2.tech</news:name>
@@ -663,7 +681,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=finance-4-62242</loc>
+    <loc>https://trendpulse-live.web.app/?news=finance-4-62242</loc>
     <news:news>
       <news:publication>
         <news:name>U.S. Bank</news:name>
@@ -674,7 +692,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=entertainment-4-787075</loc>
+    <loc>https://trendpulse-live.web.app/?news=entertainment-4-787075</loc>
     <news:news>
       <news:publication>
         <news:name>The Seattle Times</news:name>
@@ -685,7 +703,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=sports-4-400888</loc>
+    <loc>https://trendpulse-live.web.app/?news=sports-4-400888</loc>
     <news:news>
       <news:publication>
         <news:name>Sox Machine</news:name>
@@ -696,7 +714,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=tech-4-331801</loc>
+    <loc>https://trendpulse-live.web.app/?news=tech-4-331801</loc>
     <news:news>
       <news:publication>
         <news:name>GSMArena.com</news:name>
@@ -707,7 +725,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=education-4-583635</loc>
+    <loc>https://trendpulse-live.web.app/?news=education-4-583635</loc>
     <news:news>
       <news:publication>
         <news:name>Shiksha.com</news:name>
@@ -718,7 +736,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=competition-4-46657</loc>
+    <loc>https://trendpulse-live.web.app/?news=competition-4-46657</loc>
     <news:news>
       <news:publication>
         <news:name>PW</news:name>
@@ -729,7 +747,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/#news=motivational-4-781140</loc>
+    <loc>https://trendpulse-live.web.app/?news=motivational-4-781140</loc>
     <news:news>
       <news:publication>
         <news:name>thebetterindia.com</news:name>

@@ -231,7 +231,7 @@ def fetch_rss_feed(category):
     return articles
 
 def generate_sitemap(all_articles):
-    """Generates Google News XML Sitemap."""
+    """Generates Google News XML Sitemap compliant with Google Search guidelines."""
     now_iso = datetime.datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']
@@ -246,10 +246,19 @@ def generate_sitemap(all_articles):
     xml.append('    <priority>1.0</priority>')
     xml.append('  </url>')
 
-    # Category URLs
+    # Static Pages (About, Privacy, Contact)
+    for page in ['about.html', 'privacy.html', 'contact.html']:
+        xml.append('  <url>')
+        xml.append(f'    <loc>{SITE_URL}/{page}</loc>')
+        xml.append(f'    <lastmod>{now_iso}</lastmod>')
+        xml.append('    <changefreq>monthly</changefreq>')
+        xml.append('    <priority>0.7</priority>')
+        xml.append('  </url>')
+
+    # Category URLs (clean query param, no '#' fragments)
     for cat in CATEGORIES:
         xml.append('  <url>')
-        xml.append(f'    <loc>{SITE_URL}/#category={cat["id"]}</loc>')
+        xml.append(f'    <loc>{SITE_URL}/?category={cat["id"]}</loc>')
         xml.append(f'    <lastmod>{now_iso}</lastmod>')
         xml.append('    <changefreq>hourly</changefreq>')
         xml.append('    <priority>0.8</priority>')
@@ -268,7 +277,7 @@ def generate_sitemap(all_articles):
         escaped_source = html.escape(art["source"])
 
         xml.append('  <url>')
-        xml.append(f'    <loc>{SITE_URL}/#news={art["id"]}</loc>')
+        xml.append(f'    <loc>{SITE_URL}/?news={art["id"]}</loc>')
         xml.append('    <news:news>')
         xml.append('      <news:publication>')
         xml.append(f'        <news:name>{escaped_source}</news:name>')

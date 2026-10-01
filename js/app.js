@@ -856,16 +856,19 @@ const App = {
   },
 
   handleInitialRouting() {
+    const params = new URLSearchParams(window.location.search);
     const hash = window.location.hash.substring(1);
-    if (hash.startsWith('news=')) {
-      const artId = hash.replace('news=', '');
-      this.openArticleModal(artId);
+
+    const newsId = params.get('news') || (hash.startsWith('news=') ? hash.replace('news=', '') : null);
+    const catId = params.get('category') || (hash.startsWith('category=') ? hash.replace('category=', '') : null);
+
+    if (newsId) {
+      this.openArticleModal(newsId);
     } else {
       if (this.data.activeArticleModal) {
         this.closeArticleModal(false);
       }
-      if (hash.startsWith('category=')) {
-        const catId = hash.replace('category=', '');
+      if (catId) {
         this.setCategory(catId);
       }
     }
