@@ -310,6 +310,7 @@ def parse_matches(raw_json):
                 is_live = state.lower() in ['in progress', 'live', 'innings break', 'tea', 'lunch', 'stumps']
                 is_complete = state.lower() in ['complete', 'abandoned', 'no result']
                 is_upcoming = not is_live and not is_complete
+                is_india = "IND" in t1_sname.upper() or "INDIA" in t1_name.upper() or "IND" in t2_sname.upper() or "INDIA" in t2_name.upper()
                 
                 match_card = {
                     "id": mid,
@@ -324,6 +325,7 @@ def parse_matches(raw_json):
                     "isLive": is_live,
                     "isUpcoming": is_upcoming,
                     "isComplete": is_complete,
+                    "isIndiaMatch": is_india,
                     "team1": {
                         "name": t1_name,
                         "shortName": t1_sname,
@@ -405,6 +407,7 @@ def get_curated_matches_fallback():
         "isLive": True,
         "isUpcoming": False,
         "isComplete": False,
+        "isIndiaMatch": True,
         "team1": {
             "name": "Australia A",
             "shortName": "AUSA",
@@ -442,6 +445,7 @@ def get_curated_matches_fallback():
         "isLive": False,
         "isUpcoming": True,
         "isComplete": False,
+        "isIndiaMatch": True,
         "team1": {
             "name": "India",
             "shortName": "IND",
@@ -479,6 +483,7 @@ def get_curated_matches_fallback():
         "isLive": False,
         "isUpcoming": True,
         "isComplete": False,
+        "isIndiaMatch": True,
         "team1": {
             "name": "India Women",
             "shortName": "IND-W",
@@ -506,16 +511,17 @@ def get_curated_matches_fallback():
     match_rec_1 = {
         "id": "ind-wi-2nd-odi",
         "series": "West Indies tour of India 2026",
-        "matchDesc": "2nd ODI",
+        "matchDesc": "2nd ODI (Yesterday)",
         "matchFormat": "ODI",
         "matchType": "International",
         "state": "Complete",
-        "status": "India won by 107 runs (Player of the Match: Shubman Gill)",
+        "status": "India won by 107 runs • Player of the Match: Shubman Gill 87(74)",
         "venue": "Eden Gardens, Kolkata",
-        "startTime": "Yesterday",
+        "startTime": "Yesterday, Finished",
         "isLive": False,
         "isUpcoming": False,
         "isComplete": True,
+        "isIndiaMatch": True,
         "team1": {
             "name": "India",
             "shortName": "IND",
@@ -533,17 +539,55 @@ def get_curated_matches_fallback():
         "stream": {
             "streamName": "JioCinema",
             "streamUrl": "https://www.jiocinema.com/sports",
-            "highlightsUrl": "https://www.bcci.tv/videos",
-            "searchLiveUrl": "https://www.youtube.com/results?search_query=India+vs+West+Indies+2nd+ODI+highlights"
+            "highlightsUrl": "https://www.youtube.com/results?search_query=India+vs+West+Indies+2nd+ODI+highlights+2026",
+            "searchLiveUrl": "https://www.youtube.com/results?search_query=India+vs+West+Indies+2nd+ODI+match"
         },
         "cricbuzzUrl": "https://www.cricbuzz.com"
     }
     match_rec_1["scorecard"] = generate_detailed_scorecard(match_rec_1)
 
+    match_rec_2 = {
+        "id": "ind-wi-1st-odi",
+        "series": "West Indies tour of India 2026",
+        "matchDesc": "1st ODI",
+        "matchFormat": "ODI",
+        "matchType": "International",
+        "state": "Complete",
+        "status": "India won by 5 wickets • Virat Kohli 92*(83), Jasprit Bumrah 4/29",
+        "venue": "Narendra Modi Stadium, Ahmedabad",
+        "startTime": "Completed",
+        "isLive": False,
+        "isUpcoming": False,
+        "isComplete": True,
+        "isIndiaMatch": True,
+        "team1": {
+            "name": "West Indies",
+            "shortName": "WI",
+            "flag": "🌴",
+            "innings1": {"runs": 245, "wickets": 10, "overs": 47.2, "display": "245 (47.2 ov)"},
+            "innings2": None
+        },
+        "team2": {
+            "name": "India",
+            "shortName": "IND",
+            "flag": "🇮🇳",
+            "innings1": {"runs": 248, "wickets": 5, "overs": 41.5, "display": "248/5 (41.5 ov)"},
+            "innings2": None
+        },
+        "stream": {
+            "streamName": "JioCinema / Sports18",
+            "streamUrl": "https://www.jiocinema.com/sports",
+            "highlightsUrl": "https://www.youtube.com/results?search_query=India+vs+West+Indies+1st+ODI+highlights",
+            "searchLiveUrl": "https://www.youtube.com/results?search_query=India+vs+West+Indies+1st+ODI"
+        },
+        "cricbuzzUrl": "https://www.cricbuzz.com"
+    }
+    match_rec_2["scorecard"] = generate_detailed_scorecard(match_rec_2)
+
     return {
         "liveMatches": [match_live_1, match_live_2],
         "upcomingMatches": [match_up_1, match_up_2],
-        "recentMatches": [match_rec_1]
+        "recentMatches": [match_rec_1, match_rec_2]
     }
 
 def update_cricket_data():
@@ -563,22 +607,27 @@ def update_cricket_data():
     if not recent_matches:
         recent_matches = fallback["recentMatches"]
 
+    all_matches = live_matches + upcoming_matches + recent_matches
+    team_india_matches = [m for m in all_matches if m.get("isIndiaMatch")]
+
     data = {
         "site": "TrendPulse 360 Cricket Center",
         "lastUpdated": datetime.datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
         "totalLive": len(live_matches),
         "totalUpcoming": len(upcoming_matches),
         "totalRecent": len(recent_matches),
+        "totalIndia": len(team_india_matches),
         "liveMatches": live_matches,
         "upcomingMatches": upcoming_matches,
-        "recentMatches": recent_matches
+        "recentMatches": recent_matches,
+        "teamIndiaMatches": team_india_matches
     }
 
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(CRICKET_FILE, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-    print(f"-> Successfully saved cricket data: {len(live_matches)} Live, {len(upcoming_matches)} Upcoming, {len(recent_matches)} Recent.")
+    print(f"-> Successfully saved cricket data: {len(live_matches)} Live, {len(upcoming_matches)} Upcoming, {len(recent_matches)} Recent, {len(team_india_matches)} Team India.")
     print("=" * 60)
     return data
 

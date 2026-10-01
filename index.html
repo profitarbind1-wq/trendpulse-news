@@ -256,6 +256,9 @@
           <span class="text-xs text-slate-400">Loading live cricket scores &amp; fixtures...</span>
         </div>
       </div>
+      <button onclick="Cricket.setTab('india'); Cricket.toggleCricketCenter();" class="text-xs font-black px-2.5 py-1 rounded bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white flex items-center gap-1 transition-all whitespace-nowrap cursor-pointer shrink-0 shadow-sm">
+        <span>🇮🇳</span> <span class="hidden sm:inline">India</span> Highlights
+      </button>
       <button onclick="Cricket.toggleCricketCenter()" class="text-xs font-semibold px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1 transition-all whitespace-nowrap cursor-pointer shrink-0">
         <span>📊</span> <span class="hidden sm:inline">Match</span> Center
       </button>
@@ -287,15 +290,18 @@
             </div>
           </div>
 
-          <!-- Filter Tabs: Live, Upcoming, Recent -->
-          <div class="flex items-center gap-1.5 bg-slate-800/80 p-1 rounded-xl border border-slate-700/60 self-start sm:self-auto">
-            <button onclick="Cricket.setTab('live')" id="cricket-tab-live" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-1.5 cursor-pointer">
+          <!-- Filter Tabs: Team India (Special), Live, Upcoming, Recent -->
+          <div class="flex items-center gap-1.5 bg-slate-800/80 p-1 rounded-xl border border-slate-700/60 self-start sm:self-auto overflow-x-auto no-scrollbar max-w-full">
+            <button onclick="Cricket.setTab('india')" id="cricket-tab-india" class="px-3.5 py-1.5 rounded-lg text-xs font-black transition-all bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+              <span>🇮🇳</span> Team India Highlights (<span id="count-india-tab">0</span>)
+            </button>
+            <button onclick="Cricket.setTab('live')" id="cricket-tab-live" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
               <span class="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping"></span> Live (<span id="count-live-tab">0</span>)
             </button>
-            <button onclick="Cricket.setTab('upcoming')" id="cricket-tab-upcoming" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer">
+            <button onclick="Cricket.setTab('upcoming')" id="cricket-tab-upcoming" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
               <span>📅</span> Upcoming (<span id="count-upcoming-tab">0</span>)
             </button>
-            <button onclick="Cricket.setTab('recent')" id="cricket-tab-recent" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer">
+            <button onclick="Cricket.setTab('recent')" id="cricket-tab-recent" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
               <span>🏆</span> Results (<span id="count-recent-tab">0</span>)
             </button>
           </div>

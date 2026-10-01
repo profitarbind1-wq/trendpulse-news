@@ -2,10 +2,10 @@
  * TrendPulse 360 - Cricket Live Score & Match Center Module
  * Features:
  * - Real-time auto-refreshing scores (every 60s)
- * - Beautiful top cricket marquee ticker
- * - Interactive Match Center (Live, Upcoming, Recent Results)
+ * - Beautiful top cricket marquee ticker with India Match alerts
+ * - Interactive Match Center (🇮🇳 Team India, Live, Upcoming, Recent Results)
  * - Full detailed scorecard modal (Batting, Bowling, Toss, CRR/RRR)
- * - Direct Live Streaming & Video Highlights links
+ * - Direct Live Streaming (JioCinema / Hotstar / SonyLIV) & Video Highlights links
  */
 
 const Cricket = {
@@ -13,9 +13,10 @@ const Cricket = {
     matches: {
       liveMatches: [],
       upcomingMatches: [],
-      recentMatches: []
+      recentMatches: [],
+      teamIndiaMatches: []
     },
-    activeTab: 'live',
+    activeTab: 'india', // Default to Team India tab for top engagement!
     selectedMatch: null,
     selectedInningsIdx: 0,
     pollInterval: null
@@ -38,7 +39,23 @@ const Cricket = {
       this.data.matches.upcomingMatches = json.upcomingMatches || [];
       this.data.matches.recentMatches = json.recentMatches || [];
 
+      // Extract or compute Team India matches
+      const all = [
+        ...this.data.matches.liveMatches,
+        ...this.data.matches.upcomingMatches,
+        ...this.data.matches.recentMatches
+      ];
+
+      this.data.matches.teamIndiaMatches = json.teamIndiaMatches || all.filter(m => 
+        m.isIndiaMatch || 
+        (m.team1 && m.team1.shortName && m.team1.shortName.toUpperCase().includes('IND')) ||
+        (m.team2 && m.team2.shortName && m.team2.shortName.toUpperCase().includes('IND'))
+      );
+
       // Update tab badges
+      const indiaBadge = document.getElementById('count-india-tab');
+      if (indiaBadge) indiaBadge.textContent = this.data.matches.teamIndiaMatches.length;
+
       const liveBadge = document.getElementById('count-live-tab');
       if (liveBadge) liveBadge.textContent = this.data.matches.liveMatches.length;
 
@@ -47,13 +64,6 @@ const Cricket = {
 
       const recBadge = document.getElementById('count-recent-tab');
       if (recBadge) recBadge.textContent = this.data.matches.recentMatches.length;
-
-      // Default to upcoming if no live matches
-      if (this.data.matches.liveMatches.length === 0 && this.data.activeTab === 'live' && !isPolling) {
-        if (this.data.matches.upcomingMatches.length > 0) {
-          this.setTab('upcoming');
-        }
-      }
 
       this.renderTicker();
       this.renderCards();
@@ -75,20 +85,25 @@ const Cricket = {
     const all = [
       ...this.data.matches.liveMatches,
       ...this.data.matches.upcomingMatches,
-      ...this.data.matches.recentMatches
+      ...this.data.matches.recentMatches,
+      ...this.data.matches.teamIndiaMatches
     ];
     return all.find(m => m.id === id);
   },
 
   setTab(tabName) {
     this.data.activeTab = tabName;
-    ['live', 'upcoming', 'recent'].forEach(t => {
+    ['india', 'live', 'upcoming', 'recent'].forEach(t => {
       const btn = document.getElementById(`cricket-tab-${t}`);
       if (!btn) return;
       if (t === tabName) {
-        btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-1.5";
+        if (t === 'india') {
+          btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-black transition-all bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md flex items-center gap-1.5 cursor-pointer whitespace-nowrap";
+        } else {
+          btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-1.5 cursor-pointer whitespace-nowrap";
+        }
       } else {
-        btn.className = "px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5";
+        btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap";
       }
     });
     this.renderCards();
@@ -100,7 +115,8 @@ const Cricket = {
 
     const allTickerMatches = [
       ...this.data.matches.liveMatches,
-      ...this.data.matches.upcomingMatches
+      ...this.data.matches.upcomingMatches,
+      ...this.data.matches.recentMatches
     ];
 
     if (!allTickerMatches.length) {
@@ -109,6 +125,25 @@ const Cricket = {
     }
 
     let html = '';
+
+    // Prominent India vs West Indies Highlights Lead Badge in Ticker
+    const indWi = allTickerMatches.find(m => m.id === 'ind-wi-2nd-odi');
+    if (indWi) {
+      html += `
+        <div onclick="Cricket.openScorecard('${indWi.id}')" class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-600/20 border border-amber-500/60 px-3 py-1 rounded-lg text-xs cursor-pointer transition-all hover:border-amber-400 shadow-md shrink-0">
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-black uppercase bg-amber-500 text-slate-950 animate-pulse">
+            🎬 Highlights
+          </span>
+          <span class="font-extrabold flex items-center gap-1 text-white">
+            <span>🇮🇳</span> IND 324/5 vs <span>🌴</span> WI 217 (Ind won by 107r)
+          </span>
+          <span class="text-amber-300 text-[11px] font-bold hover:underline">
+            Watch Full Highlights →
+          </span>
+        </div>
+      `;
+    }
+
     allTickerMatches.forEach(m => {
       const t1 = m.team1;
       const t2 = m.team2;
@@ -116,7 +151,7 @@ const Cricket = {
       const t2_score = t2.innings1 ? t2.innings1.display : '';
 
       const isLive = m.isLive;
-      const badgeColor = isLive ? 'bg-red-600 text-white animate-pulse' : 'bg-slate-700 text-slate-300';
+      const badgeColor = isLive ? 'bg-red-600 text-white animate-pulse' : (m.isUpcoming ? 'bg-slate-700 text-slate-300' : 'bg-emerald-700 text-white');
       const badgeText = isLive ? 'LIVE' : (m.isUpcoming ? 'UPCOMING' : 'RESULT');
 
       html += `
@@ -149,7 +184,12 @@ const Cricket = {
     if (!container) return;
 
     let targetMatches = [];
-    if (this.data.activeTab === 'live') {
+    let isIndiaTab = false;
+
+    if (this.data.activeTab === 'india') {
+      targetMatches = this.data.matches.teamIndiaMatches;
+      isIndiaTab = true;
+    } else if (this.data.activeTab === 'live') {
       targetMatches = this.data.matches.liveMatches;
     } else if (this.data.activeTab === 'upcoming') {
       targetMatches = this.data.matches.upcomingMatches;
@@ -161,9 +201,9 @@ const Cricket = {
       container.innerHTML = `
         <div class="col-span-full text-center py-12 text-slate-400">
           <div class="text-4xl mb-2">🏏</div>
-          <p class="font-semibold text-sm">No matches in this category right now.</p>
-          <button onclick="Cricket.setTab('upcoming')" class="mt-3 px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all">
-            View Upcoming Schedule
+          <p class="font-semibold text-sm">No matches in this section right now.</p>
+          <button onclick="Cricket.setTab('india')" class="mt-3 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold transition-all">
+            View Team India Matches &amp; Highlights
           </button>
         </div>
       `;
@@ -171,6 +211,39 @@ const Cricket = {
     }
 
     let cardsHtml = '';
+
+    // Team India Special Header Banner
+    if (isIndiaTab) {
+      cardsHtml += `
+        <div class="col-span-full bg-gradient-to-r from-amber-500/20 via-orange-600/20 to-blue-600/20 border border-amber-500/50 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs shadow-lg">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-2xl shadow-md shrink-0">
+              🇮🇳
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-sm sm:text-base flex items-center gap-2">
+                Team India Match Highlights &amp; Hub
+                <span class="text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-2 py-0.5 rounded-full font-mono">
+                  Official Videos
+                </span>
+              </h4>
+              <p class="text-slate-300 mt-0.5">
+                कल हुए <strong>India vs West Indies</strong> समेत टीम इंडिया के सभी लाइव, हालिया और आगामी मैचों की पूरी स्कोरकार्ड और हाइलाइट्स।
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 self-stretch sm:self-auto">
+            <a href="https://www.youtube.com/results?search_query=India+vs+West+Indies+highlights+2026" target="_blank" rel="noopener" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black shadow-md transition-all flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer">
+              <span>🎬</span> Ind vs WI Highlights
+            </a>
+            <a href="https://www.bcci.tv/videos" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer">
+              <span>🏛️</span> BCCI Hub
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
     targetMatches.forEach(m => {
       const t1 = m.team1;
       const t2 = m.team2;
@@ -178,20 +251,30 @@ const Cricket = {
       const t2_s = t2.innings1 ? t2.innings1.display : (m.isUpcoming ? 'Yet to Bat' : '-');
 
       const isLive = m.isLive;
+      const isInd = m.isIndiaMatch;
+
       const badgeStyle = isLive 
         ? 'bg-red-600 text-white shadow-red-500/30 animate-pulse' 
         : (m.isUpcoming ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30');
       
       const badgeLabel = isLive ? '🔴 LIVE' : (m.isUpcoming ? '📅 UPCOMING' : '🏆 COMPLETED');
+      const borderStyle = isInd ? 'border-amber-500/60 shadow-amber-500/10' : 'border-slate-700/80';
+
+      // Specific highlight button text
+      const isIndWi = m.id && m.id.includes('ind-wi');
+      const highlightBtnLabel = isIndWi ? '🎬 Watch Ind vs WI Highlights' : '🎬 Watch Highlights';
+      const highlightBtnStyle = isInd 
+        ? 'bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black shadow-md' 
+        : 'bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold';
 
       cardsHtml += `
-        <div class="bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 rounded-2xl p-4 sm:p-5 shadow-lg transition-all hover:border-indigo-500/80 flex flex-col justify-between group">
+        <div class="bg-slate-800/90 hover:bg-slate-800 border ${borderStyle} rounded-2xl p-4 sm:p-5 shadow-lg transition-all hover:border-indigo-500/80 flex flex-col justify-between group">
           
           <!-- Top Row: Series & State Badge -->
           <div>
             <div class="flex items-center justify-between text-xs mb-3 pb-2 border-b border-slate-700/60">
               <span class="font-semibold text-slate-300 truncate max-w-[65%]" title="${m.series}">
-                ${m.series} • <strong class="text-indigo-400">${m.matchFormat}</strong>
+                ${isInd ? '<span class="text-amber-400 font-bold mr-1">🇮🇳</span>' : ''}${m.series} • <strong class="text-indigo-400">${m.matchFormat}</strong>
               </span>
               <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${badgeStyle}">
                 ${badgeLabel}
@@ -205,7 +288,10 @@ const Cricket = {
                 <div class="flex items-center gap-2">
                   <span class="text-2xl">${t1.flag}</span>
                   <div>
-                    <h4 class="font-bold text-sm text-white">${t1.name}</h4>
+                    <h4 class="font-bold text-sm text-white flex items-center gap-1">
+                      ${t1.name}
+                      ${t1.shortName.includes('IND') ? '<span class="text-amber-400 text-xs">★</span>' : ''}
+                    </h4>
                     <span class="text-[10px] text-slate-400">${m.matchDesc}</span>
                   </div>
                 </div>
@@ -219,7 +305,10 @@ const Cricket = {
                 <div class="flex items-center gap-2">
                   <span class="text-2xl">${t2.flag}</span>
                   <div>
-                    <h4 class="font-bold text-sm text-white">${t2.name}</h4>
+                    <h4 class="font-bold text-sm text-white flex items-center gap-1">
+                      ${t2.name}
+                      ${t2.shortName.includes('IND') ? '<span class="text-amber-400 text-xs">★</span>' : ''}
+                    </h4>
                     <span class="text-[10px] text-slate-400">${m.venue}</span>
                   </div>
                 </div>
@@ -239,17 +328,17 @@ const Cricket = {
           </div>
 
           <!-- Action Buttons Bar: Scorecard, Live Stream, Highlights -->
-          <div class="pt-3 border-t border-slate-700/60 flex items-center gap-2 text-xs">
-            <button onclick="Cricket.openScorecard('${m.id}')" class="flex-1 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-center shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-              <span>📊</span> Detailed Scorecard
+          <div class="pt-3 border-t border-slate-700/60 flex flex-wrap items-center gap-2 text-xs">
+            <button onclick="Cricket.openScorecard('${m.id}')" class="flex-1 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-center shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer min-w-[120px]">
+              <span>📊</span> Scorecard
             </button>
             
-            <a href="${m.stream.streamUrl}" target="_blank" rel="noopener" class="py-2 px-3 rounded-xl bg-red-600/90 hover:bg-red-500 text-white font-bold text-center transition-all flex items-center justify-center gap-1 cursor-pointer" title="Watch Live on ${m.stream.streamName}">
-              <span>📺</span> <span class="hidden sm:inline">Stream</span>
+            <a href="${m.stream.highlightsUrl}" target="_blank" rel="noopener" class="flex-1 py-2 px-3 rounded-xl ${highlightBtnStyle} text-center transition-all flex items-center justify-center gap-1 cursor-pointer min-w-[140px]" title="Watch Match Highlights Video">
+              <span>🎬</span> ${highlightBtnLabel}
             </a>
 
-            <a href="${m.stream.highlightsUrl}" target="_blank" rel="noopener" class="py-2 px-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-center transition-all flex items-center justify-center gap-1 cursor-pointer" title="Watch Highlights Video">
-              <span>🎬</span> <span class="hidden sm:inline">Highlights</span>
+            <a href="${m.stream.streamUrl}" target="_blank" rel="noopener" class="py-2 px-3 rounded-xl bg-red-600/90 hover:bg-red-500 text-white font-bold text-center transition-all flex items-center justify-center gap-1 cursor-pointer" title="Watch Live Stream on ${m.stream.streamName}">
+              <span>📺</span> <span class="hidden sm:inline">Stream</span>
             </a>
           </div>
 
@@ -297,6 +386,7 @@ const Cricket = {
     const t2 = match.team2;
     const sc = match.scorecard || {};
     const stream = match.stream;
+    const isInd = match.isIndiaMatch;
 
     // 1. Header
     const headerEl = document.getElementById('scorecard-modal-header');
@@ -304,8 +394,8 @@ const Cricket = {
       headerEl.innerHTML = `
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <span class="text-xs uppercase tracking-wider text-indigo-300 font-semibold">
-              ${match.series} • ${match.matchDesc} (${match.matchFormat})
+            <span class="text-xs uppercase tracking-wider text-indigo-300 font-semibold flex items-center gap-1.5">
+              ${isInd ? '<span>🇮🇳</span>' : ''}${match.series} • ${match.matchDesc} (${match.matchFormat})
             </span>
             <div class="flex items-center gap-4 mt-2">
               <div class="flex items-center gap-2">
@@ -362,11 +452,11 @@ const Cricket = {
           <span>${sc.status || match.status}</span>
         </div>
         <div class="flex items-center gap-2">
-          <a href="${stream.streamUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold shadow-sm transition-all hover:scale-105">
-            <span>📺</span> Watch Live Stream (${stream.streamName})
+          <a href="${stream.highlightsUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black shadow-md transition-all">
+            <span>🎬</span> Watch Highlights Video
           </a>
-          <a href="${stream.highlightsUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold shadow-sm transition-all">
-            <span>🎬</span> Official Highlights
+          <a href="${stream.streamUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold shadow-sm transition-all">
+            <span>📺</span> Watch Live (${stream.streamName})
           </a>
         </div>
       `;
