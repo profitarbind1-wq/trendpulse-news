@@ -290,13 +290,13 @@
             </div>
           </div>
 
-          <!-- Filter Tabs: Team India (Special), Live, Upcoming, Recent -->
+          <!-- Filter Tabs: Live First (as requested), Team India Highlights, Upcoming, Recent -->
           <div class="flex items-center gap-1.5 bg-slate-800/80 p-1 rounded-xl border border-slate-700/60 self-start sm:self-auto overflow-x-auto no-scrollbar max-w-full">
-            <button onclick="Cricket.setTab('india')" id="cricket-tab-india" class="px-3.5 py-1.5 rounded-lg text-xs font-black transition-all bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
-              <span>🇮🇳</span> India Match Highlights (<span id="count-india-tab">10</span>)
+            <button onclick="Cricket.setTab('live')" id="cricket-tab-live" class="px-3.5 py-1.5 rounded-lg text-xs font-black transition-all bg-red-600 text-white shadow-md flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+              <span class="w-2 h-2 rounded-full bg-white animate-ping mr-0.5"></span> 🔴 Live Matches (<span id="count-live-tab">0</span>)
             </button>
-            <button onclick="Cricket.setTab('live')" id="cricket-tab-live" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
-              <span class="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping"></span> Live (<span id="count-live-tab">0</span>)
+            <button onclick="Cricket.setTab('india')" id="cricket-tab-india" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+              <span>🇮🇳</span> India Match Highlights (<span id="count-india-tab">10</span>)
             </button>
             <button onclick="Cricket.setTab('upcoming')" id="cricket-tab-upcoming" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
               <span>📅</span> Upcoming (<span id="count-upcoming-tab">0</span>)
