@@ -2,10 +2,10 @@
  * TrendPulse 360 - Cricket Live Score & Match Center Module
  * Features:
  * - Real-time auto-refreshing scores (every 60s)
- * - Beautiful top cricket marquee ticker with India Match alerts
- * - Interactive Match Center (🇮🇳 Team India, Live, Upcoming, Recent Results)
- * - Full detailed scorecard modal (Batting, Bowling, Toss, CRR/RRR)
- * - Direct Live Streaming (JioCinema / Hotstar / SonyLIV) & Video Highlights links
+ * - Beautiful top cricket marquee ticker with India Match highlights alerts
+ * - Dedicated Team India Highlights Hub (India Men Last 5 & India Women Last 5 matches)
+ * - Direct official OTT free streaming links (JioCinema / Disney+ Hotstar / SonyLIV / BCCI) - Zero YouTube!
+ * - Full interactive scorecard modal (Batting, Bowling, Toss, CRR/RRR, Dismissals)
  */
 
 const Cricket = {
@@ -14,9 +14,12 @@ const Cricket = {
       liveMatches: [],
       upcomingMatches: [],
       recentMatches: [],
-      teamIndiaMatches: []
+      teamIndiaMatches: [],
+      indiaMenHighlights: [],
+      indiaWomenHighlights: []
     },
-    activeTab: 'india', // Default to Team India tab for top engagement!
+    activeTab: 'india', // 'india' (default), 'live', 'upcoming', 'recent'
+    activeIndiaSubTab: 'men', // 'men' (default), 'women', 'all'
     selectedMatch: null,
     selectedInningsIdx: 0,
     pollInterval: null
@@ -38,23 +41,30 @@ const Cricket = {
       this.data.matches.liveMatches = json.liveMatches || [];
       this.data.matches.upcomingMatches = json.upcomingMatches || [];
       this.data.matches.recentMatches = json.recentMatches || [];
+      this.data.matches.indiaMenHighlights = json.indiaMenHighlights || [];
+      this.data.matches.indiaWomenHighlights = json.indiaWomenHighlights || [];
 
       // Extract or compute Team India matches
       const all = [
         ...this.data.matches.liveMatches,
         ...this.data.matches.upcomingMatches,
-        ...this.data.matches.recentMatches
+        ...this.data.matches.recentMatches,
+        ...this.data.matches.indiaMenHighlights,
+        ...this.data.matches.indiaWomenHighlights
       ];
 
-      this.data.matches.teamIndiaMatches = json.teamIndiaMatches || all.filter(m => 
-        m.isIndiaMatch || 
-        (m.team1 && m.team1.shortName && m.team1.shortName.toUpperCase().includes('IND')) ||
-        (m.team2 && m.team2.shortName && m.team2.shortName.toUpperCase().includes('IND'))
-      );
+      const indiaMap = {};
+      (json.teamIndiaMatches || all.filter(m => m.isIndiaMatch)).forEach(m => {
+        indiaMap[m.id] = m;
+      });
+      this.data.matches.teamIndiaMatches = Object.values(indiaMap);
 
       // Update tab badges
       const indiaBadge = document.getElementById('count-india-tab');
-      if (indiaBadge) indiaBadge.textContent = this.data.matches.teamIndiaMatches.length;
+      if (indiaBadge) {
+        const totalHl = (this.data.matches.indiaMenHighlights.length + this.data.matches.indiaWomenHighlights.length) || this.data.matches.teamIndiaMatches.length;
+        indiaBadge.textContent = totalHl;
+      }
 
       const liveBadge = document.getElementById('count-live-tab');
       if (liveBadge) liveBadge.textContent = this.data.matches.liveMatches.length;
@@ -86,7 +96,9 @@ const Cricket = {
       ...this.data.matches.liveMatches,
       ...this.data.matches.upcomingMatches,
       ...this.data.matches.recentMatches,
-      ...this.data.matches.teamIndiaMatches
+      ...this.data.matches.teamIndiaMatches,
+      ...this.data.matches.indiaMenHighlights,
+      ...this.data.matches.indiaWomenHighlights
     ];
     return all.find(m => m.id === id);
   },
@@ -109,6 +121,17 @@ const Cricket = {
     this.renderCards();
   },
 
+  setIndiaSubTab(subTab) {
+    this.data.activeIndiaSubTab = subTab;
+    this.renderCards();
+  },
+
+  openIndiaHighlights(subTab = 'men') {
+    this.data.activeIndiaSubTab = subTab;
+    this.setTab('india');
+    this.toggleCricketCenter();
+  },
+
   renderTicker() {
     const tickerTrack = document.getElementById('cricket-ticker-track');
     if (!tickerTrack) return;
@@ -119,29 +142,29 @@ const Cricket = {
       ...this.data.matches.recentMatches
     ];
 
-    if (!allTickerMatches.length) {
-      tickerTrack.innerHTML = '<span class="text-xs text-slate-400">No scheduled cricket matches today.</span>';
-      return;
-    }
-
     let html = '';
 
-    // Prominent India vs West Indies Highlights Lead Badge in Ticker
-    const indWi = allTickerMatches.find(m => m.id === 'ind-wi-2nd-odi');
-    if (indWi) {
+    // Prominent India Match Highlights Lead Badge in Ticker
+    const leadIndiaMatch = (this.data.matches.indiaMenHighlights && this.data.matches.indiaMenHighlights[0]) || allTickerMatches.find(m => m.id === 'ind-wi-2nd-odi');
+    if (leadIndiaMatch) {
       html += `
-        <div onclick="Cricket.openScorecard('${indWi.id}')" class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-600/20 border border-amber-500/60 px-3 py-1 rounded-lg text-xs cursor-pointer transition-all hover:border-amber-400 shadow-md shrink-0">
+        <div onclick="Cricket.openIndiaHighlights('men')" class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-600/20 border border-amber-500/60 px-3 py-1 rounded-lg text-xs cursor-pointer transition-all hover:border-amber-400 shadow-md shrink-0">
           <span class="px-1.5 py-0.5 rounded text-[10px] font-black uppercase bg-amber-500 text-slate-950 animate-pulse">
-            🎬 Highlights
+            🎬 India Match Highlights
           </span>
           <span class="font-extrabold flex items-center gap-1 text-white">
             <span>🇮🇳</span> IND 324/5 vs <span>🌴</span> WI 217 (Ind won by 107r)
           </span>
-          <span class="text-amber-300 text-[11px] font-bold hover:underline">
-            Watch Full Highlights →
+          <span class="text-amber-300 text-[11px] font-bold hover:underline flex items-center gap-1">
+            Free Stream on JioCinema →
           </span>
         </div>
       `;
+    }
+
+    if (!allTickerMatches.length && !leadIndiaMatch) {
+      tickerTrack.innerHTML = '<span class="text-xs text-slate-400">No scheduled cricket matches today.</span>';
+      return;
     }
 
     allTickerMatches.forEach(m => {
@@ -184,11 +207,16 @@ const Cricket = {
     if (!container) return;
 
     let targetMatches = [];
-    let isIndiaTab = false;
+    const isIndiaTab = (this.data.activeTab === 'india');
 
-    if (this.data.activeTab === 'india') {
-      targetMatches = this.data.matches.teamIndiaMatches;
-      isIndiaTab = true;
+    if (isIndiaTab) {
+      if (this.data.activeIndiaSubTab === 'men') {
+        targetMatches = this.data.matches.indiaMenHighlights || [];
+      } else if (this.data.activeIndiaSubTab === 'women') {
+        targetMatches = this.data.matches.indiaWomenHighlights || [];
+      } else {
+        targetMatches = this.data.matches.teamIndiaMatches || [];
+      }
     } else if (this.data.activeTab === 'live') {
       targetMatches = this.data.matches.liveMatches;
     } else if (this.data.activeTab === 'upcoming') {
@@ -197,51 +225,101 @@ const Cricket = {
       targetMatches = this.data.matches.recentMatches;
     }
 
+    let cardsHtml = '';
+
+    // Team India Special Header & Sub-Navigation
+    if (isIndiaTab) {
+      const activeSub = this.data.activeIndiaSubTab;
+      const menActive = activeSub === 'men' 
+        ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white font-black shadow-md' 
+        : 'text-slate-300 hover:text-white hover:bg-slate-800';
+      const womenActive = activeSub === 'women' 
+        ? 'bg-gradient-to-r from-pink-500 to-rose-600 text-white font-black shadow-md' 
+        : 'text-slate-300 hover:text-white hover:bg-slate-800';
+      const allActive = activeSub === 'all' 
+        ? 'bg-indigo-600 text-white font-black shadow-md' 
+        : 'text-slate-300 hover:text-white hover:bg-slate-800';
+
+      const subBannerTitle = activeSub === 'men' 
+        ? '👨 Team India Men — Previous 5 Matches Highlights & Free Streaming' 
+        : (activeSub === 'women' 
+            ? '👩 Team India Women — Previous 5 Matches Highlights & Free Streaming' 
+            : '🏏 All Team India Fixtures, Live & Upcoming Matches');
+
+      const subBannerDesc = activeSub === 'men'
+        ? 'JioCinema / SonyLIV / BCCI.tv पर टीम इंडिया मेन्स के पिछले 5 मैचों के 100% फ्री हाइलाइट्स व फुल स्कोरकार्ड।'
+        : (activeSub === 'women'
+            ? 'JioCinema / Disney+ Hotstar पर टीम इंडिया विमेंस के पिछले 5 ऐतिहासिक मैचों (300 Chase, T20 WC) के फ्री हाइलाइट्स।'
+            : 'भारतीय टीम के सभी वर्तमान, हालिया और आगामी मैचों की पूरी सूची।');
+
+      cardsHtml += `
+        <div class="col-span-full space-y-4">
+          
+          <!-- Top Sub-Tabs Navigation (Men vs Women vs All) -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-950/80 border border-amber-500/40 rounded-2xl p-2.5 sm:p-3 shadow-lg">
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+              <button onclick="Cricket.setIndiaSubTab('men')" class="px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all whitespace-nowrap cursor-pointer ${menActive}">
+                <span>👨</span> <strong>India Men (5 Highlights)</strong>
+              </button>
+              <button onclick="Cricket.setIndiaSubTab('women')" class="px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all whitespace-nowrap cursor-pointer ${womenActive}">
+                <span>👩</span> <strong>India Women (5 Highlights)</strong>
+              </button>
+              <button onclick="Cricket.setIndiaSubTab('all')" class="px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all whitespace-nowrap cursor-pointer ${allActive}">
+                <span>🏏</span> All India Matches (${this.data.matches.teamIndiaMatches.length})
+              </button>
+            </div>
+
+            <!-- Free Streaming Platform Badge -->
+            <div class="flex items-center gap-2 text-[11px] font-semibold text-amber-300 self-end sm:self-auto bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl">
+              <span>🆓</span> 100% Free Highlights on JioCinema / Hotstar / SonyLIV (No Login Needed)
+            </div>
+          </div>
+
+          <!-- Section Banner -->
+          <div class="bg-gradient-to-r from-amber-500/20 via-orange-600/20 to-blue-600/20 border border-amber-500/50 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs shadow-lg">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-2xl shadow-md shrink-0">
+                ${activeSub === 'women' ? '👩' : '🇮🇳'}
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-sm sm:text-base flex items-center gap-2">
+                  ${subBannerTitle}
+                  <span class="text-[10px] font-black uppercase tracking-wider bg-emerald-500 text-slate-950 px-2 py-0.5 rounded-full font-mono">
+                    Free OTT Stream
+                  </span>
+                </h4>
+                <p class="text-slate-300 mt-0.5">
+                  ${subBannerDesc}
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-2 self-stretch sm:self-auto">
+              <a href="https://www.jiocinema.com/sports/cricket" target="_blank" rel="noopener" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white font-black shadow-md transition-all flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer" title="Open JioCinema Sports Cricket Hub">
+                <span>📺</span> JioCinema Cricket
+              </a>
+              <a href="https://www.bcci.tv/videos/highlights" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer" title="Official 1080p Extended Highlights">
+                <span>🏛️</span> BCCI.tv
+              </a>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
     if (!targetMatches.length) {
-      container.innerHTML = `
+      cardsHtml += `
         <div class="col-span-full text-center py-12 text-slate-400">
           <div class="text-4xl mb-2">🏏</div>
           <p class="font-semibold text-sm">No matches in this section right now.</p>
-          <button onclick="Cricket.setTab('india')" class="mt-3 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold transition-all">
-            View Team India Matches &amp; Highlights
+          <button onclick="Cricket.openIndiaHighlights('men')" class="mt-3 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold transition-all">
+            View Team India Highlights (5 Matches)
           </button>
         </div>
       `;
+      container.innerHTML = cardsHtml;
       return;
-    }
-
-    let cardsHtml = '';
-
-    // Team India Special Header Banner
-    if (isIndiaTab) {
-      cardsHtml += `
-        <div class="col-span-full bg-gradient-to-r from-amber-500/20 via-orange-600/20 to-blue-600/20 border border-amber-500/50 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs shadow-lg">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-2xl shadow-md shrink-0">
-              🇮🇳
-            </div>
-            <div>
-              <h4 class="font-bold text-white text-sm sm:text-base flex items-center gap-2">
-                Team India Match Highlights &amp; Hub
-                <span class="text-[10px] font-black uppercase tracking-wider bg-amber-500 text-slate-950 px-2 py-0.5 rounded-full font-mono">
-                  Official Videos
-                </span>
-              </h4>
-              <p class="text-slate-300 mt-0.5">
-                कल हुए <strong>India vs West Indies</strong> समेत टीम इंडिया के सभी लाइव, हालिया और आगामी मैचों की पूरी स्कोरकार्ड और हाइलाइट्स।
-              </p>
-            </div>
-          </div>
-          <div class="flex items-center gap-2 self-stretch sm:self-auto">
-            <a href="https://www.youtube.com/results?search_query=India+vs+West+Indies+highlights+2026" target="_blank" rel="noopener" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black shadow-md transition-all flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer">
-              <span>🎬</span> Ind vs WI Highlights
-            </a>
-            <a href="https://www.bcci.tv/videos" target="_blank" rel="noopener" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer">
-              <span>🏛️</span> BCCI Hub
-            </a>
-          </div>
-        </div>
-      `;
     }
 
     targetMatches.forEach(m => {
@@ -260,12 +338,9 @@ const Cricket = {
       const badgeLabel = isLive ? '🔴 LIVE' : (m.isUpcoming ? '📅 UPCOMING' : '🏆 COMPLETED');
       const borderStyle = isInd ? 'border-amber-500/60 shadow-amber-500/10' : 'border-slate-700/80';
 
-      // Specific highlight button text
-      const isIndWi = m.id && m.id.includes('ind-wi');
-      const highlightBtnLabel = isIndWi ? '🎬 Watch Ind vs WI Highlights' : '🎬 Watch Highlights';
-      const highlightBtnStyle = isInd 
-        ? 'bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black shadow-md' 
-        : 'bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold';
+      // Stream & Highlights Info (Direct OTT streaming partner)
+      const stream = m.stream || { streamName: 'JioCinema Sports', highlightsUrl: 'https://www.jiocinema.com/sports/cricket', streamUrl: 'https://www.jiocinema.com/sports/cricket' };
+      const ottHighlightBtnLabel = `🎬 India Match Highlights`;
 
       cardsHtml += `
         <div class="bg-slate-800/90 hover:bg-slate-800 border ${borderStyle} rounded-2xl p-4 sm:p-5 shadow-lg transition-all hover:border-indigo-500/80 flex flex-col justify-between group">
@@ -282,7 +357,7 @@ const Cricket = {
             </div>
 
             <!-- Teams & Scores -->
-            <div class="space-y-2.5 my-3">
+            <div class="space-y-3 my-2">
               <!-- Team 1 -->
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
@@ -292,7 +367,7 @@ const Cricket = {
                       ${t1.name}
                       ${t1.shortName.includes('IND') ? '<span class="text-amber-400 text-xs">★</span>' : ''}
                     </h4>
-                    <span class="text-[10px] text-slate-400">${m.matchDesc}</span>
+                    <span class="text-[10px] text-slate-400">${m.date || m.matchDesc}</span>
                   </div>
                 </div>
                 <div class="text-right">
@@ -318,26 +393,34 @@ const Cricket = {
               </div>
             </div>
 
-            <!-- Match Status / Situation -->
-            <div class="bg-slate-900/80 rounded-xl p-2.5 my-3 border border-slate-700/50 text-xs">
+            <!-- Key Highlights / Status Badge -->
+            <div class="bg-slate-900/80 rounded-xl p-2.5 my-3 border border-slate-700/50 text-xs space-y-1">
               <div class="flex items-start gap-1.5 text-slate-200 font-medium">
-                <span class="text-red-400">⚡</span>
+                <span class="text-amber-400">🏆</span>
                 <span class="leading-snug">${m.status || m.startTime}</span>
+              </div>
+              ${m.keyHighlights ? `
+                <div class="text-[11px] text-slate-400 pt-1 border-t border-slate-800 flex items-center gap-1">
+                  <span>🌟</span> <span class="truncate">${m.keyHighlights}</span>
+                </div>
+              ` : ''}
+              <div class="text-[10px] text-emerald-400 pt-0.5 flex items-center gap-1 font-semibold">
+                <span>📡</span> Stream: <strong>${stream.streamName}</strong> (Free Highlights)
               </div>
             </div>
           </div>
 
           <!-- Action Buttons Bar: Scorecard, Live Stream, Highlights -->
           <div class="pt-3 border-t border-slate-700/60 flex flex-wrap items-center gap-2 text-xs">
-            <button onclick="Cricket.openScorecard('${m.id}')" class="flex-1 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-center shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer min-w-[120px]">
+            <button onclick="Cricket.openScorecard('${m.id}')" class="flex-1 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-center shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer min-w-[110px]">
               <span>📊</span> Scorecard
             </button>
             
-            <a href="${m.stream.highlightsUrl}" target="_blank" rel="noopener" class="flex-1 py-2 px-3 rounded-xl ${highlightBtnStyle} text-center transition-all flex items-center justify-center gap-1 cursor-pointer min-w-[140px]" title="Watch Match Highlights Video">
-              <span>🎬</span> ${highlightBtnLabel}
+            <a href="${stream.highlightsUrl}" target="_blank" rel="noopener" class="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black shadow-md text-center transition-all flex items-center justify-center gap-1 cursor-pointer min-w-[160px]" title="Watch Free Highlights on ${stream.streamName}">
+              <span>🎬</span> ${ottHighlightBtnLabel}
             </a>
 
-            <a href="${m.stream.streamUrl}" target="_blank" rel="noopener" class="py-2 px-3 rounded-xl bg-red-600/90 hover:bg-red-500 text-white font-bold text-center transition-all flex items-center justify-center gap-1 cursor-pointer" title="Watch Live Stream on ${m.stream.streamName}">
+            <a href="${stream.streamUrl}" target="_blank" rel="noopener" class="py-2 px-3 rounded-xl bg-red-600/90 hover:bg-red-500 text-white font-bold text-center transition-all flex items-center justify-center gap-1 cursor-pointer" title="Watch Live/Replay on ${stream.streamName}">
               <span>📺</span> <span class="hidden sm:inline">Stream</span>
             </a>
           </div>
@@ -385,7 +468,7 @@ const Cricket = {
     const t1 = match.team1;
     const t2 = match.team2;
     const sc = match.scorecard || {};
-    const stream = match.stream;
+    const stream = match.stream || { streamName: 'JioCinema Sports', highlightsUrl: 'https://www.jiocinema.com/sports/cricket', streamUrl: 'https://www.jiocinema.com/sports/cricket' };
     const isInd = match.isIndiaMatch;
 
     // 1. Header
@@ -395,7 +478,7 @@ const Cricket = {
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <span class="text-xs uppercase tracking-wider text-indigo-300 font-semibold flex items-center gap-1.5">
-              ${isInd ? '<span>🇮🇳</span>' : ''}${match.series} • ${match.matchDesc} (${match.matchFormat})
+              ${isInd ? '<span>🇮🇳</span>' : ''}${match.series} • ${match.matchDesc || ''} (${match.matchFormat})
             </span>
             <div class="flex items-center gap-4 mt-2">
               <div class="flex items-center gap-2">
@@ -437,27 +520,32 @@ const Cricket = {
             <span class="text-amber-400">📍 Venue:</span> ${sc.venue || match.venue}
           </div>
           <div>
-            <span class="text-emerald-400">🪙 Toss:</span> ${sc.toss || 'Toss yet to occur'}
+            <span class="text-emerald-400">🪙 Toss:</span> ${sc.toss || 'Toss completed'}
           </div>
         </div>
       `;
     }
 
-    // 2. Action Buttons (Live Stream & Highlights)
+    // 2. Action Buttons (Live Stream & Free OTT Highlights)
     const actionsBar = document.getElementById('scorecard-actions-bar');
     if (actionsBar) {
       actionsBar.innerHTML = `
-        <div class="flex items-center gap-2 font-medium text-gray-700 dark:text-gray-300">
+        <div class="flex items-center gap-2 font-medium text-gray-700 dark:text-gray-300 text-xs">
           <span class="text-red-500 font-bold">● Status:</span>
           <span>${sc.status || match.status}</span>
         </div>
-        <div class="flex items-center gap-2">
-          <a href="${stream.highlightsUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black shadow-md transition-all">
-            <span>🎬</span> Watch Highlights Video
+        <div class="flex flex-wrap items-center gap-2">
+          <a href="${stream.highlightsUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black shadow-md transition-all text-xs" title="Watch Free Highlights on ${stream.streamName}">
+            <span>🎬</span> Watch Highlights on ${stream.streamName} (Free OTT)
           </a>
-          <a href="${stream.streamUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold shadow-sm transition-all">
-            <span>📺</span> Watch Live (${stream.streamName})
+          <a href="${stream.streamUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold shadow-sm transition-all text-xs" title="Watch on ${stream.streamName}">
+            <span>📺</span> Watch Stream (${stream.streamName})
           </a>
+          ${stream.bcciUrl ? `
+            <a href="${stream.bcciUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition-all text-xs" title="Watch on BCCI Official">
+              <span>🏛️</span> BCCI Official
+            </a>
+          ` : ''}
         </div>
       `;
     }
@@ -473,7 +561,7 @@ const Cricket = {
           : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 font-medium';
 
         tabsHtml += `
-          <button onclick="Cricket.setScorecardInnings(${idx})" class="py-2 px-4 text-xs whitespace-nowrap transition-colors flex items-center gap-2 ${activeClass}">
+          <button onclick="Cricket.setScorecardInnings(${idx})" class="py-2 px-4 text-xs whitespace-nowrap transition-colors flex items-center gap-2 cursor-pointer ${activeClass}">
             <span>${inn.flag}</span>
             <span>${inn.team} Innings</span>
             <span class="font-mono text-xs opacity-75">(${inn.score})</span>
