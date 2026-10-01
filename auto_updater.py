@@ -380,6 +380,13 @@ def run():
     generate_robots_txt()
     generate_rss_xml(all_articles)
 
+    # Update Live Cricket Scores & Fixtures
+    try:
+        from cricket_updater import update_cricket_data
+        update_cricket_data()
+    except Exception as e:
+        print(f"  [Cricket Updater Notice] {e}")
+
     # Auto-Post Fresh Top Stories to Telegram / WhatsApp
     try:
         from auto_social_poster import run_autoposter

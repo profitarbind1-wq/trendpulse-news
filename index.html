@@ -244,8 +244,69 @@
     </div>
   </div>
 
+  <!-- Live Cricket Scores & Fixtures Marquee (100% Automated Live Center) -->
+  <div id="cricket-ticker-section" class="bg-slate-900 text-white border-b border-slate-800 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 flex items-center gap-3 py-2">
+      <div class="flex items-center gap-2 bg-red-600 text-white font-extrabold text-[11px] px-2.5 py-1 rounded-md uppercase tracking-wider whitespace-nowrap shadow-sm shrink-0">
+        <span class="w-2 h-2 rounded-full bg-white animate-ping mr-0.5"></span>
+        🏏 Live Cricket
+      </div>
+      <div class="flex-1 overflow-hidden relative">
+        <div id="cricket-ticker-track" class="flex items-center gap-4 overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap py-0.5">
+          <span class="text-xs text-slate-400">Loading live cricket scores &amp; fixtures...</span>
+        </div>
+      </div>
+      <button onclick="Cricket.toggleCricketCenter()" class="text-xs font-semibold px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1 transition-all whitespace-nowrap cursor-pointer shrink-0">
+        <span>📊</span> <span class="hidden sm:inline">Match</span> Center
+      </button>
+    </div>
+  </div>
+
   <!-- Main Content Layout -->
   <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- Dedicated Cricket Match Center Section -->
+    <section id="cricket-match-center" class="mb-8 scroll-mt-24">
+      <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-indigo-900/50 rounded-2xl shadow-xl overflow-hidden text-white">
+        <!-- Section Header -->
+        <div class="p-4 sm:p-5 border-b border-indigo-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center text-xl shadow-lg">
+              🏏
+            </div>
+            <div>
+              <h3 class="font-serif-headline text-lg sm:text-xl font-bold flex items-center gap-2">
+                Cricket Live Match Center
+                <span class="text-[10px] uppercase font-sans tracking-wider bg-red-600 text-white px-2 py-0.5 rounded-full font-bold animate-pulse">
+                  Live 24/7
+                </span>
+              </h3>
+              <p class="text-xs text-slate-400">
+                Real-time scores, detailed scorecards, upcoming fixtures, and official live streaming links.
+              </p>
+            </div>
+          </div>
+
+          <!-- Filter Tabs: Live, Upcoming, Recent -->
+          <div class="flex items-center gap-1.5 bg-slate-800/80 p-1 rounded-xl border border-slate-700/60 self-start sm:self-auto">
+            <button onclick="Cricket.setTab('live')" id="cricket-tab-live" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-1.5 cursor-pointer">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping"></span> Live (<span id="count-live-tab">0</span>)
+            </button>
+            <button onclick="Cricket.setTab('upcoming')" id="cricket-tab-upcoming" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer">
+              <span>📅</span> Upcoming (<span id="count-upcoming-tab">0</span>)
+            </button>
+            <button onclick="Cricket.setTab('recent')" id="cricket-tab-recent" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer">
+              <span>🏆</span> Results (<span id="count-recent-tab">0</span>)
+            </button>
+          </div>
+        </div>
+
+        <!-- Match Cards Grid -->
+        <div id="cricket-cards-container" class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Rendered dynamically by js/cricket.js -->
+        </div>
+      </div>
+    </section>
 
     <!-- Section Header & Filter Meta -->
     <div class="flex items-center justify-between mb-6 pb-3 border-b border-gray-200 dark:border-gray-800">
@@ -284,6 +345,49 @@
   <div id="article-modal" class="fixed inset-0 z-50 hidden bg-white dark:bg-gray-950 overflow-y-auto w-full h-full">
     <div id="modal-content" class="w-full min-h-screen">
       <!-- Injected by js/app.js -->
+    </div>
+  </div>
+
+  <!-- Interactive Cricket Scorecard Modal -->
+  <div id="cricket-scorecard-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+    <div class="relative w-full max-w-4xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden my-6 max-h-[90vh] flex flex-col text-gray-900 dark:text-gray-100">
+      
+      <!-- Modal Header -->
+      <div class="p-4 sm:p-6 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex items-start justify-between border-b border-indigo-900/50">
+        <div id="scorecard-modal-header" class="w-full">
+          <!-- Populated dynamically by js/cricket.js -->
+        </div>
+        <button onclick="Cricket.closeScorecard()" class="p-2 ml-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer text-base leading-none shrink-0" title="Close Scorecard (Esc)">
+          ✕
+        </button>
+      </div>
+
+      <!-- Quick Action Streaming & Highlights Bar inside Modal -->
+      <div id="scorecard-actions-bar" class="bg-gray-100 dark:bg-gray-800/80 px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 dark:border-gray-700/60 text-xs">
+        <!-- Injected dynamically: Watch Live Stream button & Highlights button -->
+      </div>
+
+      <!-- Innings Tabs (e.g. Bangladesh Innings / Pakistan Innings / Match Info) -->
+      <div class="flex items-center gap-2 px-4 sm:px-6 pt-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 overflow-x-auto no-scrollbar" id="scorecard-innings-tabs">
+        <!-- Injected dynamically -->
+      </div>
+
+      <!-- Scorecard Tables Body -->
+      <div id="scorecard-modal-body" class="p-4 sm:p-6 overflow-y-auto flex-1 space-y-6">
+        <!-- Injected dynamically -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700/60 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+        <div class="flex items-center gap-1.5 font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span>Live Scores &amp; Ball-by-Ball Auto-Synced (60s)</span>
+        </div>
+        <button onclick="Cricket.closeScorecard()" class="px-4 py-1.5 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-bold transition-all cursor-pointer">
+          Close (Esc)
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -368,6 +472,7 @@
 
   <!-- SEO & Application Scripts -->
   <script src="js/seo.js"></script>
+  <script src="js/cricket.js"></script>
   <script src="js/app.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
