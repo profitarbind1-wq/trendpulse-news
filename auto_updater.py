@@ -387,6 +387,13 @@ def run():
     except Exception as e:
         print(f"  [Cricket Updater Notice] {e}")
 
+    # Update Festive Offers & Latest Product Launches (Amazon, Flipkart, Nykaa, Myntra, Meesho, Blinkit)
+    try:
+        from deals_updater import update_deals_data
+        update_deals_data()
+    except Exception as e:
+        print(f"  [Deals Updater Notice] {e}")
+
     # Auto-Post Fresh Top Stories to Telegram / WhatsApp
     try:
         from auto_social_poster import run_autoposter

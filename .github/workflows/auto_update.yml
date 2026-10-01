@@ -32,7 +32,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "TrendPulse Auto Bot"
-          git add data/news.json data/cricket.json data/posted_articles.json sitemap.xml robots.txt rss.xml
+          git add data/news.json data/cricket.json data/deals.json data/posted_articles.json sitemap.xml robots.txt rss.xml
           if [ -n "$(git status --porcelain)" ]; then
             git commit -m "Auto-update worldwide trending news & social logs [skip ci]"
             git pull --rebase origin main || true
