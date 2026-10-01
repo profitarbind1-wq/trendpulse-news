@@ -17,12 +17,85 @@ const App = {
     isSpeaking: false,
     currentSpeechUtterance: null,
     activeArticleModal: null,
-    isDarkMode: false
+    isDarkMode: false,
+    currentLang: localStorage.getItem('tp_lang') || 'en'
+  },
+
+  i18n: {
+    en: {
+      siteTagline: 'Real-Time Worldwide Trending News & 60-Sec Briefs',
+      searchPlaceholder: 'Search news & topics...',
+      trendingNow: 'Trending Now',
+      savedArticles: 'Saved Articles',
+      worldwideFeeds: 'Worldwide Trending Feeds',
+      marketsLive: 'Markets Live:',
+      leadStory: 'Lead Story',
+      minuteRead: '1 min read',
+      listen: 'Listen',
+      bookmark: 'Bookmark',
+      share: 'Share',
+      readFullCoverage: 'Read full detailed coverage on',
+      whatYouNeedToKnow: 'What you need to know (Key Takeaways):',
+      backToNews: 'Back to All News',
+      whatsappAlertsTitle: 'Get Breaking News Alerts on WhatsApp',
+      whatsappAlertsDesc: 'Join the official TrendPulse 360 News channel on WhatsApp.',
+      followChannel: 'Follow Channel',
+      categories: {
+        'trending': '🔥 Trending Now',
+        'world': '🌍 Worldwide',
+        'politics': '🏛️ Politics',
+        'business': '💼 Business & Startups',
+        'share-market': '📈 Share Market & Crypto',
+        'finance': '💰 Finance & Wealth',
+        'entertainment': '🎬 Entertainment',
+        'sports': '⚽ Sports',
+        'tech': '🤖 Tech & AI',
+        'education': '🎓 Education & Exams',
+        'competition': '🏆 Competition & Jobs',
+        'motivational': '💡 Motivational Stories',
+        'bookmarks': '⭐ Saved Articles'
+      }
+    },
+    hi: {
+      siteTagline: 'विश्वभर की ताज़ा ट्रेंडिंग खबरें और 60-सेकंड की ब्रीफ्स',
+      searchPlaceholder: 'ताज़ा खबरें और विषय खोजें...',
+      trendingNow: 'ट्रेंडिंग नाउ',
+      savedArticles: 'सेव की गई खबरें',
+      worldwideFeeds: 'विश्वभर की ताज़ा ट्रेंडिंग खबरें',
+      marketsLive: 'शेयर बाज़ार लाइव:',
+      leadStory: 'मुख्य खबर',
+      minuteRead: '1 मिनट',
+      listen: 'ऑडियो सुनें',
+      bookmark: 'सेव करें',
+      share: 'शेयर करें',
+      readFullCoverage: 'मूल स्रोत पर पूरा विस्तार से पढ़ें',
+      whatYouNeedToKnow: 'मुख्य बिंदु (What you need to know):',
+      backToNews: 'वापस मुख्य पेज पर जाएं',
+      whatsappAlertsTitle: 'व्हाट्सएप पर तुरंत ब्रेकिंग न्यूज़ पाएं',
+      whatsappAlertsDesc: 'आधिकारिक TrendPulse 360 व्हाट्सएप चैनल से अभी जुड़ें।',
+      followChannel: 'चैनल जॉइन करें',
+      categories: {
+        'trending': '🔥 ट्रेंडिंग',
+        'world': '🌍 देश-विदेश',
+        'politics': '🏛️ राजनीति',
+        'business': '💼 बिज़नेस & स्टार्टअप्स',
+        'share-market': '📈 शेयर बाज़ार & क्रिप्टो',
+        'finance': '💰 फाइनेंस & बजट',
+        'entertainment': '🎬 मनोरंजन',
+        'sports': '⚽ खेलकूद',
+        'tech': '🤖 टेक & AI',
+        'education': '🎓 शिक्षा & करियर',
+        'competition': '🏆 सरकारी नौकरी & परीक्षाएं',
+        'motivational': '💡 प्रेरक कहानियाँ',
+        'bookmarks': '⭐ सेव की गई खबरें'
+      }
+    }
   },
 
   async init() {
     this.initTheme();
     this.initBookmarks();
+    this.initLanguage();
     this.bindEvents();
     if (window.SEO) window.SEO.init();
     await this.loadData();
@@ -181,16 +254,132 @@ const App = {
     }
   },
 
+  initLanguage() {
+    this.applyLanguage(false);
+  },
+
+  toggleLanguage() {
+    this.data.currentLang = this.data.currentLang === 'en' ? 'hi' : 'en';
+    localStorage.setItem('tp_lang', this.data.currentLang);
+    this.applyLanguage(true);
+  },
+
+  applyLanguage(shouldTriggerTranslation = true) {
+    const isHi = this.data.currentLang === 'hi';
+    const dict = this.i18n[this.data.currentLang] || this.i18n.en;
+
+    // 1. Update Lang button in header
+    const langBtn = document.getElementById('lang-toggle-btn');
+    if (langBtn) {
+      langBtn.innerHTML = isHi 
+        ? '<span class="text-sm">🇬🇧</span> <span>English</span>' 
+        : '<span class="text-sm">🇮🇳</span> <span>हिन्दी</span>';
+      langBtn.title = isHi ? "Switch to English" : "हिन्दी में पढ़ें";
+    }
+
+    // 2. Update Search Placeholders
+    const searchInputs = document.querySelectorAll('input[type="text"][placeholder*="Search"], input[type="text"][placeholder*="खोजें"]');
+    searchInputs.forEach(input => input.placeholder = dict.searchPlaceholder);
+
+    // 3. Update Markets Label
+    const mktLabel = document.getElementById('markets-live-label');
+    if (mktLabel) {
+      mktLabel.innerHTML = `<span>📈</span> ${dict.marketsLive}`;
+    }
+
+    // 4. Update Section Title
+    const titleEl = document.getElementById('section-title');
+    if (titleEl) {
+      if (this.data.activeCategory === 'bookmarks') {
+        titleEl.textContent = dict.savedArticles;
+      } else if (this.data.activeCategory === 'trending' || !this.data.activeCategory) {
+        titleEl.textContent = dict.worldwideFeeds;
+      } else {
+        const catName = (isHi && dict.categories[this.data.activeCategory]) ? dict.categories[this.data.activeCategory] : (this.data.categories.find(c => c.id === this.data.activeCategory)?.name || dict.worldwideFeeds);
+        titleEl.textContent = catName;
+      }
+    }
+
+    // 5. Re-render Categories Nav
+    this.renderCategoriesNav();
+
+    // 6. Notify Cricket Module
+    if (window.Cricket && typeof window.Cricket.updateLanguage === 'function') {
+      window.Cricket.updateLanguage(this.data.currentLang);
+    }
+
+    // 7. Notify Poll Module
+    if (window.Poll && typeof window.Poll.render === 'function') {
+      window.Poll.render();
+    }
+
+    // 8. Re-filter Articles if loaded
+    if (this.data.articles && this.data.articles.length > 0) {
+      this.filterArticles();
+    }
+
+    // 9. Full page translation trigger
+    if (shouldTriggerTranslation) {
+      this.triggerTranslation(this.data.currentLang);
+    }
+  },
+
+  triggerTranslation(lang) {
+    if (lang === 'hi') {
+      document.cookie = "googtrans=/en/hi; path=/";
+      document.cookie = "googtrans=/en/hi; domain=" + window.location.hostname + "; path=/";
+      if (!window.google || !window.google.translate) {
+        this.loadGoogleTranslateScript();
+      } else {
+        try {
+          const select = document.querySelector('.goog-te-combo');
+          if (select) {
+            select.value = 'hi';
+            select.dispatchEvent(new Event('change'));
+          }
+        } catch(e) {}
+      }
+    } else {
+      document.cookie = "googtrans=/en/en; path=/";
+      document.cookie = "googtrans=/en/en; domain=" + window.location.hostname + "; path=/";
+      try {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          select.value = 'en';
+          select.dispatchEvent(new Event('change'));
+        }
+      } catch(e) {}
+    }
+  },
+
+  loadGoogleTranslateScript() {
+    if (document.getElementById('google-translate-script')) return;
+    window.googleTranslateElementInit = function() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'hi,en',
+        autoDisplay: false
+      }, 'google_translate_element');
+    };
+    const script = document.createElement('script');
+    script.id = 'google-translate-script';
+    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    document.body.appendChild(script);
+  },
+
   renderCategoriesNav() {
     const container = document.getElementById('categories-nav');
     if (!container) return;
 
+    const isHi = this.data.currentLang === 'hi';
+    const dict = this.i18n[this.data.currentLang] || this.i18n.en;
+
     let html = `
       <button onclick="App.setCategory('trending')" class="category-pill flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${this.data.activeCategory === 'trending' ? 'bg-red-600 text-white shadow-md shadow-red-500/20' : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'}">
-        <span>🔥</span> Trending Now
+        <span>🔥</span> ${isHi ? 'ट्रेंडिंग नाउ' : 'Trending Now'}
       </button>
       <button onclick="App.setCategory('bookmarks')" class="category-pill flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${this.data.activeCategory === 'bookmarks' ? 'bg-amber-500 text-white shadow-md' : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'}">
-        <span>⭐</span> Saved Articles (${this.data.bookmarks.length})
+        <span>⭐</span> ${isHi ? 'सेव की गई' : 'Saved Articles'} (${this.data.bookmarks.length})
       </button>
     `;
 
@@ -198,9 +387,10 @@ const App = {
       if (cat.id === 'trending') return;
       const isActive = this.data.activeCategory === cat.id;
       const count = this.data.categoryCounts[cat.id] || 0;
+      const catDisplayName = (isHi && dict.categories[cat.id]) ? dict.categories[cat.id] : `${cat.icon} ${cat.name}`;
       html += `
         <button onclick="App.setCategory('${cat.id}')" class="category-pill flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${isActive ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'}">
-          <span>${cat.icon}</span> ${cat.name}
+          ${catDisplayName}
           ${count > 0 ? `<span class="text-xs opacity-75 font-mono">(${count})</span>` : ''}
         </button>
       `;
@@ -232,15 +422,18 @@ const App = {
     this.data.activeCategory = catId;
     window.location.hash = `category=${catId}`;
 
+    const isHi = this.data.currentLang === 'hi';
+    const dict = this.i18n[this.data.currentLang] || this.i18n.en;
+
     const titleEl = document.getElementById('section-title');
     if (titleEl) {
       if (catId === 'bookmarks') {
-        titleEl.textContent = '⭐ Saved Articles';
+        titleEl.textContent = dict.savedArticles;
       } else if (catId === 'trending' || !catId) {
-        titleEl.textContent = 'Worldwide Trending Feeds';
+        titleEl.textContent = dict.worldwideFeeds;
       } else {
-        const catObj = this.data.categories.find(c => c.id === catId);
-        titleEl.textContent = catObj ? `${catObj.icon} ${catObj.name}` : 'Worldwide Trending Feeds';
+        const catName = (isHi && dict.categories[catId]) ? dict.categories[catId] : (this.data.categories.find(c => c.id === catId)?.name || dict.worldwideFeeds);
+        titleEl.textContent = catName;
       }
     }
 

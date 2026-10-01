@@ -772,6 +772,33 @@ const Cricket = {
     center.scrollIntoView({ behavior: 'smooth' });
   },
 
+  updateLanguage(lang) {
+    const isHi = lang === 'hi';
+    const liveBtn = document.getElementById('cricket-tab-live');
+    const indiaBtn = document.getElementById('cricket-tab-india');
+    const upcomingBtn = document.getElementById('cricket-tab-upcoming');
+    const recentBtn = document.getElementById('cricket-tab-recent');
+
+    const liveCount = this.data.matches.liveMatches.length;
+    const indiaCount = (this.data.matches.indiaMenHighlights.length + this.data.matches.indiaWomenHighlights.length) || 10;
+    const upCount = this.data.matches.upcomingMatches.length;
+    const recCount = this.data.matches.recentMatches.length;
+
+    if (liveBtn) {
+      liveBtn.innerHTML = `<span class="w-2 h-2 rounded-full bg-white animate-ping mr-0.5"></span> ${isHi ? '🔴 लाइव मैच' : '🔴 Live Matches'} (<span id="count-live-tab">${liveCount}</span>)`;
+    }
+    if (indiaBtn) {
+      indiaBtn.innerHTML = `<span>🇮🇳</span> ${isHi ? 'भारत मैच हाइलाइट्स' : 'India Match Highlights'} (<span id="count-india-tab">${indiaCount}</span>)`;
+    }
+    if (upcomingBtn) {
+      upcomingBtn.innerHTML = `<span>📅</span> ${isHi ? 'आगामी मैच' : 'Upcoming'} (<span id="count-upcoming-tab">${upCount}</span>)`;
+    }
+    if (recentBtn) {
+      recentBtn.innerHTML = `<span>🏆</span> ${isHi ? 'परिणाम' : 'Results'} (<span id="count-recent-tab">${recCount}</span>)`;
+    }
+    this.renderCards();
+  },
+
   bindEvents() {
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') this.closeScorecard();

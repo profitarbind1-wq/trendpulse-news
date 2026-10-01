@@ -143,3 +143,25 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Google Translate Clean Integration */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-gadget-icon,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+.goog-tooltip, .goog-tooltip:hover {
+  display: none !important;
+}
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.skiptranslate > iframe {
+  display: none !important;
+}
+
