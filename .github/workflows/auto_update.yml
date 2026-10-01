@@ -2,8 +2,8 @@ name: Auto Update Worldwide News, Deploy & Post to Telegram
 
 on:
   schedule:
-    # Runs every 1 hour automatically 24/7 (00:00, 01:00, 02:00 UTC, etc.)
-    - cron: '0 * * * *'
+    # Runs every 2 hours automatically 24/7 (00:00, 02:00, 04:00, 06:00, etc. UTC)
+    - cron: '0 */2 * * *'
   workflow_dispatch: # Allows manual trigger from GitHub UI anytime
 
 permissions:
@@ -33,7 +33,13 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "TrendPulse Auto Bot"
           git add data/news.json data/posted_articles.json sitemap.xml robots.txt rss.xml
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update worldwide trending news & social logs [skip ci]" && git pull --rebase origin main || true && git push)
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Auto-update worldwide trending news & social logs [skip ci]"
+            git pull --rebase origin main || true
+            git push origin main
+          else
+            echo "No new changes to commit."
+          fi
 
       - name: Deploy to Firebase Hosting
         if: env.FIREBASE_TOKEN != ''
