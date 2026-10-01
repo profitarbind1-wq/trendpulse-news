@@ -351,6 +351,11 @@ def run():
         all_articles.extend(articles)
         category_summary[cat['id']] = len(articles)
 
+    # Fail-safe check: Never overwrite news.json with empty or corrupted data
+    if len(all_articles) < 15:
+        print(f"\n[WARNING] Only {len(all_articles)} articles fetched! Retaining existing data/news.json cache to keep website active.")
+        return
+
     # Sort top breaking news by trending score
     all_articles.sort(key=lambda x: x["trendingScore"], reverse=True)
 

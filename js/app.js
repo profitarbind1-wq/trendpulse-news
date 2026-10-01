@@ -27,6 +27,7 @@ const App = {
     if (window.SEO) window.SEO.init();
     await this.loadData();
     this.handleInitialRouting();
+    this.initNotificationPrompt();
   },
 
   initTheme() {
@@ -98,7 +99,12 @@ const App = {
       const response = await fetch('data/news.json?v=' + Date.now());
       if (!response.ok) throw new Error("Local news.json not found");
       const json = await response.json();
-      this.data.articles = json.articles || [];
+      
+      if (!json.articles || json.articles.length === 0) {
+        throw new Error("Local news.json has 0 articles");
+      }
+
+      this.data.articles = json.articles;
       this.data.categories = json.categories || [];
       this.data.categoryCounts = json.categoryCounts || {};
 
@@ -106,15 +112,6 @@ const App = {
       if (lastUpdatedEl && json.lastUpdated) {
         lastUpdatedEl.textContent = `Updated: ${json.lastUpdated}`;
       }
-
-      // Smart Fail-Safe: If PC was off and cache is older than 6 hours, auto-refresh live headlines
-      try {
-        const cacheDate = new Date(json.lastUpdated.replace(' UTC', 'Z'));
-        const ageHours = (Date.now() - cacheDate.getTime()) / (1000 * 60 * 60);
-        if (ageHours > 6) {
-          this.fetchLiveNewsFallback(true);
-        }
-      } catch (e) {}
     } catch (err) {
       console.warn("Could not load local data/news.json, falling back to live fetch:", err);
       await this.fetchLiveNewsFallback();
@@ -131,23 +128,53 @@ const App = {
       const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en')}`;
       const res = await fetch(proxyUrl);
       const data = await res.json();
-      if (data && data.items) {
-        this.data.articles = data.items.map((item, idx) => ({
-          id: `live-${idx}`,
-          title: item.title,
-          source: item.author || "Google News Wire",
-          category: "trending",
-          categoryName: "Trending Now",
-          categoryIcon: "🔥",
-          categoryColor: "from-red-500 to-amber-500",
-          url: item.link,
-          publishedAt: item.pubDate,
-          summary: item.description ? item.description.replace(/<[^>]*>?/gm, '').trim() : item.title,
-          bullets: [item.title, "Trending worldwide topic reported by top global media."],
-          readTime: "1 min read",
-          trendingScore: 99 - idx,
-          image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900&auto=format&fit=crop&q=80"
-        }));
+      if (data && data.items && data.items.length > 0) {
+        const availableCategories = this.data.categories.length > 0 ? this.data.categories : [
+          { id: "trending", name: "Trending Now", icon: "🔥", color: "from-red-500 to-amber-500" },
+          { id: "world", name: "Worldwide", icon: "🌍", color: "from-blue-500 to-cyan-500" },
+          { id: "politics", name: "Politics", icon: "🏛️", color: "from-purple-500 to-indigo-500" },
+          { id: "business", name: "Business & Startups", icon: "💼", color: "from-emerald-500 to-teal-500" },
+          { id: "share-market", name: "Share Market & Crypto", icon: "📈", color: "from-green-500 to-emerald-600" },
+          { id: "finance", name: "Finance & Wealth", icon: "💰", color: "from-amber-500 to-yellow-600" },
+          { id: "entertainment", name: "Entertainment", icon: "🎬", color: "from-pink-500 to-rose-500" },
+          { id: "sports", name: "Sports", icon: "⚽", color: "from-orange-500 to-amber-500" },
+          { id: "tech", name: "Tech & AI", icon: "🤖", color: "from-cyan-500 to-blue-600" },
+          { id: "education", name: "Education & Exams", icon: "🎓", color: "from-indigo-500 to-purple-600" },
+          { id: "competition", name: "Competition & Jobs", icon: "🏆", color: "from-yellow-500 to-amber-600" },
+          { id: "motivational", name: "Motivational Stories", icon: "💡", color: "from-teal-500 to-emerald-600" }
+        ];
+
+        this.data.categories = availableCategories;
+        const fallbackArticles = [];
+        const counts = {};
+
+        data.items.forEach((item, idx) => {
+          const cat = availableCategories[idx % availableCategories.length];
+          counts[cat.id] = (counts[cat.id] || 0) + 1;
+          fallbackArticles.push({
+            id: `live-${cat.id}-${idx}`,
+            title: item.title,
+            source: item.author || "Global News Wire",
+            category: cat.id,
+            categoryName: cat.name,
+            categoryIcon: cat.icon,
+            categoryColor: cat.color,
+            url: item.link,
+            publishedAt: item.pubDate || new Date().toUTCString(),
+            summary: item.description ? item.description.replace(/<[^>]*>?/gm, '').trim() : item.title,
+            bullets: [
+              `Headline: ${item.title}`,
+              `Breaking news update regarding ${cat.name}.`,
+              "Follow TrendPulse 360 for live coverage."
+            ],
+            readTime: "1 min read",
+            trendingScore: 99 - (idx % 20),
+            image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900&auto=format&fit=crop&q=80"
+          });
+        });
+
+        this.data.articles = fallbackArticles;
+        this.data.categoryCounts = counts;
       }
     } catch (e) {
       console.error("Live fetch fallback failed:", e);
@@ -204,6 +231,19 @@ const App = {
   setCategory(catId) {
     this.data.activeCategory = catId;
     window.location.hash = `category=${catId}`;
+
+    const titleEl = document.getElementById('section-title');
+    if (titleEl) {
+      if (catId === 'bookmarks') {
+        titleEl.textContent = '⭐ Saved Articles';
+      } else if (catId === 'trending' || !catId) {
+        titleEl.textContent = 'Worldwide Trending Feeds';
+      } else {
+        const catObj = this.data.categories.find(c => c.id === catId);
+        titleEl.textContent = catObj ? `${catObj.icon} ${catObj.name}` : 'Worldwide Trending Feeds';
+      }
+    }
+
     this.renderCategoriesNav();
     this.filterArticles();
     if (window.SEO) {
@@ -738,6 +778,81 @@ const App = {
     const shareUrl = `${window.location.origin}/#news=${article.id}`;
     const text = encodeURIComponent(`🔥 ${article.title}`);
     window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(shareUrl)}&hashtags=TrendingNews,Breaking`, '_blank');
+  },
+
+  initNotificationPrompt() {
+    const banner = document.getElementById('push-prompt-banner');
+    if (!banner) return;
+
+    // Check if Notification API is supported
+    if (!('Notification' in window)) {
+      banner.classList.add('hidden');
+      return;
+    }
+
+    // 1. If notification is ALREADY granted or enabled by user, NEVER show alert again!
+    if (Notification.permission === 'granted' || localStorage.getItem('tp_notifications') === 'enabled') {
+      banner.classList.add('hidden');
+      return;
+    }
+
+    // 2. If user explicitly denied, don't nag
+    if (Notification.permission === 'denied' || localStorage.getItem('tp_notifications') === 'denied') {
+      banner.classList.add('hidden');
+      return;
+    }
+
+    // 3. If user clicked 'Later', wait at least 3 days before showing again
+    const dismissedAt = localStorage.getItem('tp_notifications_dismissed');
+    if (dismissedAt) {
+      const elapsed = Date.now() - parseInt(dismissedAt, 10);
+      if (elapsed < 3 * 24 * 60 * 60 * 1000) {
+        banner.classList.add('hidden');
+        return;
+      }
+    }
+
+    // Only if notifications are OFF / not enabled: Show alert after 3 seconds
+    setTimeout(() => {
+      if (Notification.permission !== 'granted' && localStorage.getItem('tp_notifications') !== 'enabled') {
+        banner.classList.remove('hidden');
+      }
+    }, 3000);
+  },
+
+  async enableNotifications() {
+    const banner = document.getElementById('push-prompt-banner');
+    if (!('Notification' in window)) {
+      alert("Notifications are not supported in this browser.");
+      if (banner) banner.classList.add('hidden');
+      return;
+    }
+
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        localStorage.setItem('tp_notifications', 'enabled');
+        if (banner) banner.classList.add('hidden');
+
+        try {
+          new Notification("TrendPulse 360", {
+            body: "🔔 Breaking News Alerts enabled! You will now receive instant headlines.",
+            icon: "logo.jpg"
+          });
+        } catch (e) {}
+      } else {
+        localStorage.setItem('tp_notifications', 'denied');
+        if (banner) banner.classList.add('hidden');
+      }
+    } catch (e) {
+      if (banner) banner.classList.add('hidden');
+    }
+  },
+
+  dismissNotifications() {
+    const banner = document.getElementById('push-prompt-banner');
+    if (banner) banner.classList.add('hidden');
+    localStorage.setItem('tp_notifications_dismissed', Date.now().toString());
   },
 
   handleInitialRouting() {
