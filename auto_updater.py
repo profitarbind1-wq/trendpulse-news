@@ -123,21 +123,278 @@ CATEGORIES = [
     }
 ]
 
-# Curated high-resolution fallback photos for each category (Unsplash royalty-free CDN)
-CATEGORY_IMAGES = {
-    "trending": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900&auto=format&fit=crop&q=80",
-    "world": "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=900&auto=format&fit=crop&q=80",
-    "politics": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=900&auto=format&fit=crop&q=80",
-    "business": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&auto=format&fit=crop&q=80",
-    "share-market": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=900&auto=format&fit=crop&q=80",
-    "finance": "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=900&auto=format&fit=crop&q=80",
-    "entertainment": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=900&auto=format&fit=crop&q=80",
-    "sports": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=900&auto=format&fit=crop&q=80",
-    "tech": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&auto=format&fit=crop&q=80",
-    "education": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=900&auto=format&fit=crop&q=80",
-    "competition": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=900&auto=format&fit=crop&q=80",
-    "motivational": "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?w=900&auto=format&fit=crop&q=80"
+# Curated contextual photo bank matching news topics with high-res Unsplash CDN images
+TOPIC_IMAGE_RULES = [
+    # 1. Weather, Storms, Heat, Natural Events, Disasters
+    (
+        ['heat', 'storm', 'storms', 'weather', 'climate', 'sea arch', 'pacific', 'hawaii', 'flood', 'rain', 'temperature', 'wildfire', 'earthquake'],
+        [
+            "https://images.unsplash.com/photo-1504386106331-3e4e71712b38?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1527482797697-8795b05a13fe?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 2. Aviation & Flight incidents
+    (
+        ['plane', 'flight', 'pilot', 'cockpit', 'airline', 'airport', 'flydubai', 'airbus', 'boeing', 'aviation', 'stabbing'],
+        [
+            "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1506015391300-4802dc74de2e?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1520437358207-323b43b50729?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1517400508447-88cca558e457?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 3. Oil, Diesel, Energy, Petroleum, Reserves
+    (
+        ['diesel', 'crude', 'oil', 'petroleum', 'barrels', 'reserves', 'g7', 'g-7', 'gasoline', 'energy', 'refinery', 'pipeline'],
+        [
+            "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1582582494705-f8ce0b0c24f0?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 4. Legal, Courts, Prison, Execution, Crimes, Law
+    (
+        ['execution', 'christa pike', 'inmate', 'death row', 'lethal injection', 'court', 'trial', 'judge', 'sentenced', 'prison', 'jail', 'lawyer', 'prosecutor', 'rape', 'allegation', 'assault', 'crime', 'murder', 'verdict', 'justice', 'investigation', 'arrest', 'sting', 'kratom', 'clerk', 'charges', 'charged', 'terrorism', 'terrorist', 'terror'],
+        [
+            "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1453733190371-0a9bedd82893?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1589578527966-fdac0f44566c?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 5. Colleges, Universities, Campus
+    (
+        ['cornell', 'harvard', 'university', 'college', 'campus', 'higher education', 'students', 'dorm', 'ole miss'],
+        [
+            "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1562774053-701939374585?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 6. Crypto, Bitcoin, Gold, Commodities
+    (
+        ['crypto', 'bitcoin', 'btc', 'gold', 'ethereum', 'token', 'blockchain', 'bullion'],
+        [
+            "https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1622979135225-d2ba269bc1df?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 7. Stock Market, Trading, Sensex, Nifty, Wall Street
+    (
+        ['stocks', 'stock market', 'sensex', 'nifty', 'wall street', 'nasdaq', 'investors', 'trading', 'shares', 'rally', 'equity', 'jobs report'],
+        [
+            "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1535320903710-d993d3d77d29?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 8. Economy, Finance, Banking, History, Dollar
+    (
+        ['economy', 'economic', 'financial', 'finance', 'dollar', 'milestones', 'bank', 'banking', 'fed', 'federal reserve', 'inflation', 'wealth', 'tax'],
+        [
+            "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 9. Entertainment, Movies, Hollywood, Barbie, Actors
+    (
+        ['skydance', 'barbie', 'movie', 'film', 'hollywood', 'bollywood', 'actor', 'actress', 'cinema', 'series', 'netflix', 'ellison', 'box office', 'entertainment', 'music', 'album', 'song'],
+        [
+            "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 10. Sports, NFL, 49ers, Football, Cricket
+    (
+        ['49ers', 'nfl', 'york', 'sports', 'football', 'stadium', 'cricket', 'fifa', 'tournament', 'champion', 'trophy', 'match', 'ipl', 'olympics'],
+        [
+            "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 11. Tech, AI, Apple, Mac, Cyber, Software
+    (
+        ['apple', 'mac', 'ai', 'tech', 'disk access', 'software', 'technology', 'robot', 'cyber', 'google', 'microsoft', 'chatgpt', 'nvidia', 'chips', 'hardware', 'intel', 'musk'],
+        [
+            "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 12. Education, Exams, UPSC, NDA, Admit Card, Results
+    (
+        ['upsc', 'nda', 'admit card', 'hall ticket', 'exam', 'education', 'school', 'scholarship', 'answer key', 'results', 'merit list'],
+        [
+            "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 13. Migration, Deportation, Border
+    (
+        ['migrant', 'migration', 'deportation', 'border', 'asylum', 'immigrant', 'return hubs'],
+        [
+            "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 14. Protests, Demonstrations, Activism
+    (
+        ['protest', 'protests', 'protesters', 'rally', 'demonstration', 'march', 'gather', 'streets'],
+        [
+            "https://images.unsplash.com/photo-1577495508048-b635879837f1?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1569683795645-b62e50fbf103?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 15. War, Military, Strikes, Middle East, Conflicts, Pentagon
+    (
+        ['iran', 'iranian', 'israel', 'israeli', 'strike', 'strikes', 'gaza', 'war', 'military', 'missile', 'drone', 'soldier', 'army', 'pentagon', 'defense', 'ukraine', 'russia', 'air attack'],
+        [
+            "https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1579975096649-e773152b04cb?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&auto=format&fit=crop&q=80"
+        ]
+    ),
+    # 16. US Politics, White House, Congress, Trump, Government
+    (
+        ['trump', 'biden', 'white house', 'congress', 'senate', 'democrat', 'republican', 'capitol', 'presidency', 'taxpayer', 'governor', 'hegseth', 'cabinet', 'election', 'lobbying', 'gop', 'midterms', 'redistricting', 'kushner', 'bolsonaro', 'lula'],
+        [
+            "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1575517111478-7f6afd0973db?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=900&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=900&auto=format&fit=crop&q=80"
+        ]
+    )
+]
+
+# Rich varied fallback photo collections per category (so adjacent stories never duplicate)
+CATEGORY_POOLS = {
+    "trending": [
+        "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1495020689067-958852a7765e?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1476242906366-d8eb64c2f661?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=900&auto=format&fit=crop&q=80"
+    ],
+    "world": [
+        "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=900&auto=format&fit=crop&q=80"
+    ],
+    "politics": [
+        "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1575517111478-7f6afd0973db?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=900&auto=format&fit=crop&q=80"
+    ],
+    "business": [
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=900&auto=format&fit=crop&q=80"
+    ],
+    "share-market": [
+        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1535320903710-d993d3d77d29?w=900&auto=format&fit=crop&q=80"
+    ],
+    "finance": [
+        "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1565372195458-9de0b320ef04?w=900&auto=format&fit=crop&q=80"
+    ],
+    "entertainment": [
+        "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=900&auto=format&fit=crop&q=80"
+    ],
+    "sports": [
+        "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=900&auto=format&fit=crop&q=80"
+    ],
+    "tech": [
+        "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&auto=format&fit=crop&q=80"
+    ],
+    "education": [
+        "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=900&auto=format&fit=crop&q=80"
+    ],
+    "competition": [
+        "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=900&auto=format&fit=crop&q=80"
+    ],
+    "motivational": [
+        "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=900&auto=format&fit=crop&q=80"
+    ]
 }
+
+def is_kw_match(kw, text):
+    if len(kw) <= 4:
+        return bool(re.search(rf'\b{re.escape(kw)}\b', text))
+    return kw in text
+
+def get_smart_article_image(title, category_id, summary=""):
+    """
+    Intelligently assigns a relevant, distinct high-resolution image
+    based on news headline keywords and category pools.
+    Prioritizes title matches so headline subjects determine the photo.
+    """
+    title_lower = title.lower()
+    summary_lower = summary.lower()
+    
+    # 1. Direct Headline Topic Match (Highest Relevance!)
+    for keywords, images in TOPIC_IMAGE_RULES:
+        if any(is_kw_match(kw, title_lower) for kw in keywords):
+            idx = abs(hash(title)) % len(images)
+            return images[idx]
+
+    # 2. Context Summary Match
+    for keywords, images in TOPIC_IMAGE_RULES:
+        if any(is_kw_match(kw, summary_lower) for kw in keywords):
+            idx = abs(hash(title)) % len(images)
+            return images[idx]
+            
+    # 3. Varied Category Pool Selection
+    pool = CATEGORY_POOLS.get(category_id, CATEGORY_POOLS.get("trending"))
+    idx = abs(hash(title)) % len(pool)
+    return pool[idx]
+
 
 def clean_html(raw_html):
     """Strips HTML tags and unescapes entities."""
@@ -222,7 +479,7 @@ def fetch_rss_feed(category):
                 "readTime": "1 min read",
                 "trendingScore": score,
                 "slug": slug,
-                "image": CATEGORY_IMAGES.get(category["id"], CATEGORY_IMAGES["trending"])
+                "image": get_smart_article_image(title, category["id"], clean_desc)
             })
 
     except Exception as e:

@@ -242,7 +242,7 @@ const App = {
             ],
             readTime: "1 min read",
             trendingScore: 99 - (idx % 20),
-            image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900&auto=format&fit=crop&q=80"
+            image: this.getSmartImage(item.title, cat.id)
           });
         });
 
@@ -252,6 +252,87 @@ const App = {
     } catch (e) {
       console.error("Live fetch fallback failed:", e);
     }
+  },
+
+  getSmartImage(title, categoryId) {
+    const text = (title || '').toLowerCase();
+    const images = {
+      weather: [
+        "https://images.unsplash.com/photo-1504386106331-3e4e71712b38?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1527482797697-8795b05a13fe?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&auto=format&fit=crop&q=80"
+      ],
+      aviation: [
+        "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1506015391300-4802dc74de2e?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1517400508447-88cca558e457?w=900&auto=format&fit=crop&q=80"
+      ],
+      energy: [
+        "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1582582494705-f8ce0b0c24f0?w=900&auto=format&fit=crop&q=80"
+      ],
+      crime: [
+        "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=900&auto=format&fit=crop&q=80"
+      ],
+      sports: [
+        "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=900&auto=format&fit=crop&q=80"
+      ],
+      entertainment: [
+        "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=900&auto=format&fit=crop&q=80"
+      ],
+      crypto: [
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=900&auto=format&fit=crop&q=80"
+      ],
+      stocks: [
+        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=900&auto=format&fit=crop&q=80"
+      ],
+      tech: [
+        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=900&auto=format&fit=crop&q=80"
+      ],
+      war: [
+        "https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1579975096649-e773152b04cb?w=900&auto=format&fit=crop&q=80"
+      ],
+      politics: [
+        "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1575517111478-7f6afd0973db?w=900&auto=format&fit=crop&q=80"
+      ],
+      general: [
+        "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1495020689067-958852a7765e?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1476242906366-d8eb64c2f661?w=900&auto=format&fit=crop&q=80"
+      ]
+    };
+    if (/heat|storm|weather|climate|sea arch|pacific|hawaii|flood|wildfire|earthquake/i.test(text)) return images.weather[Math.abs(this.hashCode(text)) % images.weather.length];
+    if (/plane|flight|pilot|airline|airport|flydubai|airbus|boeing|aviation/i.test(text)) return images.aviation[Math.abs(this.hashCode(text)) % images.aviation.length];
+    if (/oil|diesel|crude|petroleum|gasoline|energy|refinery|pipeline|reserves/i.test(text)) return images.energy[Math.abs(this.hashCode(text)) % images.energy.length];
+    if (/court|trial|judge|prison|jail|crime|murder|execution|inmate|rape|assault|investigation|arrest/i.test(text)) return images.crime[Math.abs(this.hashCode(text)) % images.crime.length];
+    if (/crypto|bitcoin|btc|gold|ethereum/i.test(text)) return images.crypto[Math.abs(this.hashCode(text)) % images.crypto.length];
+    if (/stock|stocks|sensex|nifty|shares|market|trading|nasdaq/i.test(text)) return images.stocks[Math.abs(this.hashCode(text)) % images.stocks.length];
+    if (/sports|cricket|football|nfl|fifa|olympics|match|tournament|49ers/i.test(text)) return images.sports[Math.abs(this.hashCode(text)) % images.sports.length];
+    if (/movie|film|hollywood|bollywood|actor|actress|cinema|series|netflix|box office/i.test(text)) return images.entertainment[Math.abs(this.hashCode(text)) % images.entertainment.length];
+    if (/apple|mac|ai|tech|robot|software|google|microsoft|nvidia|chatgpt/i.test(text)) return images.tech[Math.abs(this.hashCode(text)) % images.tech.length];
+    if (/strike|missile|drone|military|pentagon|war|soldier|army|gaza|iran|israel|ukraine/i.test(text)) return images.war[Math.abs(this.hashCode(text)) % images.war.length];
+    if (/trump|biden|white house|congress|senate|capitol|election|gop|democrat|republican/i.test(text)) return images.politics[Math.abs(this.hashCode(text)) % images.politics.length];
+    return images.general[Math.abs(this.hashCode(text)) % images.general.length];
+  },
+
+  hashCode(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = ((hash << 5) - hash) + str.charCodeAt(i);
+      hash |= 0;
+    }
+    return hash;
   },
 
   initLanguage() {
