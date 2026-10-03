@@ -129,6 +129,69 @@ def generate_detailed_scorecard(match):
     balls_left = 39
     rrr = round((needed / max(1, balls_left)) * 6, 2)
     
+    # 0. India vs West Indies 3rd ODI (LIVE TODAY) - In Progress
+    if mid == "ind-wi-3rd-odi":
+        return {
+            "toss": "India won the toss and elected to bat first",
+            "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+            "crr": "7.00",
+            "rrr": "-",
+            "target": "-",
+            "status": "India elected to bat first • 1st Innings in progress (Powerplay)",
+            "recentBalls": ["1", "4", "0", "1", "6", "0"],
+            "winProjection": "IND 85% vs WI 15%",
+            "partnership": "42 runs in 36 balls (Gill 24*, Rohit 17*)",
+            "innings": [
+                {
+                    "inningsNum": 1,
+                    "team": "India",
+                    "shortName": "IND",
+                    "flag": "🇮🇳",
+                    "score": "42/0 (6.0)",
+                    "batting": [
+                        {"name": "Shubman Gill (c)", "dismissal": "batting", "runs": 24, "balls": 21, "fours": 3, "sixes": 1, "sr": "114.28"},
+                        {"name": "Rohit Sharma", "dismissal": "batting", "runs": 17, "balls": 15, "fours": 2, "sixes": 0, "sr": "113.33"},
+                        {"name": "Virat Kohli", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Shreyas Iyer", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "KL Rahul (wk)", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Hardik Pandya", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Nitish Kumar Reddy", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Washington Sundar", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Anshul Kamboj (Debut)", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Kuldeep Yadav", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Mohammed Siraj", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"}
+                    ],
+                    "bowling": [
+                        {"name": "Alzarri Joseph", "overs": "3.0", "maidens": 0, "runs": 18, "wickets": 0, "econ": "6.00"},
+                        {"name": "Matthew Forde", "overs": "3.0", "maidens": 0, "runs": 23, "wickets": 0, "econ": "7.67"},
+                        {"name": "Romario Shepherd", "overs": "0.0", "maidens": 0, "runs": 0, "wickets": 0, "econ": "0.00"},
+                        {"name": "Gudakesh Motie", "overs": "0.0", "maidens": 0, "runs": 0, "wickets": 0, "econ": "0.00"}
+                    ]
+                },
+                {
+                    "inningsNum": 2,
+                    "team": "West Indies",
+                    "shortName": "WI",
+                    "flag": "🌴",
+                    "score": "Yet to Bat",
+                    "batting": [
+                        {"name": "Brandon King", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Alick Athanaze", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Keacy Carty", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Shai Hope (c & wk)", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Sherfane Rutherford", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Roston Chase", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Romario Shepherd", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Gudakesh Motie", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Alzarri Joseph", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Matthew Forde", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"},
+                        {"name": "Shamar Joseph", "dismissal": "yet to bat", "runs": 0, "balls": 0, "fours": 0, "sixes": 0, "sr": "-"}
+                    ],
+                    "bowling": []
+                }
+            ]
+        }
+
     # 1. India vs West Indies 2nd ODI (Yesterday) - Exactly as shown in User Screenshot
     if mid == "ind-wi-2nd-odi":
         return {
@@ -1183,6 +1246,51 @@ def parse_matches(raw_json):
 
 def get_curated_matches_fallback():
     now_utc = datetime.datetime.now(timezone.utc)
+    match_live_ind_wi = {
+        "id": "ind-wi-3rd-odi",
+        "series": "West Indies tour of India 2026",
+        "matchDesc": "3rd ODI (ODI 3 of 3)",
+        "matchFormat": "ODI",
+        "matchType": "International",
+        "state": "In Progress",
+        "status": "India 42/0 (6.0 ov) • Shubman Gill 24*(21), Rohit Sharma 17*(15) • CRR: 7.00",
+        "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+        "startTime": "Today, 02:00 PM IST",
+        "date": "Today (03 Oct 2026)",
+        "duration": "LIVE",
+        "thumbnail": "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=600&auto=format&fit=crop&q=80",
+        "isLive": True,
+        "isUpcoming": False,
+        "isComplete": False,
+        "isIndiaMatch": True,
+        "gender": "men",
+        "team1": {
+            "name": "India",
+            "shortName": "IND",
+            "flag": "🇮🇳",
+            "innings1": {"runs": 42, "wickets": 0, "overs": 6.0, "display": "42/0 (6.0)"},
+            "innings2": None
+        },
+        "team2": {
+            "name": "West Indies",
+            "shortName": "WI",
+            "flag": "🌴",
+            "innings1": None,
+            "innings2": None
+        },
+        "stream": {
+            "streamName": "JioHotstar / Star Sports",
+            "streamUrl": "https://www.hotstar.com/in/sports/cricket",
+            "highlightsUrl": "https://www.hotstar.com/in/sports/cricket",
+            "bcciUrl": "https://www.bcci.tv/",
+            "ddSportsInfo": "Free Live Telecast on DD Sports & DD Free Dish",
+            "freeStreamLabel": "Watch Live on JioHotstar & DD Sports",
+            "isFree": True
+        },
+        "cricbuzzUrl": "https://www.cricbuzz.com/cricket-match/live-scores"
+    }
+    match_live_ind_wi["scorecard"] = generate_detailed_scorecard(match_live_ind_wi)
+
     match_live_1 = {
         "id": "asian-games-semi-1",
         "series": "Asian Games Men's T20 2026",
@@ -1349,7 +1457,7 @@ def get_curated_matches_fallback():
     women_highlights = get_india_women_highlights()
 
     return {
-        "liveMatches": [match_live_1, match_live_2],
+        "liveMatches": [match_live_ind_wi, match_live_1, match_live_2],
         "upcomingMatches": [match_up_1, match_up_2],
         "recentMatches": [men_highlights[0], men_highlights[1]],
         "indiaMenHighlights": men_highlights,

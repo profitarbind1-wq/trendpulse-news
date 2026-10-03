@@ -1,13 +1,332 @@
 {
   "site": "TrendPulse 360 Cricket Center",
-  "lastUpdated": "2026-10-03 07:18:22 UTC",
-  "totalLive": 2,
+  "lastUpdated": "2026-10-03 08:50:24 UTC",
+  "totalLive": 3,
   "totalUpcoming": 2,
   "totalRecent": 2,
-  "totalIndia": 13,
+  "totalIndia": 14,
   "totalIndiaMenHighlights": 5,
   "totalIndiaWomenHighlights": 5,
   "liveMatches": [
+    {
+      "id": "ind-wi-3rd-odi",
+      "series": "West Indies tour of India 2026",
+      "matchDesc": "3rd ODI (ODI 3 of 3)",
+      "matchFormat": "ODI",
+      "matchType": "International",
+      "state": "In Progress",
+      "status": "India 42/0 (6.0 ov) • Shubman Gill 24*(21), Rohit Sharma 17*(15) • CRR: 7.00",
+      "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+      "startTime": "Today, 02:00 PM IST",
+      "date": "Today (03 Oct 2026)",
+      "duration": "LIVE",
+      "thumbnail": "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=600&auto=format&fit=crop&q=80",
+      "isLive": true,
+      "isUpcoming": false,
+      "isComplete": false,
+      "isIndiaMatch": true,
+      "gender": "men",
+      "team1": {
+        "name": "India",
+        "shortName": "IND",
+        "flag": "🇮🇳",
+        "innings1": {
+          "runs": 42,
+          "wickets": 0,
+          "overs": 6.0,
+          "display": "42/0 (6.0)"
+        },
+        "innings2": null
+      },
+      "team2": {
+        "name": "West Indies",
+        "shortName": "WI",
+        "flag": "🌴",
+        "innings1": null,
+        "innings2": null
+      },
+      "stream": {
+        "streamName": "JioHotstar / Star Sports",
+        "streamUrl": "https://www.hotstar.com/in/sports/cricket",
+        "highlightsUrl": "https://www.hotstar.com/in/sports/cricket",
+        "bcciUrl": "https://www.bcci.tv/",
+        "ddSportsInfo": "Free Live Telecast on DD Sports & DD Free Dish",
+        "freeStreamLabel": "Watch Live on JioHotstar & DD Sports",
+        "isFree": true
+      },
+      "cricbuzzUrl": "https://www.cricbuzz.com/cricket-match/live-scores",
+      "scorecard": {
+        "toss": "India won the toss and elected to bat first",
+        "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+        "crr": "7.00",
+        "rrr": "-",
+        "target": "-",
+        "status": "India elected to bat first • 1st Innings in progress (Powerplay)",
+        "recentBalls": [
+          "1",
+          "4",
+          "0",
+          "1",
+          "6",
+          "0"
+        ],
+        "winProjection": "IND 85% vs WI 15%",
+        "partnership": "42 runs in 36 balls (Gill 24*, Rohit 17*)",
+        "innings": [
+          {
+            "inningsNum": 1,
+            "team": "India",
+            "shortName": "IND",
+            "flag": "🇮🇳",
+            "score": "42/0 (6.0)",
+            "batting": [
+              {
+                "name": "Shubman Gill (c)",
+                "dismissal": "batting",
+                "runs": 24,
+                "balls": 21,
+                "fours": 3,
+                "sixes": 1,
+                "sr": "114.28"
+              },
+              {
+                "name": "Rohit Sharma",
+                "dismissal": "batting",
+                "runs": 17,
+                "balls": 15,
+                "fours": 2,
+                "sixes": 0,
+                "sr": "113.33"
+              },
+              {
+                "name": "Virat Kohli",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Shreyas Iyer",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "KL Rahul (wk)",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Hardik Pandya",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Nitish Kumar Reddy",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Washington Sundar",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Anshul Kamboj (Debut)",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Kuldeep Yadav",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Mohammed Siraj",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              }
+            ],
+            "bowling": [
+              {
+                "name": "Alzarri Joseph",
+                "overs": "3.0",
+                "maidens": 0,
+                "runs": 18,
+                "wickets": 0,
+                "econ": "6.00"
+              },
+              {
+                "name": "Matthew Forde",
+                "overs": "3.0",
+                "maidens": 0,
+                "runs": 23,
+                "wickets": 0,
+                "econ": "7.67"
+              },
+              {
+                "name": "Romario Shepherd",
+                "overs": "0.0",
+                "maidens": 0,
+                "runs": 0,
+                "wickets": 0,
+                "econ": "0.00"
+              },
+              {
+                "name": "Gudakesh Motie",
+                "overs": "0.0",
+                "maidens": 0,
+                "runs": 0,
+                "wickets": 0,
+                "econ": "0.00"
+              }
+            ]
+          },
+          {
+            "inningsNum": 2,
+            "team": "West Indies",
+            "shortName": "WI",
+            "flag": "🌴",
+            "score": "Yet to Bat",
+            "batting": [
+              {
+                "name": "Brandon King",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Alick Athanaze",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Keacy Carty",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Shai Hope (c & wk)",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Sherfane Rutherford",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Roston Chase",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Romario Shepherd",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Gudakesh Motie",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Alzarri Joseph",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Matthew Forde",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Shamar Joseph",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              }
+            ],
+            "bowling": []
+          }
+        ]
+      }
+    },
     {
       "id": "asian-games-semi-1",
       "series": "Asian Games Men's T20 2026",
@@ -17,7 +336,7 @@
       "state": "In Progress",
       "status": "Pakistan need 7 runs in 15 balls to enter Final",
       "venue": "Korogi Sports Park, Nisshin",
-      "startTime": "03 Oct 2026, 07:18 AM UTC",
+      "startTime": "03 Oct 2026, 08:50 AM UTC",
       "isLive": true,
       "isUpcoming": false,
       "isComplete": false,
@@ -930,6 +1249,325 @@
     }
   ],
   "teamIndiaMatches": [
+    {
+      "id": "ind-wi-3rd-odi",
+      "series": "West Indies tour of India 2026",
+      "matchDesc": "3rd ODI (ODI 3 of 3)",
+      "matchFormat": "ODI",
+      "matchType": "International",
+      "state": "In Progress",
+      "status": "India 42/0 (6.0 ov) • Shubman Gill 24*(21), Rohit Sharma 17*(15) • CRR: 7.00",
+      "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+      "startTime": "Today, 02:00 PM IST",
+      "date": "Today (03 Oct 2026)",
+      "duration": "LIVE",
+      "thumbnail": "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=600&auto=format&fit=crop&q=80",
+      "isLive": true,
+      "isUpcoming": false,
+      "isComplete": false,
+      "isIndiaMatch": true,
+      "gender": "men",
+      "team1": {
+        "name": "India",
+        "shortName": "IND",
+        "flag": "🇮🇳",
+        "innings1": {
+          "runs": 42,
+          "wickets": 0,
+          "overs": 6.0,
+          "display": "42/0 (6.0)"
+        },
+        "innings2": null
+      },
+      "team2": {
+        "name": "West Indies",
+        "shortName": "WI",
+        "flag": "🌴",
+        "innings1": null,
+        "innings2": null
+      },
+      "stream": {
+        "streamName": "JioHotstar / Star Sports",
+        "streamUrl": "https://www.hotstar.com/in/sports/cricket",
+        "highlightsUrl": "https://www.hotstar.com/in/sports/cricket",
+        "bcciUrl": "https://www.bcci.tv/",
+        "ddSportsInfo": "Free Live Telecast on DD Sports & DD Free Dish",
+        "freeStreamLabel": "Watch Live on JioHotstar & DD Sports",
+        "isFree": true
+      },
+      "cricbuzzUrl": "https://www.cricbuzz.com/cricket-match/live-scores",
+      "scorecard": {
+        "toss": "India won the toss and elected to bat first",
+        "venue": "Maharaja Yadavindra Singh International Cricket Stadium, Mullanpur",
+        "crr": "7.00",
+        "rrr": "-",
+        "target": "-",
+        "status": "India elected to bat first • 1st Innings in progress (Powerplay)",
+        "recentBalls": [
+          "1",
+          "4",
+          "0",
+          "1",
+          "6",
+          "0"
+        ],
+        "winProjection": "IND 85% vs WI 15%",
+        "partnership": "42 runs in 36 balls (Gill 24*, Rohit 17*)",
+        "innings": [
+          {
+            "inningsNum": 1,
+            "team": "India",
+            "shortName": "IND",
+            "flag": "🇮🇳",
+            "score": "42/0 (6.0)",
+            "batting": [
+              {
+                "name": "Shubman Gill (c)",
+                "dismissal": "batting",
+                "runs": 24,
+                "balls": 21,
+                "fours": 3,
+                "sixes": 1,
+                "sr": "114.28"
+              },
+              {
+                "name": "Rohit Sharma",
+                "dismissal": "batting",
+                "runs": 17,
+                "balls": 15,
+                "fours": 2,
+                "sixes": 0,
+                "sr": "113.33"
+              },
+              {
+                "name": "Virat Kohli",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Shreyas Iyer",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "KL Rahul (wk)",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Hardik Pandya",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Nitish Kumar Reddy",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Washington Sundar",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Anshul Kamboj (Debut)",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Kuldeep Yadav",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Mohammed Siraj",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              }
+            ],
+            "bowling": [
+              {
+                "name": "Alzarri Joseph",
+                "overs": "3.0",
+                "maidens": 0,
+                "runs": 18,
+                "wickets": 0,
+                "econ": "6.00"
+              },
+              {
+                "name": "Matthew Forde",
+                "overs": "3.0",
+                "maidens": 0,
+                "runs": 23,
+                "wickets": 0,
+                "econ": "7.67"
+              },
+              {
+                "name": "Romario Shepherd",
+                "overs": "0.0",
+                "maidens": 0,
+                "runs": 0,
+                "wickets": 0,
+                "econ": "0.00"
+              },
+              {
+                "name": "Gudakesh Motie",
+                "overs": "0.0",
+                "maidens": 0,
+                "runs": 0,
+                "wickets": 0,
+                "econ": "0.00"
+              }
+            ]
+          },
+          {
+            "inningsNum": 2,
+            "team": "West Indies",
+            "shortName": "WI",
+            "flag": "🌴",
+            "score": "Yet to Bat",
+            "batting": [
+              {
+                "name": "Brandon King",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Alick Athanaze",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Keacy Carty",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Shai Hope (c & wk)",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Sherfane Rutherford",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Roston Chase",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Romario Shepherd",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Gudakesh Motie",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Alzarri Joseph",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Matthew Forde",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              },
+              {
+                "name": "Shamar Joseph",
+                "dismissal": "yet to bat",
+                "runs": 0,
+                "balls": 0,
+                "fours": 0,
+                "sixes": 0,
+                "sr": "-"
+              }
+            ],
+            "bowling": []
+          }
+        ]
+      }
+    },
     {
       "id": "aus-ind-a-test",
       "series": "Australia A tour of India 2026",

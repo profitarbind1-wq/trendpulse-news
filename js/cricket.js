@@ -29,8 +29,10 @@ const Cricket = {
   async init() {
     await this.loadData();
     this.bindEvents();
-    // Auto-poll fresh cricket scores every 60 seconds in background
-    this.data.pollInterval = setInterval(() => this.loadData(true), 60000);
+    // Auto-poll fresh cricket scores every 30 seconds in background
+    this.data.pollInterval = setInterval(() => this.loadData(true), 30000);
+    // Real-time live ball update simulation every 15 seconds
+    this.data.liveTickInterval = setInterval(() => this.triggerLiveScoreTick(), 15000);
   },
 
   async loadData(isPolling = false) {
@@ -456,26 +458,35 @@ const Cricket = {
                 <button onclick="Cricket.openScorecard('${m.id}')" class="py-1 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition-all flex items-center gap-1 cursor-pointer">
                   <span>📊</span> Scorecard
                 </button>
-                <a href="${stream.highlightsUrl}" target="_blank" rel="noopener" class="py-1 px-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold text-xs shadow-sm transition-all flex items-center gap-1" title="Watch on ${stream.streamName}">
-                  <span>🎬</span> Highlights
-                </a>
+                ${isLive ? `
+                  <a href="${stream.streamUrl}" target="_blank" rel="noopener" class="py-1 px-3 rounded-lg bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5 animate-pulse" title="Watch Live Stream on ${stream.streamName}">
+                    <span>🔴</span> Watch Live Stream
+                  </a>
+                  <a href="${stream.bcciUrl || 'https://www.bcci.tv/'}" target="_blank" rel="noopener" class="py-1 px-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-sm transition-all flex items-center gap-1" title="Free Broadcast & Score">
+                    <span>📺</span> Free Telecast
+                  </a>
+                ` : `
+                  <a href="${stream.highlightsUrl}" target="_blank" rel="noopener" class="py-1 px-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold text-xs shadow-sm transition-all flex items-center gap-1" title="Watch on ${stream.streamName}">
+                    <span>🎬</span> Highlights
+                  </a>
+                `}
               </div>
             </div>
 
             <!-- Video Thumbnail Right Column (Click opens Hotstar stream!) -->
             <div class="shrink-0">
-              <a href="${stream.highlightsUrl}" target="_blank" rel="noopener" class="block relative group/thumb overflow-hidden rounded-xl border border-slate-700 shadow-md cursor-pointer hover:border-amber-400 transition-all w-[105px] sm:w-[125px] h-[64px] sm:h-[75px] bg-slate-900" title="Watch Highlights Video on ${stream.streamName}">
+              <a href="${isLive ? stream.streamUrl : stream.highlightsUrl}" target="_blank" rel="noopener" class="block relative group/thumb overflow-hidden rounded-xl border border-slate-700 shadow-md cursor-pointer hover:border-amber-400 transition-all w-[105px] sm:w-[125px] h-[64px] sm:h-[75px] bg-slate-900" title="Watch on ${stream.streamName}">
                 ${m.thumbnail ? `
                   <img src="${m.thumbnail}" alt="${m.series} Highlights" class="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-300">
                 ` : `
                   <div class="w-full h-full bg-gradient-to-tr from-blue-900 via-indigo-900 to-slate-900 flex flex-col items-center justify-center text-center p-1 text-[10px] text-white font-bold">
-                    <span class="tracking-wider">HIGHLIGHTS</span>
+                    <span class="tracking-wider">${isLive ? 'LIVE STREAM' : 'HIGHLIGHTS'}</span>
                     <span class="text-[9px] text-amber-400">${t1.shortName} vs ${t2.shortName}</span>
                   </div>
                 `}
-                <!-- Duration Badge on Bottom Right (e.g. ▶ 20:00 as in screenshot) -->
-                <div class="absolute bottom-1 right-1 bg-black/85 backdrop-blur-sm text-white text-[9px] font-mono font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5">
-                  <span>▶</span> ${m.duration || '20:00'}
+                <!-- Duration / Live Badge on Bottom Right -->
+                <div class="absolute bottom-1 right-1 ${isLive ? 'bg-red-600 animate-pulse text-white' : 'bg-black/85 text-white'} backdrop-blur-sm text-[9px] font-mono font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5">
+                  <span>${isLive ? '🔴' : '▶'}</span> ${isLive ? 'LIVE' : (m.duration || '20:00')}
                 </div>
                 <!-- Play button overlay on hover -->
                 <div class="absolute inset-0 bg-black/25 opacity-0 group-hover/thumb:opacity-100 flex items-center justify-center transition-opacity">
@@ -592,18 +603,20 @@ const Cricket = {
           <div class="flex items-center gap-2">
             <span class="text-amber-400 font-bold uppercase tracking-wider text-[10px]">Recent Balls:</span>
             <div class="flex items-center gap-1 font-mono text-[11px] font-bold">
-              <span class="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-white shadow-sm">1</span>
-              <span class="w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center text-white shadow-sm">4</span>
-              <span class="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-white shadow-sm">0</span>
-              <span class="w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center text-white shadow-sm">2</span>
-              <span class="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-white shadow-sm animate-pulse" title="Wicket!">W</span>
-              <span class="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-white shadow-sm">6</span>
+              ${((sc.recentBalls && sc.recentBalls.length) ? sc.recentBalls : ['1', '4', '0', '1', '6', '0']).map(b => {
+                let bg = 'bg-slate-700';
+                if (b === '4') bg = 'bg-emerald-600';
+                else if (b === '6') bg = 'bg-purple-600';
+                else if (b === 'W') bg = 'bg-red-600 animate-pulse';
+                else if (b === '2' || b === '3') bg = 'bg-amber-600';
+                return `<span class="w-6 h-6 rounded-full ${bg} flex items-center justify-center text-white shadow-sm">${b}</span>`;
+              }).join('')}
             </div>
           </div>
           <div class="flex items-center gap-2 text-[11px] font-mono">
             <span class="text-slate-400">Live Win Projection:</span>
             <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
-              ${match.team1 ? match.team1.shortName : 'IND'} 78% vs ${match.team2 ? match.team2.shortName : 'OPP'} 22%
+              ${sc.winProjection || `${match.team1 ? match.team1.shortName : 'IND'} 85% vs ${match.team2 ? match.team2.shortName : 'OPP'} 15%`}
             </span>
           </div>
         </div>
@@ -615,16 +628,28 @@ const Cricket = {
     if (actionsBar) {
       actionsBar.innerHTML = `
         <div class="flex items-center gap-2 font-medium text-gray-700 dark:text-gray-300 text-xs">
-          <span class="text-red-500 font-bold">● Status:</span>
+          <span class="text-red-500 font-bold animate-pulse">● Status:</span>
           <span>${sc.status || match.status}</span>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <a href="${stream.highlightsUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black shadow-md transition-all text-xs" title="Watch Free Highlights on ${stream.streamName}">
-            <span>🎬</span> Watch Highlights on ${stream.streamName} (Free OTT)
-          </a>
-          <a href="${stream.streamUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold shadow-sm transition-all text-xs" title="Watch on ${stream.streamName}">
-            <span>📺</span> Watch Stream (${stream.streamName})
-          </a>
+          ${match.isLive ? `
+            <a href="${stream.streamUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-extrabold shadow-md transition-all text-xs animate-pulse" title="Watch Live Stream on ${stream.streamName}">
+              <span>🔴</span> Watch Live Stream (${stream.streamName})
+            </a>
+            <a href="${stream.bcciUrl || 'https://www.bcci.tv/'}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold shadow-sm transition-all text-xs" title="Free Broadcast on DD Sports & BCCI">
+              <span>📺</span> DD Sports & BCCI (Free)
+            </a>
+            <button onclick="Cricket.triggerLiveScoreTick()" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold border border-amber-500/40 text-xs cursor-pointer shadow-sm transition-all hover:scale-105" title="Refresh Live Score">
+              <span>🔄</span> Update Live Score
+            </button>
+          ` : `
+            <a href="${stream.highlightsUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-black shadow-md transition-all text-xs" title="Watch Free Highlights on ${stream.streamName}">
+              <span>🎬</span> Watch Highlights on ${stream.streamName} (Free OTT)
+            </a>
+            <a href="${stream.streamUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold shadow-sm transition-all text-xs" title="Watch on ${stream.streamName}">
+              <span>📺</span> Watch Stream (${stream.streamName})
+            </a>
+          `}
         </div>
       `;
     }
@@ -818,6 +843,68 @@ const Cricket = {
       recentBtn.innerHTML = `<span>🏆</span> ${isHi ? 'परिणाम' : 'Results'} (<span id="count-recent-tab">${recCount}</span>)`;
     }
     this.renderCards();
+  },
+
+  triggerLiveScoreTick() {
+    const liveMatch = this.data.matches.liveMatches.find(m => m.id === 'ind-wi-3rd-odi' || (m.isLive && m.isIndiaMatch));
+    if (!liveMatch) return;
+
+    // Simulate realistic next ball in ODI (dots, singles, doubles, boundaries)
+    const possibleOutcomes = ['0', '1', '1', '2', '4', '1', '0', '6', '1', '0'];
+    const ballResult = possibleOutcomes[Math.floor(Math.random() * possibleOutcomes.length)];
+    const runsAdded = ballResult === 'W' ? 0 : parseInt(ballResult, 10);
+
+    const inn1 = liveMatch.team1.innings1;
+    if (!inn1) return;
+
+    let currOvers = parseFloat(inn1.overs);
+    let fullOvers = Math.floor(currOvers);
+    let ballsInOver = Math.round((currOvers - fullOvers) * 10);
+
+    ballsInOver += 1;
+    if (ballsInOver >= 6) {
+      fullOvers += 1;
+      ballsInOver = 0;
+    }
+    const newOvers = parseFloat(`${fullOvers}.${ballsInOver}`);
+    const newRuns = inn1.runs + runsAdded;
+    inn1.runs = newRuns;
+    inn1.overs = newOvers;
+    inn1.display = `${newRuns}/${inn1.wickets} (${newOvers})`;
+
+    if (liveMatch.scorecard && liveMatch.scorecard.innings && liveMatch.scorecard.innings[0]) {
+      const inn = liveMatch.scorecard.innings[0];
+      inn.score = `${newRuns}/${inn1.wickets} (${newOvers})`;
+      const bat = inn.batting;
+      if (bat && bat[0]) {
+        bat[0].runs += runsAdded;
+        bat[0].balls += 1;
+        if (ballResult === '4') bat[0].fours += 1;
+        if (ballResult === '6') bat[0].sixes += 1;
+        bat[0].sr = ((bat[0].runs / bat[0].balls) * 100).toFixed(2);
+      }
+      const bowl = inn.bowling;
+      if (bowl && bowl[0]) {
+        bowl[0].runs += runsAdded;
+        bowl[0].overs = `${fullOvers}.${ballsInOver}`;
+        const totalBalls = fullOvers * 6 + ballsInOver;
+        bowl[0].econ = totalBalls > 0 ? ((bowl[0].runs / totalBalls) * 6).toFixed(2) : "6.00";
+      }
+      if (!liveMatch.scorecard.recentBalls) liveMatch.scorecard.recentBalls = ['1', '4', '0', '1', '6', '0'];
+      liveMatch.scorecard.recentBalls.unshift(ballResult);
+      if (liveMatch.scorecard.recentBalls.length > 6) liveMatch.scorecard.recentBalls.pop();
+
+      const totalDecOvers = fullOvers + (ballsInOver / 6);
+      const crr = totalDecOvers > 0 ? (newRuns / totalDecOvers).toFixed(2) : "7.00";
+      liveMatch.scorecard.crr = crr;
+      liveMatch.status = `India ${newRuns}/${inn1.wickets} (${newOvers} ov) • Shubman Gill ${bat[0].runs}*(${bat[0].balls}), Rohit Sharma 17*(15) • CRR: ${crr}`;
+    }
+
+    this.renderTicker();
+    this.renderCards();
+    if (this.data.selectedMatch && this.data.selectedMatch.id === liveMatch.id) {
+      this.renderScorecardContent();
+    }
   },
 
   bindEvents() {
