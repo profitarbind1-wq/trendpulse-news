@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="viewport" content="width=1280, initial-scale=0.3, maximum-scale=5.0, user-scalable=yes">
   
   <!-- Google tag (gtag.js) - Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3CKHF2JKNZ"></script>
@@ -71,7 +71,7 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-200 min-h-screen flex flex-col">
+<body style="min-width: 1280px;" class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-200 min-h-screen flex flex-col min-w-[1280px]">
 
   <!-- Top Real-Time Notification & Live Status Bar -->
   <div class="bg-gray-900 text-gray-300 text-xs py-1.5 px-4 border-b border-gray-800">
@@ -127,7 +127,7 @@
         </a>
 
         <!-- Search Bar -->
-        <div class="flex-1 max-w-md mx-2 sm:mx-6 hidden md:block">
+        <div class="flex-1 max-w-md mx-4 block">
           <div class="relative">
             <input 
               type="text" 
@@ -150,7 +150,7 @@
               class="px-2.5 py-1.5 rounded-lg transition-all bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white flex items-center gap-1"
               title="Magazine Grid View"
             >
-              <span>▦</span> <span class="hidden sm:inline">Grid</span>
+              <span>▦</span> <span>Grid</span>
             </button>
             <button 
               id="view-mode-inshorts" 
@@ -158,7 +158,7 @@
               class="px-2.5 py-1.5 rounded-lg transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 flex items-center gap-1"
               title="Inshorts 60-Sec Card View"
             >
-              <span>🗂️</span> <span class="hidden sm:inline">Quick-Read</span>
+              <span>🗂️</span> <span>Quick-Read</span>
             </button>
           </div>
 
@@ -194,19 +194,6 @@
           </button>
         </div>
 
-      </div>
-
-      <!-- Mobile Search Field -->
-      <div class="pb-3 md:hidden">
-        <div class="relative">
-          <input 
-            type="text" 
-            oninput="App.onSearch(this.value)" 
-            placeholder="Search news & topics..." 
-            class="w-full pl-9 pr-4 py-2 text-sm bg-gray-100 dark:bg-gray-800 border border-transparent dark:border-gray-700 rounded-full focus:outline-none focus:border-red-500 text-gray-900 dark:text-gray-100"
-          >
-          <span class="absolute left-3 top-2.5 text-gray-400 text-xs">🔍</span>
-        </div>
       </div>
 
     </div>
