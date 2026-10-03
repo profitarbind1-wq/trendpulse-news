@@ -7,29 +7,72 @@
       "**/.*",
       "**/node_modules/**",
       "auto_updater.py",
+      "cricket_updater.py",
       "server.py",
       "*.bat",
       ".github/**",
-      "README.md"
+      "README.md",
+      "scripts/**",
+      "tests/**"
     ],
     "cleanUrls": true,
     "trailingSlash": false,
     "headers": [
       {
-        "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css)",
+        "source": "sw.js",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "max-age=604800, public"
+            "value": "no-cache, no-store, must-revalidate, max-age=0"
+          },
+          {
+            "key": "Service-Worker-Allowed",
+            "value": "/"
           }
         ]
       },
       {
-        "source": "data/news.json",
+        "source": "index.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate, max-age=0"
+          }
+        ]
+      },
+      {
+        "source": "data/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate, max-age=0"
+          }
+        ]
+      },
+      {
+        "source": "js/**",
         "headers": [
           {
             "key": "Cache-Control",
             "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "css/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|ico)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=86400, public"
           }
         ]
       },
