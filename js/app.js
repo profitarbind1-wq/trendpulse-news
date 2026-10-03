@@ -18,6 +18,7 @@ const App = {
     currentSpeechUtterance: null,
     activeArticleModal: null,
     isDarkMode: false,
+    currentFontSize: 18,
     currentLang: localStorage.getItem('tp_lang') || 'en'
   },
 
@@ -532,6 +533,7 @@ const App = {
     this.data.viewMode = mode;
     const magBtn = document.getElementById('view-mode-magazine');
     const inshortsBtn = document.getElementById('view-mode-inshorts');
+    const bottomLabel = document.getElementById('bottom-view-label');
 
     if (magBtn && inshortsBtn) {
       if (mode === 'magazine') {
@@ -542,7 +544,15 @@ const App = {
         magBtn.classList.remove('bg-white', 'dark:bg-gray-700', 'shadow-sm');
       }
     }
+    if (bottomLabel) {
+      bottomLabel.textContent = mode === 'magazine' ? 'Quick' : 'Grid';
+    }
     this.render();
+  },
+
+  toggleViewMode() {
+    const nextMode = this.data.viewMode === 'magazine' ? 'inshorts' : 'magazine';
+    this.setViewMode(nextMode);
   },
 
   onSearch(val) {
@@ -645,14 +655,20 @@ const App = {
               </div>
               <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
                 <span class="text-xs text-gray-400">${hero.publishedAt}</span>
-                <div class="flex items-center gap-2">
-                  <button onclick="App.playAudio('${hero.id}', event)" title="Listen" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300">
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                  <button onclick="App.playAudio('${hero.id}', event)" title="Listen (ऑडियो सुनें)" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors">
                     🔊
                   </button>
-                  <button onclick="App.toggleBookmark('${hero.id}', event)" title="Bookmark" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${isSaved ? 'text-amber-500' : 'text-gray-400'}">
+                  <button onclick="App.toggleBookmark('${hero.id}', event)" title="Bookmark (सेव करें)" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${isSaved ? 'text-amber-500' : 'text-gray-400'} transition-colors">
                     ${isSaved ? '★' : '☆'}
                   </button>
-                  <button onclick="App.shareArticle('${hero.id}', event)" title="Share" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-indigo-600">
+                  <button onclick="App.shareToWhatsApp('${hero.id}', event)" title="Share to WhatsApp" class="p-2 rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 transition-colors">
+                    💬
+                  </button>
+                  <button onclick="App.copyArticleLink('${hero.id}', event)" title="Copy Link" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
+                    📋
+                  </button>
+                  <button onclick="App.shareArticle('${hero.id}', event)" title="Share" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-indigo-600 transition-colors">
                     ↗️
                   </button>
                 </div>
@@ -698,13 +714,19 @@ const App = {
           <div class="px-5 pb-4 pt-2 flex items-center justify-between border-t border-gray-100 dark:border-gray-700 text-xs">
             <span class="text-gray-400 text-[11px] truncate max-w-[120px]">${art.publishedAt.split(' ').slice(0, 4).join(' ')}</span>
             <div class="flex items-center gap-1">
-              <button onclick="App.playAudio('${art.id}', event)" title="Listen" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500">
+              <button onclick="App.playAudio('${art.id}', event)" title="Listen" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 transition-colors">
                 🔊
               </button>
-              <button onclick="App.toggleBookmark('${art.id}', event)" title="Save" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${isSaved ? 'text-amber-500 font-bold' : 'text-gray-400'}">
+              <button onclick="App.toggleBookmark('${art.id}', event)" title="Save" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${isSaved ? 'text-amber-500 font-bold' : 'text-gray-400'} transition-colors">
                 ${isSaved ? '★' : '☆'}
               </button>
-              <button onclick="App.shareArticle('${art.id}', event)" title="Share" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-indigo-600">
+              <button onclick="App.shareToWhatsApp('${art.id}', event)" title="Share on WhatsApp" class="p-1.5 rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 transition-colors">
+                💬
+              </button>
+              <button onclick="App.copyArticleLink('${art.id}', event)" title="Copy Link" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 transition-colors">
+                📋
+              </button>
+              <button onclick="App.shareArticle('${art.id}', event)" title="Share" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-indigo-600 transition-colors">
                 ↗️
               </button>
             </div>
@@ -808,40 +830,81 @@ const App = {
 
     const isSaved = this.isBookmarked(article.id);
 
+    const related = this.data.articles
+      .filter(a => a.id !== article.id)
+      .slice(0, 3);
+
+    const relatedHtml = related.length ? `
+      <div class="mb-10 pt-6 border-t border-gray-200 dark:border-gray-800">
+        <h3 class="text-base sm:text-lg font-bold font-serif-headline text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+          <span>🔥</span> Related Trending Stories (और भी ताज़ा खबरें)
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          ${related.map(rel => `
+            <div onclick="App.openArticleModal('${rel.id}')" class="group rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-md cursor-pointer transition-all flex flex-col justify-between p-3">
+              <div class="h-32 w-full rounded-xl overflow-hidden mb-2.5 bg-gray-200 dark:bg-gray-800">
+                <img src="${rel.image}" alt="${rel.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=600&auto=format&fit=crop&q=80';">
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-red-600 uppercase tracking-wider">${rel.source}</span>
+                <h4 class="text-xs font-bold text-gray-900 dark:text-white line-clamp-2 mt-0.5 group-hover:text-red-600 transition-colors">
+                  ${rel.title}
+                </h4>
+              </div>
+              <span class="text-[10px] text-gray-400 mt-2 block">${rel.readTime || '1 min read'}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    ` : '';
+
     content.innerHTML = `
       <div class="min-h-screen bg-white dark:bg-gray-950 flex flex-col text-gray-900 dark:text-gray-100">
         <!-- Sticky Top Navigation Header -->
-        <header class="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm py-3 px-4 sm:px-8">
-          <div class="max-w-5xl mx-auto flex items-center justify-between gap-3">
+        <header class="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm py-2.5 px-3 sm:px-8">
+          <div class="max-w-5xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
             
             <!-- Left: Back Button & Category -->
-            <div class="flex items-center gap-2 sm:gap-3">
-              <button onclick="App.closeArticleModal()" class="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-bold text-xs sm:text-sm transition-all shadow-sm group">
+            <div class="flex items-center gap-1.5 sm:gap-3">
+              <button onclick="App.closeArticleModal()" class="flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-bold text-xs sm:text-sm transition-all shadow-sm group cursor-pointer">
                 <span class="text-base sm:text-lg group-hover:-translate-x-1 transition-transform">←</span>
-                <span>Back to News</span>
+                <span class="hidden sm:inline">Back</span>
               </button>
-              <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400">
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 truncate max-w-[120px] sm:max-w-none">
                 ${article.categoryIcon || '🔥'} ${article.categoryName}
               </span>
             </div>
 
-            <!-- Right: Quick Actions (Audio, Bookmark, WhatsApp, Share, Big Close) -->
-            <div class="flex items-center gap-1.5 sm:gap-2.5">
-              <button onclick="App.playAudio('${article.id}', event)" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs sm:text-sm font-semibold text-gray-800 dark:text-gray-200" title="Listen to Article">
+            <!-- Right: Quick Actions (Font Size, Audio, Bookmark, WhatsApp, Copy Link, Close) -->
+            <div class="flex items-center gap-1 sm:gap-2">
+              <!-- Font size control -->
+              <div class="flex items-center bg-gray-100 dark:bg-gray-800 p-0.5 sm:p-1 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300">
+                <button onclick="App.changeFontSize(-2)" class="px-2 py-1 rounded hover:bg-white dark:hover:bg-gray-700 cursor-pointer" title="Smaller text">A-</button>
+                <button onclick="App.changeFontSize(2)" class="px-2 py-1 rounded hover:bg-white dark:hover:bg-gray-700 cursor-pointer" title="Larger text">A+</button>
+              </div>
+
+              <button onclick="App.playAudio('${article.id}', event)" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs sm:text-sm font-semibold text-gray-800 dark:text-gray-200 transition-colors cursor-pointer" title="Listen to Article">
                 🔊 <span class="hidden md:inline">Listen</span>
               </button>
-              <button id="modal-bookmark-btn" onclick="App.toggleBookmark('${article.id}', event)" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs sm:text-sm font-semibold ${isSaved ? 'text-amber-500' : 'text-gray-700 dark:text-gray-300'}" title="Save Article">
-                ${isSaved ? '★ Saved' : '☆ Save'}
+              
+              <button id="modal-bookmark-btn" onclick="App.toggleBookmark('${article.id}', event)" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs sm:text-sm font-semibold ${isSaved ? 'text-amber-500' : 'text-gray-700 dark:text-gray-300'} transition-colors cursor-pointer" title="Save Article">
+                ${isSaved ? '★' : '☆'} <span class="hidden md:inline">${isSaved ? 'Saved' : 'Save'}</span>
               </button>
-              <button onclick="App.shareToWhatsApp('${article.id}')" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold text-xs sm:text-sm shadow-sm" title="Share on WhatsApp">
-                💬 <span>WhatsApp</span>
+
+              <button onclick="App.shareToWhatsApp('${article.id}')" class="p-2 sm:px-3.5 sm:py-2 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold text-xs sm:text-sm shadow-sm transition-colors cursor-pointer" title="Share on WhatsApp">
+                💬 <span class="hidden sm:inline">WhatsApp</span>
               </button>
-              <button onclick="App.shareArticle('${article.id}', event)" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm" title="Share Link">
-                <span>↗ Share</span>
+
+              <button onclick="App.copyArticleLink('${article.id}', event)" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold text-xs sm:text-sm shadow-sm transition-colors cursor-pointer" title="Copy Link">
+                📋
+              </button>
+
+              <button onclick="App.shareArticle('${article.id}', event)" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-colors cursor-pointer" title="Share">
+                ↗
               </button>
               
               <!-- Big Clear Red Close Button -->
-              <button onclick="App.closeArticleModal()" class="w-10 h-10 rounded-xl bg-red-100 hover:bg-red-200 dark:bg-red-950/80 dark:hover:bg-red-900/80 text-red-600 dark:text-red-400 flex items-center justify-center font-black text-xl transition-all shadow-sm ml-1" title="Close (बंद करें)">
+              <button onclick="App.closeArticleModal()" class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-red-100 hover:bg-red-200 dark:bg-red-950/80 dark:hover:bg-red-900/80 text-red-600 dark:text-red-400 flex items-center justify-center font-black text-lg sm:text-xl transition-all shadow-sm ml-0.5 sm:ml-1 cursor-pointer" title="Close (बंद करें)">
                 ✕
               </button>
             </div>
@@ -883,9 +946,9 @@ const App = {
             </div>
           </div>
 
-          <!-- Summary Body Text -->
+          <!-- Summary Body Text with resizable font -->
           <div class="prose prose-lg dark:prose-invert max-w-none mb-8">
-            <p class="text-lg sm:text-xl text-gray-800 dark:text-gray-200 leading-relaxed font-normal">
+            <p id="article-modal-body-text" style="font-size: ${this.data.currentFontSize || 18}px; line-height: ${(this.data.currentFontSize || 18) * 1.6}px;" class="text-gray-800 dark:text-gray-200 font-normal transition-all duration-150">
               ${article.summary}
             </p>
           </div>
@@ -917,10 +980,13 @@ const App = {
               </a>
             </div>
             <div class="flex items-center gap-2 w-full sm:w-auto justify-center">
-              <button onclick="App.shareToWhatsApp('${article.id}')" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm">
+              <button onclick="App.shareToWhatsApp('${article.id}')" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm cursor-pointer">
                 💬 WhatsApp
               </button>
-              <button onclick="App.shareArticle('${article.id}', event)" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm">
+              <button onclick="App.copyArticleLink('${article.id}', event)" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm cursor-pointer">
+                📋 Copy Link
+              </button>
+              <button onclick="App.shareArticle('${article.id}', event)" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm cursor-pointer">
                 ↗ Share
               </button>
             </div>
@@ -940,9 +1006,12 @@ const App = {
             </a>
           </div>
 
+          <!-- Related Stories Section -->
+          ${relatedHtml}
+
           <!-- Big Bottom Exit Button -->
           <div class="pt-2 pb-12">
-            <button onclick="App.closeArticleModal()" class="w-full py-4 px-6 rounded-2xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-bold text-base flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.01]">
+            <button onclick="App.closeArticleModal()" class="w-full py-4 px-6 rounded-2xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-bold text-base flex items-center justify-center gap-2 shadow-sm transition-all hover:scale-[1.01] cursor-pointer">
               <span class="text-lg">←</span>
               <span>Back to All News (वापस मुख्य पेज पर जाएं)</span>
             </button>
@@ -1019,6 +1088,41 @@ const App = {
     }
   },
 
+  changeFontSize(delta) {
+    this.data.currentFontSize = Math.max(14, Math.min(26, (this.data.currentFontSize || 18) + delta));
+    const textEl = document.getElementById('article-modal-body-text');
+    if (textEl) {
+      textEl.style.fontSize = `${this.data.currentFontSize}px`;
+      textEl.style.lineHeight = `${this.data.currentFontSize * 1.6}px`;
+    }
+  },
+
+  showToast(msg) {
+    const toast = document.getElementById('toast-message');
+    if (!toast) return;
+    toast.innerHTML = msg;
+    toast.classList.remove('opacity-0', 'pointer-events-none');
+    toast.classList.add('opacity-100');
+    setTimeout(() => {
+      toast.classList.remove('opacity-100');
+      toast.classList.add('opacity-0', 'pointer-events-none');
+    }, 2500);
+  },
+
+  copyArticleLink(articleId, e) {
+    if (e) e.stopPropagation();
+    const shareUrl = `${window.location.origin}/#news=${articleId}`;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        this.showToast('📋 Link copied to clipboard!');
+      }).catch(() => {
+        this.showToast(`📋 ${shareUrl}`);
+      });
+    } else {
+      this.showToast('📋 Link copied!');
+    }
+  },
+
   // Viral Sharing Handlers
   shareArticle(articleId, e) {
     if (e) e.stopPropagation();
@@ -1033,21 +1137,27 @@ const App = {
         title: article.title,
         text: shareText,
         url: shareUrl
-      }).catch(err => console.log('Share canceled', err));
+      }).catch(err => {
+        if (err.name !== 'AbortError') {
+          this.copyArticleLink(articleId);
+        }
+      });
     } else {
-      this.shareToWhatsApp(articleId);
+      this.copyArticleLink(articleId);
     }
   },
 
-  shareToWhatsApp(articleId) {
+  shareToWhatsApp(articleId, e) {
+    if (e) e.stopPropagation();
     const article = this.data.articles.find(a => a.id === articleId);
     if (!article) return;
     const shareUrl = `${window.location.origin}/#news=${article.id}`;
-    const text = encodeURIComponent(`🔥 Breaking News: ${article.title}\n\nRead 60-sec brief here:\n${shareUrl}`);
+    const text = encodeURIComponent(`🔥 Breaking News: ${article.title}\n\n${article.summary}\n\n👉 Read 60-second brief on TrendPulse 360:\n${shareUrl}`);
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
   },
 
-  shareToTwitter(articleId) {
+  shareToTwitter(articleId, e) {
+    if (e) e.stopPropagation();
     const article = this.data.articles.find(a => a.id === articleId);
     if (!article) return;
     const shareUrl = `${window.location.origin}/#news=${article.id}`;
@@ -1150,14 +1260,45 @@ const App = {
   },
 
   bindEvents() {
-    const searchInput = document.getElementById('search-input');
-    if (searchInput) {
-      let timeout = null;
-      searchInput.addEventListener('input', (e) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => this.onSearch(e.target.value), 250);
-      });
-    }
+    // Synchronize Desktop and Mobile search inputs
+    const setupSearch = (id, otherId) => {
+      const input = document.getElementById(id);
+      const other = document.getElementById(otherId);
+      if (input) {
+        let timeout = null;
+        input.addEventListener('input', (e) => {
+          clearTimeout(timeout);
+          const val = e.target.value;
+          if (other && other.value !== val) other.value = val;
+          timeout = setTimeout(() => this.onSearch(val), 200);
+        });
+      }
+    };
+    setupSearch('search-input', 'search-input-mobile');
+    setupSearch('search-input-mobile', 'search-input');
+
+    // Scroll progress bar and back-to-top button
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      
+      const progressBar = document.getElementById('reading-progress-bar');
+      if (progressBar) {
+        progressBar.style.width = `${Math.min(100, Math.max(0, scrollPercent))}%`;
+      }
+
+      const backBtn = document.getElementById('back-to-top');
+      if (backBtn) {
+        if (scrollTop > 350) {
+          backBtn.classList.remove('opacity-0', 'pointer-events-none');
+          backBtn.classList.add('opacity-100');
+        } else {
+          backBtn.classList.remove('opacity-100');
+          backBtn.classList.add('opacity-0', 'pointer-events-none');
+        }
+      }
+    }, { passive: true });
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') this.closeArticleModal();
