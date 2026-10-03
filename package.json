@@ -5,6 +5,7 @@
   "main": "js/app.js",
   "scripts": {
     "test:e2e": "node tests/e2e_test.js",
+    "test:monitor": "node scripts/monitor_health.js",
     "screenshot:desktop": "playwright screenshot https://trendpulse-live.web.app/ previews/desktop.png --viewport-size=1280,800",
     "screenshot:mobile": "playwright screenshot https://trendpulse-live.web.app/ previews/mobile.png --viewport-size=390,844"
   },

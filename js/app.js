@@ -19,6 +19,11 @@ const App = {
     activeArticleModal: null,
     isDarkMode: false,
     currentFontSize: 18,
+    bulletin: {
+      isPlaying: false,
+      currentIndex: 0,
+      articles: []
+    },
     currentLang: localStorage.getItem('tp_lang') || 'en'
   },
 
@@ -679,10 +684,10 @@ const App = {
       `;
     }
 
-    // Grid of remaining articles
-    const cardsHtml = remaining.map(art => {
+    // Grid of remaining articles with In-Feed Native Ad Slot
+    const cardsHtml = remaining.map((art, idx) => {
       const isSaved = this.isBookmarked(art.id);
-      return `
+      const cardMarkup = `
         <article class="card-hover flex flex-col justify-between rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm cursor-pointer" onclick="App.openArticleModal('${art.id}')">
           <div>
             <div class="relative h-48 w-full overflow-hidden bg-gray-100 dark:bg-gray-900">
@@ -706,9 +711,17 @@ const App = {
               <h3 class="font-serif-headline text-lg font-bold text-gray-900 dark:text-white line-clamp-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-2">
                 ${art.title}
               </h3>
-              <p class="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mb-4 leading-relaxed">
+              <p class="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mb-2 leading-relaxed">
                 ${art.summary}
               </p>
+
+              <!-- Instant 3-Sec Takeaways Accordion (Engagement Driver) -->
+              <button onclick="App.toggleCardBullets('${art.id}', event)" class="inline-flex items-center gap-1 text-[11px] font-bold text-red-600 dark:text-red-400 hover:underline mb-2 cursor-pointer">
+                <span>⚡</span> <span>3-Sec Takeaways</span>
+              </button>
+              <div id="card-bullets-${art.id}" class="hidden mb-2 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-[11px] text-gray-700 dark:text-gray-300 space-y-1">
+                ${(art.bullets || []).map(b => `<div class="flex items-start gap-1.5"><span class="text-emerald-500 font-bold shrink-0">✔</span><span class="leading-tight">${b}</span></div>`).join('')}
+              </div>
             </div>
           </div>
           <div class="px-5 pb-4 pt-2 flex items-center justify-between border-t border-gray-100 dark:border-gray-700 text-xs">
@@ -733,6 +746,32 @@ const App = {
           </div>
         </article>
       `;
+
+      // In-Feed Native Ad Card after 3rd story
+      const inFeedAd = (idx === 2) ? `
+        <article class="card-hover flex flex-col justify-between rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-gray-800 dark:to-gray-900 border border-amber-200 dark:border-amber-900/50 overflow-hidden shadow-sm p-5 text-gray-900 dark:text-white">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-amber-500 text-slate-950">Promoted / प्रायोजित</span>
+              <span class="text-[11px] text-gray-400">Ad</span>
+            </div>
+            <h3 class="font-serif-headline text-lg font-bold mb-2">
+              💼 High-Growth Mutual Fund SIPs with ₹500/Month
+            </h3>
+            <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+              Direct Mutual Funds deliver up to 1.5% higher annual returns. 100% paperless KYC and automated monthly investments.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-amber-200/60 dark:border-gray-700 flex items-center justify-between">
+            <span class="text-xs text-amber-700 dark:text-amber-400 font-bold">Trusted by 2 Cr+ Indians</span>
+            <a href="https://groww.in" target="_blank" rel="noopener sponsored" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm">
+              Start SIP ↗
+            </a>
+          </div>
+        </article>
+      ` : '';
+
+      return cardMarkup + inFeedAd;
     }).join('');
 
     magazineView.innerHTML = heroHtml + `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full">${cardsHtml}</div>`;
@@ -1006,6 +1045,20 @@ const App = {
             </a>
           </div>
 
+          <!-- In-Article Responsive Ad Slot (Monetization Driver) -->
+          <div class="ad-slot-container rounded-2xl p-4 mb-8 text-center shadow-sm">
+            <span class="text-[9px] uppercase tracking-widest font-bold text-gray-400 mb-1.5 block">Sponsored Recommendation / प्रायोजित</span>
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
+              <div>
+                <h4 class="font-bold text-sm text-gray-900 dark:text-white">🚀 Grow Your Savings with High-Return Index Funds</h4>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Automated compounding with lowest expense ratio. Trusted by top Indian financial advisors.</p>
+              </div>
+              <a href="https://zerodha.com" target="_blank" rel="noopener sponsored" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shrink-0 shadow-sm whitespace-nowrap">
+                Explore Funds ↗
+              </a>
+            </div>
+          </div>
+
           <!-- Related Stories Section -->
           ${relatedHtml}
 
@@ -1086,6 +1139,151 @@ const App = {
       window.speechSynthesis.cancel();
       this.data.isSpeaking = false;
     }
+  },
+
+  // Instant 3-Sec Takeaways Toggle on Cards
+  toggleCardBullets(articleId, e) {
+    if (e) e.stopPropagation();
+    const el = document.getElementById(`card-bullets-${articleId}`);
+    if (el) {
+      el.classList.toggle('hidden');
+    }
+  },
+
+  // Continuous Audio News Bulletin (Plays Top 5 Headlines Sequentially)
+  startAudioBulletin() {
+    if (!('speechSynthesis' in window)) {
+      alert("Text-to-Speech audio reader is not supported on this browser.");
+      return;
+    }
+    this.stopAudio();
+
+    const topArticles = this.data.articles.slice(0, 5);
+    if (!topArticles.length) {
+      this.showToast("No news available for audio bulletin.");
+      return;
+    }
+
+    this.data.bulletin.articles = topArticles;
+    this.data.bulletin.currentIndex = 0;
+    this.data.bulletin.isPlaying = true;
+
+    const player = document.getElementById('audio-bulletin-player');
+    if (player) {
+      player.classList.remove('hidden');
+      player.classList.add('flex');
+    }
+
+    this.showToast("🎧 Starting TrendPulse Daily Audio Bulletin (5 Top Stories)...");
+    this.playBulletinCurrentStory();
+  },
+
+  playBulletinCurrentStory() {
+    const b = this.data.bulletin;
+    if (!b.articles || b.currentIndex >= b.articles.length) {
+      this.stopAudioBulletin();
+      this.showToast("🎧 Daily Bulletin completed!");
+      return;
+    }
+
+    const art = b.articles[b.currentIndex];
+    const titleEl = document.getElementById('bulletin-story-title');
+    const badgeEl = document.getElementById('bulletin-index-badge');
+    const playBtn = document.getElementById('bulletin-play-pause-btn');
+
+    if (titleEl) titleEl.textContent = art.title;
+    if (badgeEl) badgeEl.textContent = `${b.currentIndex + 1}/${b.articles.length}`;
+    if (playBtn) playBtn.textContent = '⏸';
+
+    window.speechSynthesis.cancel();
+    const text = `Story ${b.currentIndex + 1}: ${art.title}. ${art.summary}`;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 1.0;
+
+    utter.onend = () => {
+      if (b.isPlaying) {
+        b.currentIndex++;
+        this.playBulletinCurrentStory();
+      }
+    };
+    utter.onerror = () => {
+      if (b.isPlaying) {
+        b.currentIndex++;
+        this.playBulletinCurrentStory();
+      }
+    };
+
+    b.isPlaying = true;
+    window.speechSynthesis.speak(utter);
+  },
+
+  toggleBulletinPlay() {
+    const b = this.data.bulletin;
+    const playBtn = document.getElementById('bulletin-play-pause-btn');
+
+    if (b.isPlaying) {
+      window.speechSynthesis.pause();
+      b.isPlaying = false;
+      if (playBtn) playBtn.textContent = '▶';
+    } else {
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      } else {
+        this.playBulletinCurrentStory();
+      }
+      b.isPlaying = true;
+      if (playBtn) playBtn.textContent = '⏸';
+    }
+  },
+
+  nextBulletinStory() {
+    const b = this.data.bulletin;
+    if (b.currentIndex < b.articles.length - 1) {
+      b.currentIndex++;
+      this.playBulletinCurrentStory();
+    } else {
+      this.stopAudioBulletin();
+      this.showToast("🎧 Bulletin finished!");
+    }
+  },
+
+  prevBulletinStory() {
+    const b = this.data.bulletin;
+    if (b.currentIndex > 0) {
+      b.currentIndex--;
+      this.playBulletinCurrentStory();
+    }
+  },
+
+  stopAudioBulletin() {
+    this.data.bulletin.isPlaying = false;
+    window.speechSynthesis.cancel();
+    const player = document.getElementById('audio-bulletin-player');
+    if (player) {
+      player.classList.add('hidden');
+      player.classList.remove('flex');
+    }
+  },
+
+  // WhatsApp Daily Digest Generator (Viral Growth Tool)
+  shareDailyDigest() {
+    const topStories = this.data.articles.slice(0, 5);
+    if (!topStories.length) return;
+
+    const dateStr = new Date().toLocaleDateString('en-IN', {
+      weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'
+    });
+
+    let text = `⚡ *TrendPulse 360 - Daily Top 5 Headlines* ⚡\n📅 ${dateStr}\n\n`;
+    topStories.forEach((art, i) => {
+      const num = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'][i] || `${i + 1}.`;
+      text += `${num} *${art.title}*\n👉 ${window.location.origin}/#news=${art.id}\n\n`;
+    });
+    text += `📢 Read 60-sec verified worldwide news:\n${window.location.origin}`;
+
+    const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    window.open(waUrl, '_blank');
+    this.showToast("📋 Opening WhatsApp with today's Top 5 Headlines!");
   },
 
   changeFontSize(delta) {

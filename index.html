@@ -19,9 +19,11 @@
   <meta name="title" content="TrendPulse 360 - Real-Time Worldwide Trending News & Viral Briefs">
   <meta name="description" content="Stay ahead with real-time worldwide trending news across Politics, Share Market, Business, Tech & AI, Sports, Entertainment, Education & Motivational stories in 60-second briefs.">
   <meta name="keywords" content="worldwide news, trending news, breaking news, politics, share market, stock market, crypto, business, finance, sports, cricket, football, entertainment, bollywood, hollywood, education, competitive exams, motivational stories">
+  <meta name="news_keywords" content="breaking news, trending news, world news, share market, cricket live, tech, ai">
   <meta name="author" content="TrendPulse 360">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" href="https://trendpulse-live.web.app/">
+  <link rel="alternate" type="application/rss+xml" title="TrendPulse 360 RSS 2.0" href="https://trendpulse-live.web.app/rss.xml">
   
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="website">
@@ -85,11 +87,20 @@
           LIVE 24/7 SYNC
         </span>
         <span class="hidden sm:inline text-gray-500">|</span>
-        <span id="last-updated-text" class="hidden sm:inline text-gray-400 truncate max-w-[200px] md:max-w-none">Loading latest updates...</span>
+        <span id="last-updated-text" class="hidden sm:inline text-gray-400 truncate max-w-[180px] md:max-w-none">Loading latest updates...</span>
       </div>
-      <div class="flex items-center gap-2 sm:gap-4">
-        <span class="hidden md:inline text-gray-400">Worldwide • 10+ Categories</span>
-        <button onclick="App.loadData()" class="inline-flex items-center gap-1 hover:text-white transition-colors cursor-pointer text-[11px] bg-gray-800 hover:bg-gray-700 px-2 py-0.5 rounded whitespace-nowrap">
+      <div class="flex items-center gap-1.5 sm:gap-3">
+        <!-- Audio Bulletin Button (Traffic & Retention Booster) -->
+        <button onclick="App.startAudioBulletin()" id="audio-bulletin-top-btn" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-[10px] sm:text-[11px] shadow-sm transition-all hover:scale-105 cursor-pointer whitespace-nowrap" title="Listen to today's Top 5 headlines automatically">
+          <span>🎧</span> <span>Daily Bulletin</span>
+        </button>
+
+        <!-- WhatsApp Daily Digest Copy/Share (Viral Booster) -->
+        <button onclick="App.shareDailyDigest()" class="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer px-2 py-0.5 rounded bg-gray-800 hover:bg-gray-700 whitespace-nowrap" title="Share Daily Top 5 Digest on WhatsApp">
+          <span>📋</span> <span class="hidden sm:inline">WhatsApp</span> Digest
+        </button>
+
+        <button onclick="App.loadData()" class="inline-flex items-center gap-1 hover:text-white transition-colors cursor-pointer text-[10px] sm:text-[11px] bg-gray-800 hover:bg-gray-700 px-2 py-0.5 rounded whitespace-nowrap">
           <span>🔄</span> Refresh
         </button>
       </div>
@@ -285,6 +296,31 @@
       <button onclick="Cricket.toggleCricketCenter()" class="text-[11px] sm:text-xs font-semibold px-2 sm:px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1 transition-all whitespace-nowrap cursor-pointer shrink-0">
         <span>📊</span> <span class="hidden sm:inline">Match</span> Center
       </button>
+    </div>
+  </div>
+
+  <!-- Top Responsive Sponsored & AdSense Leaderboard Slot -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-0 w-full">
+    <div class="ad-slot-container rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center text-center shadow-sm">
+      <div class="text-[9px] uppercase tracking-widest font-bold text-gray-400 mb-1">
+        Sponsored / प्रायोजित
+      </div>
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 w-full max-w-4xl px-2 text-xs">
+        <div class="flex items-center gap-2.5 text-left">
+          <span class="text-2xl">📈</span>
+          <div>
+            <div class="font-bold text-gray-900 dark:text-white text-xs sm:text-sm">
+              Trade Stocks, F&amp;O &amp; Mutual Funds with Zero Brokerage
+            </div>
+            <div class="text-[11px] text-gray-500 dark:text-gray-400">
+              India's leading SEBI registered investment platforms. Open free Demat account in 5 minutes.
+            </div>
+          </div>
+        </div>
+        <a href="https://zerodha.com" target="_blank" rel="noopener sponsored" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-all hover:scale-105 whitespace-nowrap shrink-0">
+          <span>⚡</span> Open Account ↗
+        </a>
+      </div>
     </div>
   </div>
 
@@ -597,6 +633,31 @@
       });
     }
   </script>
+
+  <!-- Sticky Audio Bulletin Mini Player (Bottom of Screen) -->
+  <div id="audio-bulletin-player" class="fixed bottom-16 sm:bottom-6 left-3 right-3 sm:left-auto sm:right-6 sm:max-w-md z-40 bg-gray-900/95 text-white backdrop-blur-md rounded-2xl shadow-2xl border border-gray-700/80 p-3 hidden items-center justify-between gap-3 transition-all duration-300">
+    <div class="flex items-center gap-2.5 overflow-hidden">
+      <div class="flex items-center gap-0.5 h-5 px-1 bg-red-600/30 rounded shrink-0">
+        <span class="equalizer-bar"></span>
+        <span class="equalizer-bar"></span>
+        <span class="equalizer-bar"></span>
+        <span class="equalizer-bar"></span>
+      </div>
+      <div class="truncate">
+        <div class="text-[10px] uppercase font-bold text-red-400 flex items-center gap-1">
+          <span>🎧 Daily Bulletin</span>
+          <span id="bulletin-index-badge" class="px-1.5 py-0.2 rounded bg-red-600 text-white text-[9px] font-mono">1/5</span>
+        </div>
+        <div id="bulletin-story-title" class="text-xs font-bold truncate text-white">Loading story...</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-1 shrink-0">
+      <button onclick="App.prevBulletinStory()" class="p-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 cursor-pointer text-xs" title="Previous Story">⏮</button>
+      <button onclick="App.toggleBulletinPlay()" id="bulletin-play-pause-btn" class="p-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold cursor-pointer text-xs shadow-sm" title="Play/Pause">⏸</button>
+      <button onclick="App.nextBulletinStory()" class="p-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 cursor-pointer text-xs" title="Next Story">⏭</button>
+      <button onclick="App.stopAudioBulletin()" class="p-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white cursor-pointer text-xs ml-0.5" title="Close Bulletin">✕</button>
+    </div>
+  </div>
 
 </body>
 </html>

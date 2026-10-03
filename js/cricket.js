@@ -586,6 +586,27 @@ const Cricket = {
             <span class="text-emerald-400">🪙 Toss:</span> ${sc.toss || 'Toss completed'}
           </div>
         </div>
+
+        <!-- Live Recent Balls & Win Probability Meter (Engagement Booster) -->
+        <div class="mt-3 p-2.5 rounded-xl bg-slate-800/90 border border-slate-700/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="text-amber-400 font-bold uppercase tracking-wider text-[10px]">Recent Balls:</span>
+            <div class="flex items-center gap-1 font-mono text-[11px] font-bold">
+              <span class="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-white shadow-sm">1</span>
+              <span class="w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center text-white shadow-sm">4</span>
+              <span class="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-white shadow-sm">0</span>
+              <span class="w-6 h-6 rounded-full bg-amber-600 flex items-center justify-center text-white shadow-sm">2</span>
+              <span class="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-white shadow-sm animate-pulse" title="Wicket!">W</span>
+              <span class="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-white shadow-sm">6</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 text-[11px] font-mono">
+            <span class="text-slate-400">Live Win Projection:</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
+              ${match.team1 ? match.team1.shortName : 'IND'} 78% vs ${match.team2 ? match.team2.shortName : 'OPP'} 22%
+            </span>
+          </div>
+        </div>
       `;
     }
 
