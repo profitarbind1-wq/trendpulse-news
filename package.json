@@ -1,0 +1,17 @@
+{
+  "name": "trendpulse-news",
+  "version": "2.0.0",
+  "description": "TrendPulse 360 - Real-Time Worldwide News Portal with Cricket Live Center & PWA",
+  "main": "js/app.js",
+  "scripts": {
+    "test:e2e": "node tests/e2e_test.js",
+    "screenshot:desktop": "playwright screenshot https://trendpulse-live.web.app/ previews/desktop.png --viewport-size=1280,800",
+    "screenshot:mobile": "playwright screenshot https://trendpulse-live.web.app/ previews/mobile.png --viewport-size=390,844"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
+  },
+  "keywords": ["news", "cricket", "pwa", "trendpulse"],
+  "author": "TrendPulse Team",
+  "license": "MIT"
+}

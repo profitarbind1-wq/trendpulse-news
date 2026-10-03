@@ -2,3 +2,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 .firebase/
+node_modules/
+.playwright-cli/
+*.png
+previews/
+
