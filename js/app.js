@@ -354,8 +354,8 @@ const App = {
     const langBtn = document.getElementById('lang-toggle-btn');
     if (langBtn) {
       langBtn.innerHTML = isHi 
-        ? '<span class="text-sm">🇬🇧</span> <span>English</span>' 
-        : '<span class="text-sm">🇮🇳</span> <span>हिन्दी</span>';
+        ? '<span id="lang-flag" class="text-sm">🇬🇧</span> <span id="lang-label">English</span>' 
+        : '<span id="lang-flag" class="text-sm">🇮🇳</span> <span id="lang-label">हिन्दी</span>';
       langBtn.title = isHi ? "Switch to English" : "हिन्दी में पढ़ें";
     }
 
@@ -619,7 +619,7 @@ const App = {
         <div class="col-span-full mb-8">
           <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl transition-all hover:shadow-2xl grid grid-cols-1 lg:grid-cols-12 cursor-pointer" onclick="App.openArticleModal('${hero.id}')">
             <div class="lg:col-span-7 h-64 sm:h-80 lg:h-auto relative overflow-hidden bg-gray-900">
-              <img src="${hero.image}" alt="${hero.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+              <img src="${hero.image}" alt="${hero.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80';">
               <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent lg:hidden"></div>
               <div class="absolute top-4 left-4 flex gap-2">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-red-600 text-white pulse-badge">
@@ -670,7 +670,7 @@ const App = {
         <article class="card-hover flex flex-col justify-between rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm cursor-pointer" onclick="App.openArticleModal('${art.id}')">
           <div>
             <div class="relative h-48 w-full overflow-hidden bg-gray-100 dark:bg-gray-900">
-              <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy">
+              <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80';">
               <div class="absolute top-3 left-3">
                 <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-black/60 backdrop-blur-md text-white">
                   ${art.categoryIcon || '📰'} ${art.categoryName || 'News'}
@@ -740,7 +740,7 @@ const App = {
         <div class="inshorts-card max-w-2xl mx-auto my-6 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl overflow-hidden flex flex-col justify-between">
           <div>
             <div class="relative h-64 sm:h-72 w-full overflow-hidden bg-gray-900">
-              <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover">
+              <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80';">
               <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
               <div class="absolute top-4 left-4 flex gap-2">
                 <span class="px-3 py-1 rounded-full text-xs font-bold bg-red-600 text-white shadow">
@@ -871,7 +871,7 @@ const App = {
 
           <!-- Hero Image (Full-Width High-Res) -->
           <div class="relative w-full h-72 sm:h-96 lg:h-[480px] rounded-3xl overflow-hidden shadow-2xl mb-8 bg-gray-900">
-            <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover">
+            <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80';">
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
             <div class="absolute bottom-4 left-6 right-6 flex items-center justify-between text-xs text-white/90">
               <span class="font-medium bg-black/60 backdrop-blur-md px-3 py-1 rounded-full">
