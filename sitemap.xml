@@ -3,146 +3,146 @@
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
     <loc>https://trendpulse-live.web.app/</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>always</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/about.html</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/privacy.html</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/contact.html</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/?category=trending</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/?category=world</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/?category=politics</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/?category=business</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/?category=share-market</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/?category=finance</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/?category=entertainment</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/?category=sports</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/?category=tech</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/?category=education</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/?category=competition</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://trendpulse-live.web.app/?category=motivational</loc>
-    <lastmod>2026-10-14T09:08:50Z</lastmod>
+    <lastmod>2026-10-14T14:47:16Z</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=trending-0-268565</loc>
+    <loc>https://trendpulse-live.web.app/?news=trending-0-562080</loc>
     <news:news>
       <news:publication>
-        <news:name>The New York Times</news:name>
+        <news:name>The Washington Post</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T01:49:34Z</news:publication_date>
-      <news:title>‘Honey Please’: The Steep Rise and Sudden Fall of Kimberly Guilfoyle.</news:title>
+      <news:publication_date>2026-10-14T11:32:17Z</news:publication_date>
+      <news:title>How the pre-election search of Rep. Ilhan Omar’s home breaks Justice Dept. norms</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=world-0-492038</loc>
+    <loc>https://trendpulse-live.web.app/?news=world-0-596319</loc>
     <news:news>
       <news:publication>
-        <news:name>Axios</news:name>
+        <news:name>Reuters</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T02:39:13Z</news:publication_date>
-      <news:title>Pope Leo diagnosed with lung cancer, undergoes successful surgery</news:title>
+      <news:publication_date>2026-10-14T12:51:54Z</news:publication_date>
+      <news:title>Container ship sinks near Hormuz after being hit by projectile, sources say</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=politics-0-235398</loc>
+    <loc>https://trendpulse-live.web.app/?news=politics-0-939267</loc>
     <news:news>
       <news:publication>
         <news:name>AP News</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T04:01:00Z</news:publication_date>
-      <news:title>New White House press secretary’s debut: Brief, limited questions and some harsh reviews</news:title>
+      <news:publication_date>2026-10-14T13:13:00Z</news:publication_date>
+      <news:title>Katie Zacharia&#x27;s debut shows the pitfalls and possibilities of White House press secretary&#x27;s role</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=business-0-637874</loc>
+    <loc>https://trendpulse-live.web.app/?news=business-0-274518</loc>
     <news:news>
       <news:publication>
-        <news:name>BBC</news:name>
+        <news:name>WSJ</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T02:05:32Z</news:publication_date>
-      <news:title>Bank of America fined $1.2bn over failing to stop money laundering</news:title>
+      <news:publication_date>2026-10-14T14:17:00Z</news:publication_date>
+      <news:title>Stock Market Today: Yields Jump, Nasdaq Opens Lower After Hot Inflation Reading — Live Updates</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=share-market-0-995293</loc>
+    <loc>https://trendpulse-live.web.app/?news=share-market-0-442443</loc>
     <news:news>
       <news:publication>
         <news:name>TechStock²</news:name>
@@ -153,7 +153,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=finance-0-364441</loc>
+    <loc>https://trendpulse-live.web.app/?news=finance-0-19658</loc>
     <news:news>
       <news:publication>
         <news:name>U.S. Bank</news:name>
@@ -164,29 +164,29 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=entertainment-0-415780</loc>
+    <loc>https://trendpulse-live.web.app/?news=entertainment-0-37082</loc>
     <news:news>
       <news:publication>
-        <news:name>The Hollywood Reporter</news:name>
+        <news:name>BBC</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T02:19:45Z</news:publication_date>
-      <news:title>Pablo Torre Reveals Art of Play Security Camera Footage, and It Doesn’t Look Great for Kelly Clarkson</news:title>
+      <news:publication_date>2026-10-14T13:42:43Z</news:publication_date>
+      <news:title>Russell Brand was a &#x27;sexual predator&#x27;, says prosecution as rape trial begins</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=sports-0-710336</loc>
+    <loc>https://trendpulse-live.web.app/?news=sports-0-531776</loc>
     <news:news>
       <news:publication>
-        <news:name>ESPN</news:name>
+        <news:name>Yahoo Sports</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T03:49:00Z</news:publication_date>
-      <news:title>Jose Ramirez takes blame as miscues sink Guardians in Game 2 of ALCS vs. Rays</news:title>
+      <news:publication_date>2026-10-14T05:47:00Z</news:publication_date>
+      <news:title>Freddy Peralta goes back to his roots, leans on 4-seam fastball to shut down the Guardians in Rays&#x27; ALCS-tying victory</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=tech-0-927463</loc>
+    <loc>https://trendpulse-live.web.app/?news=tech-0-12363</loc>
     <news:news>
       <news:publication>
         <news:name>WSJ</news:name>
@@ -197,7 +197,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=education-0-877957</loc>
+    <loc>https://trendpulse-live.web.app/?news=education-0-322268</loc>
     <news:news>
       <news:publication>
         <news:name>Sakshi Education</news:name>
@@ -208,7 +208,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=competition-0-901225</loc>
+    <loc>https://trendpulse-live.web.app/?news=competition-0-281302</loc>
     <news:news>
       <news:publication>
         <news:name>Adda247</news:name>
@@ -219,7 +219,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=motivational-0-242402</loc>
+    <loc>https://trendpulse-live.web.app/?news=motivational-0-332838</loc>
     <news:news>
       <news:publication>
         <news:name>ANI News</news:name>
@@ -230,51 +230,51 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=trending-1-185583</loc>
+    <loc>https://trendpulse-live.web.app/?news=trending-1-802567</loc>
     <news:news>
       <news:publication>
-        <news:name>BBC</news:name>
+        <news:name>NBC News</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T07:23:46Z</news:publication_date>
-      <news:title>Pope diagnosed with lung cancer but had successful surgery, Vatican says</news:title>
+      <news:publication_date>2026-10-14T12:51:09Z</news:publication_date>
+      <news:title>Pope Leo spends a peaceful night in the hospital after cancer surgery</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=world-1-523452</loc>
+    <loc>https://trendpulse-live.web.app/?news=world-1-71872</loc>
     <news:news>
       <news:publication>
-        <news:name>Al Jazeera</news:name>
+        <news:name>The New York Times</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T00:40:04Z</news:publication_date>
-      <news:title>Houthis strike Aramco hours after Saudi-led coalition hits Sanaa oil site</news:title>
+      <news:publication_date>2026-10-14T14:06:41Z</news:publication_date>
+      <news:title>Ukraine’s Vulnerability Grows as Starlink Is Restricted and Russia Escalates</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=politics-1-225874</loc>
+    <loc>https://trendpulse-live.web.app/?news=politics-1-402895</loc>
     <news:news>
       <news:publication>
-        <news:name>PBS</news:name>
+        <news:name>Politico</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-13T21:46:01Z</news:publication_date>
-      <news:title>Trump&#x27;s diesel deal with Putin draws bipartisan criticism from a frustrated Congress</news:title>
+      <news:publication_date>2026-10-14T09:30:00Z</news:publication_date>
+      <news:title>Tech platforms face a ‘no-win’ choice with livestreamed execution</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=business-1-422036</loc>
+    <loc>https://trendpulse-live.web.app/?news=business-1-345909</loc>
     <news:news>
       <news:publication>
-        <news:name>The Hacker News</news:name>
+        <news:name>Yahoo Finance</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T01:59:00Z</news:publication_date>
-      <news:title>OpenAI Employee Arrested for Allegedly Planting Hidden Recorder in Executive Conference Room</news:title>
+      <news:publication_date>2026-10-14T13:03:49Z</news:publication_date>
+      <news:title>Bank of America Q3 profit tumbles 17% as $1.2 billion fine and soft trading weigh on results</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=share-market-1-30583</loc>
+    <loc>https://trendpulse-live.web.app/?news=share-market-1-826806</loc>
     <news:news>
       <news:publication>
         <news:name>Business Standard</news:name>
@@ -285,139 +285,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=finance-1-464667</loc>
-    <news:news>
-      <news:publication>
-        <news:name>U.S. Bank</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-10-01T07:00:00Z</news:publication_date>
-      <news:title>Q4 2026 investment outlook: Strong earnings meet higher rates, midterms and energy risk</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=entertainment-1-646421</loc>
-    <news:news>
-      <news:publication>
-        <news:name>Deadline</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-10-14T01:59:00Z</news:publication_date>
-      <news:title>‘Dancing With The Stars’ Recap: Super Bowl Night Sends Home A Fan Favorite</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=sports-1-89999</loc>
-    <news:news>
-      <news:publication>
-        <news:name>NBC Sports</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-10-13T23:32:57Z</news:publication_date>
-      <news:title>It’s official: Rams LT Alaric Jackson suspended two games</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=tech-1-768421</loc>
-    <news:news>
-      <news:publication>
-        <news:name>Engadget</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-10-13T18:18:54Z</news:publication_date>
-      <news:title>Apple TV 4K And HomePod Mini 2 Hands-On: A Look At The Audio Updates And Siri AI</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=education-1-18769</loc>
-    <news:news>
-      <news:publication>
-        <news:name>Shiksha.com</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-09-04T07:00:00Z</news:publication_date>
-      <news:title>UPSC NDA Admit Card 2026 OUT @upsc.gov.in; Get Direct Hall Ticket Download Link Here</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=competition-1-441739</loc>
-    <news:news>
-      <news:publication>
-        <news:name>Education Times</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-10-08T07:33:00Z</news:publication_date>
-      <news:title>BPSC gets zero applications for 218 Polytechnic HoD posts: Why are government teaching jobs going unfilled?</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=motivational-1-874457</loc>
-    <news:news>
-      <news:publication>
-        <news:name>PW</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-07-30T07:00:00Z</news:publication_date>
-      <news:title>IPMAT 2026 Result Celebration LIVE Highlights: IIM Achievers, Parents &amp; Guru Purnima Tribute</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=trending-2-364938</loc>
-    <news:news>
-      <news:publication>
-        <news:name>The Guardian</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-10-14T04:35:46Z</news:publication_date>
-      <news:title>Judge extends White House access to banned media outlets CNN, MS Now and Politico</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=world-2-580007</loc>
-    <news:news>
-      <news:publication>
-        <news:name>CNBC</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-10-14T06:57:16Z</news:publication_date>
-      <news:title>CNBC Daily Open: Zelenskyy heads to UK for talks on fresh support</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=politics-2-737765</loc>
-    <news:news>
-      <news:publication>
-        <news:name>NPR</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-10-13T20:03:45Z</news:publication_date>
-      <news:title>Kimberly Guilfoyle has been asked to resign among corruption allegations</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=business-2-328878</loc>
-    <news:news>
-      <news:publication>
-        <news:name>The New York Times</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-10-14T04:50:55Z</news:publication_date>
-      <news:title>China’s Exports Soar, Putting Its Trade Surplus on Track for a Record</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=share-market-2-196062</loc>
-    <news:news>
-      <news:publication>
-        <news:name>TechStock²</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-08-11T07:00:00Z</news:publication_date>
-      <news:title>Stock Market Today: Live Updates 11.08.2026</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=finance-2-642948</loc>
+    <loc>https://trendpulse-live.web.app/?news=finance-1-580309</loc>
     <news:news>
       <news:publication>
         <news:name>RBC Wealth Management</news:name>
@@ -428,128 +296,128 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=entertainment-2-251807</loc>
+    <loc>https://trendpulse-live.web.app/?news=entertainment-1-814440</loc>
     <news:news>
       <news:publication>
-        <news:name>BBC</news:name>
+        <news:name>Breaking News, Latest News and Videos</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-13T22:59:37Z</news:publication_date>
-      <news:title>Actress Selma Blair faces charges for kicking nurse and officer after plane incident</news:title>
+      <news:publication_date>2026-10-14T13:32:27Z</news:publication_date>
+      <news:title>Newly released surveillance video shows Kelly Clarkson in Brooklyn store - ABC News</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=sports-2-966378</loc>
+    <loc>https://trendpulse-live.web.app/?news=sports-1-679018</loc>
     <news:news>
       <news:publication>
         <news:name>The New York Times</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T05:00:59Z</news:publication_date>
-      <news:title>The trouble with Mike Tyson: ‘I lived a dark life. I say dark things’</news:title>
+      <news:publication_date>2026-10-14T09:30:18Z</news:publication_date>
+      <news:title>Shohei Ohtani insists he can play, and the Dodgers’ season hinges on whether he’s right</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=tech-2-366669</loc>
+    <loc>https://trendpulse-live.web.app/?news=tech-1-183850</loc>
     <news:news>
       <news:publication>
-        <news:name>9to5Google</news:name>
+        <news:name>PhoneArena</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-13T23:39:00Z</news:publication_date>
-      <news:title>Chrome 155 for Googlebook brings expanded web app installs, integration</news:title>
+      <news:publication_date>2026-10-14T09:56:25Z</news:publication_date>
+      <news:title>Your Galaxy Watch is about to become a whole lot better</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=education-2-441436</loc>
+    <loc>https://trendpulse-live.web.app/?news=education-1-748026</loc>
     <news:news>
       <news:publication>
-        <news:name>Modern Adhyapak</news:name>
+        <news:name>Shiksha</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-07-14T18:30:42Z</news:publication_date>
-      <news:title>Telangana Free UPSC Coaching: Rs 5,000 Stipend, Eligibility, and How to Apply - ModernAdhyapak</news:title>
+      <news:publication_date>2026-09-04T07:00:00Z</news:publication_date>
+      <news:title>UPSC NDA Admit Card 2026 OUT @upsc.gov.in; Get Direct Hall Ticket Download Link Here</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=competition-2-226847</loc>
+    <loc>https://trendpulse-live.web.app/?news=competition-1-606087</loc>
     <news:news>
       <news:publication>
-        <news:name>Outlook India</news:name>
+        <news:name>Education Times</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-09-20T07:00:00Z</news:publication_date>
-      <news:title>Jobs, Recruitment Delays In Focus As Rahul Gandhi Addresses Students In Indore</news:title>
+      <news:publication_date>2026-10-08T07:33:00Z</news:publication_date>
+      <news:title>BPSC gets zero applications for 218 Polytechnic HoD posts: Why are government teaching jobs going unfilled?</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=motivational-2-140014</loc>
+    <loc>https://trendpulse-live.web.app/?news=motivational-1-652677</loc>
     <news:news>
       <news:publication>
-        <news:name>Education Today</news:name>
+        <news:name>PW</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-07-28T10:39:27Z</news:publication_date>
-      <news:title>Deeksha Vedantu Vijayotsava 2026 Celebrates Student Success</news:title>
+      <news:publication_date>2026-07-30T07:00:00Z</news:publication_date>
+      <news:title>IPMAT 2026 Result Celebration LIVE Highlights: IIM Achievers, Parents &amp; Guru Purnima Tribute</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=trending-3-261726</loc>
-    <news:news>
-      <news:publication>
-        <news:name>Axios</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-10-14T02:29:05Z</news:publication_date>
-      <news:title>Rep. Ilhan Omar under investigation by Jeanine Pirro&#x27;s office</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://trendpulse-live.web.app/?news=world-3-117879</loc>
+    <loc>https://trendpulse-live.web.app/?news=trending-2-868126</loc>
     <news:news>
       <news:publication>
         <news:name>Reuters</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-13T15:59:49Z</news:publication_date>
-      <news:title>Argentina seeks tribunal order against UK oil activity near Falklands</news:title>
+      <news:publication_date>2026-10-14T13:59:21Z</news:publication_date>
+      <news:title>Ukraine accuses SpaceX of crippling drone missions as ties with US worsen</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=politics-3-419415</loc>
+    <loc>https://trendpulse-live.web.app/?news=world-2-201452</loc>
     <news:news>
       <news:publication>
-        <news:name>The New York Times</news:name>
+        <news:name>CBS News</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-13T21:30:00Z</news:publication_date>
-      <news:title>After Lockdown, Sea of Protesters Flows Through India’s Capital</news:title>
+      <news:publication_date>2026-10-14T14:09:00Z</news:publication_date>
+      <news:title>Live Updates: Houthis launch new attack on Saudi capital as Trump mulls U.S. role in Mideast war&#x27;s new front</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=business-3-993363</loc>
+    <loc>https://trendpulse-live.web.app/?news=politics-2-559566</loc>
     <news:news>
       <news:publication>
-        <news:name>Crude Oil Prices Today | OilPrice.com</news:name>
+        <news:name>Axios</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T06:45:00Z</news:publication_date>
-      <news:title>Rising Gasoline Prices Fuel Fresh Inflation Fears in the U.S.</news:title>
+      <news:publication_date>2026-10-14T06:02:42Z</news:publication_date>
+      <news:title>Russian diesel deal &quot;a betrayal,&quot; bipartisan coalition says</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=share-market-3-103177</loc>
+    <loc>https://trendpulse-live.web.app/?news=business-2-451778</loc>
+    <news:news>
+      <news:publication>
+        <news:name>CNBC</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-14T13:28:43Z</news:publication_date>
+      <news:title>Social Security Administration announces 3.6% cost-of-living adjustment for 2027</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=share-market-2-779370</loc>
     <news:news>
       <news:publication>
         <news:name>TechStock²</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-08-15T07:00:00Z</news:publication_date>
-      <news:title>Stock Market Today: Live Updates 15.08.2026</news:title>
+      <news:publication_date>2026-08-11T07:00:00Z</news:publication_date>
+      <news:title>Stock Market Today: Live Updates 11.08.2026</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=finance-3-330018</loc>
+    <loc>https://trendpulse-live.web.app/?news=finance-2-98306</loc>
     <news:news>
       <news:publication>
         <news:name>Investopedia</news:name>
@@ -560,51 +428,183 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=entertainment-3-220389</loc>
+    <loc>https://trendpulse-live.web.app/?news=entertainment-2-103281</loc>
     <news:news>
       <news:publication>
-        <news:name>Breaking News, Latest News and Videos</news:name>
+        <news:name>Roger Ebert</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-13T19:10:23Z</news:publication_date>
-      <news:title>Ryan Coogler&#x27;s &#x27;X-Files&#x27; reboot picked up by Hulu - ABC News</news:title>
+      <news:publication_date>2026-10-14T13:29:45Z</news:publication_date>
+      <news:title>Jason Voorhees Gets Stuck in the Mud of Atrocious “Crystal Lake”</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=sports-3-31227</loc>
+    <loc>https://trendpulse-live.web.app/?news=sports-2-687181</loc>
     <news:news>
       <news:publication>
-        <news:name>The New York Times</news:name>
+        <news:name>The Guardian</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T04:09:00Z</news:publication_date>
-      <news:title>Erling Haaland, Kylian Mbappe and the hunt for Cristiano Ronaldo’s Champions League goals record</news:title>
+      <news:publication_date>2026-10-14T13:21:00Z</news:publication_date>
+      <news:title>Netflix’s Mike Tyson docuseries offers an incomplete portrait of a troubling figure | Andrew Lawrence</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=tech-3-537568</loc>
+    <loc>https://trendpulse-live.web.app/?news=tech-2-913869</loc>
     <news:news>
       <news:publication>
-        <news:name>PCMag</news:name>
+        <news:name>The Verge</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-13T14:54:19Z</news:publication_date>
-      <news:title>Inside the iPhone Duo and 18 Pro Cooling System: Apple Engineers Reveal a Simple Trick</news:title>
+      <news:publication_date>2026-10-14T13:00:00Z</news:publication_date>
+      <news:title>The Alexa Tablet 12 Pro is almost the Android tablet we needed</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=education-3-166577</loc>
+    <loc>https://trendpulse-live.web.app/?news=education-2-74130</loc>
     <news:news>
       <news:publication>
-        <news:name>Shiksha.com</news:name>
+        <news:name>Modern Adhyapak</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-09-03T07:00:00Z</news:publication_date>
-      <news:title>NDA Admit Card 2026 TODAY? Download UPSC NDA 2 Hall Ticket @upsc.gov.in</news:title>
+      <news:publication_date>2026-07-14T18:30:42Z</news:publication_date>
+      <news:title>Telangana Free UPSC Coaching: Rs 5,000 Stipend, Eligibility, and How to Apply - ModernAdhyapak</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=competition-3-616102</loc>
+    <loc>https://trendpulse-live.web.app/?news=competition-2-157414</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Outlook India</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-20T07:00:00Z</news:publication_date>
+      <news:title>Jobs, Recruitment Delays In Focus As Rahul Gandhi Addresses Students In Indore</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=motivational-2-266730</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Education Today</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-07-28T10:39:27Z</news:publication_date>
+      <news:title>Deeksha Vedantu Vijayotsava 2026 Celebrates Student Success</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=trending-3-322614</loc>
+    <news:news>
+      <news:publication>
+        <news:name>NPR</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-14T09:09:39Z</news:publication_date>
+      <news:title>Trump&#x27;s ambassador to Greece, Kimberly Guilfoyle, resigns after allegations of improper conduct</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=world-3-393003</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Al Jazeera</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-14T10:51:27Z</news:publication_date>
+      <news:title>Russia’s arrest of Japanese journalist: Why are tensions rising?</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=politics-3-568921</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Axios</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-14T11:32:54Z</news:publication_date>
+      <news:title>Rep. Ilhan Omar under investigation by Jeanine Pirro&#x27;s office</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=business-3-335050</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Variety</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-14T13:18:00Z</news:publication_date>
+      <news:title>Netflix Lays Off 6% of Employees, Elimination About 1,000 Jobs in Biggest Cutbacks to Date</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=share-market-3-973564</loc>
+    <news:news>
+      <news:publication>
+        <news:name>TechStock²</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-08-15T07:00:00Z</news:publication_date>
+      <news:title>Stock Market Today: Live Updates 15.08.2026</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=finance-3-647292</loc>
+    <news:news>
+      <news:publication>
+        <news:name>U.S. Bank</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-01T07:00:00Z</news:publication_date>
+      <news:title>Q4 2026 investment outlook: Strong earnings meet higher rates, midterms and energy risk</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=entertainment-3-63523</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Fox News</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-14T13:30:47Z</news:publication_date>
+      <news:title>&#x27;Jon &amp; Kate Plus 8&#x27; star Collin Gosselin accuses mom of trying to &#x27;bury&#x27; him to ‘protect her reputation’</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=sports-3-951783</loc>
+    <news:news>
+      <news:publication>
+        <news:name>MLB Trade Rumors</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-14T12:20:58Z</news:publication_date>
+      <news:title>Phillies To Keep Don Mattingly As Manager</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=tech-3-167226</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Verge</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-14T11:00:00Z</news:publication_date>
+      <news:title>Fairphone’s latest repairable earbuds are smaller, lighter, and longer-lasting</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=education-3-718125</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Hindustan Times</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-03T07:00:00Z</news:publication_date>
+      <news:title>UPSC NDA, CDS Admit Card 2026 released at upsc.gov.in, download links here | Competitive Exams</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://trendpulse-live.web.app/?news=competition-3-349862</loc>
     <news:news>
       <news:publication>
         <news:name>PW</news:name>
@@ -615,7 +615,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=motivational-3-125648</loc>
+    <loc>https://trendpulse-live.web.app/?news=motivational-3-785884</loc>
     <news:news>
       <news:publication>
         <news:name>Daily Pioneer</news:name>
@@ -626,18 +626,18 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=trending-4-65836</loc>
+    <loc>https://trendpulse-live.web.app/?news=trending-4-939267</loc>
     <news:news>
       <news:publication>
-        <news:name>The Hill</news:name>
+        <news:name>AP News</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T02:25:00Z</news:publication_date>
-      <news:title>Ossoff, Collins clash in second Georgia Senate debate: 4 takeaways</news:title>
+      <news:publication_date>2026-10-14T13:13:00Z</news:publication_date>
+      <news:title>Katie Zacharia&#x27;s debut shows the pitfalls and possibilities of White House press secretary&#x27;s role</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=world-4-820071</loc>
+    <loc>https://trendpulse-live.web.app/?news=world-4-560976</loc>
     <news:news>
       <news:publication>
         <news:name>Euronews.com</news:name>
@@ -648,29 +648,29 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=politics-4-385935</loc>
+    <loc>https://trendpulse-live.web.app/?news=politics-4-44826</loc>
     <news:news>
       <news:publication>
-        <news:name>New York Post</news:name>
+        <news:name>NPR</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-13T23:21:00Z</news:publication_date>
-      <news:title>Ilhan Omar’s husband spotted for first time since DHS raid – as Trump questions how couple can afford their ‘lovely place in Washington’</news:title>
+      <news:publication_date>2026-10-13T20:03:45Z</news:publication_date>
+      <news:title>Kimberly Guilfoyle has been asked to resign among corruption allegations</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=business-4-100568</loc>
+    <loc>https://trendpulse-live.web.app/?news=business-4-18954</loc>
     <news:news>
       <news:publication>
-        <news:name>CNBC</news:name>
+        <news:name>Fox News</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T05:14:56Z</news:publication_date>
-      <news:title>ASML says it&#x27;s getting order interest through 2030 as profit smashes expectations</news:title>
+      <news:publication_date>2026-10-14T12:24:46Z</news:publication_date>
+      <news:title>OpenAI engineer arrested after recording device found at San Francisco office</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=share-market-4-406606</loc>
+    <loc>https://trendpulse-live.web.app/?news=share-market-4-741870</loc>
     <news:news>
       <news:publication>
         <news:name>TechStock²</news:name>
@@ -681,51 +681,51 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=finance-4-79176</loc>
+    <loc>https://trendpulse-live.web.app/?news=finance-4-682794</loc>
     <news:news>
       <news:publication>
-        <news:name>U.S. Bank</news:name>
+        <news:name>Yahoo Finance</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-09-16T07:00:00Z</news:publication_date>
-      <news:title>Fed raises interest rates to 3.75%-4.00% in first rate hike in three years, with more expected</news:title>
+      <news:publication_date>2025-12-18T08:00:00Z</news:publication_date>
+      <news:title>Most millionaires don&#x27;t consider themselves wealthy. So what does it really mean to be rich?</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=entertainment-4-544865</loc>
+    <loc>https://trendpulse-live.web.app/?news=entertainment-4-466948</loc>
     <news:news>
       <news:publication>
-        <news:name>The Guardian</news:name>
+        <news:name>The Hollywood Reporter</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-13T19:48:00Z</news:publication_date>
-      <news:title>Lena Dunham’s Girls returning for limited run at HBO</news:title>
+      <news:publication_date>2026-10-14T02:44:06Z</news:publication_date>
+      <news:title>Touchdown! ‘Dancing With the Stars’ Throws Its Own Halftime Show for Super Bowl Night: See the Scores, Who Went Home</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=sports-4-951517</loc>
+    <loc>https://trendpulse-live.web.app/?news=sports-4-864532</loc>
     <news:news>
       <news:publication>
-        <news:name>MMA Fighting</news:name>
+        <news:name>Arrowhead Pride</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-14T02:53:00Z</news:publication_date>
-      <news:title>Dana White responds to Sean Strickland’s complaints: ‘When isn’t Sean Strickland upset about something?’</news:title>
+      <news:publication_date>2026-10-14T10:30:00Z</news:publication_date>
+      <news:title>Chiefs News: Jury returns mixed verdict in Tyreek Hill civil battery case</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=tech-4-351710</loc>
+    <loc>https://trendpulse-live.web.app/?news=tech-4-342740</loc>
     <news:news>
       <news:publication>
-        <news:name>Android Police</news:name>
+        <news:name>MacRumors</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-10-13T10:00:10Z</news:publication_date>
-      <news:title>Google pulled the best Gemini models from free users; here&#x27;s the cheapest fix</news:title>
+      <news:publication_date>2026-10-13T21:19:09Z</news:publication_date>
+      <news:title>HomePod Mini 2 Works as Default Speaker With Select Macs</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=education-4-597449</loc>
+    <loc>https://trendpulse-live.web.app/?news=education-4-44061</loc>
     <news:news>
       <news:publication>
         <news:name>The Times of India</news:name>
@@ -736,7 +736,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=competition-4-601876</loc>
+    <loc>https://trendpulse-live.web.app/?news=competition-4-465477</loc>
     <news:news>
       <news:publication>
         <news:name>Cityairnews</news:name>
@@ -747,7 +747,7 @@
     </news:news>
   </url>
   <url>
-    <loc>https://trendpulse-live.web.app/?news=motivational-4-288929</loc>
+    <loc>https://trendpulse-live.web.app/?news=motivational-4-161449</loc>
     <news:news>
       <news:publication>
         <news:name>The Better India</news:name>
