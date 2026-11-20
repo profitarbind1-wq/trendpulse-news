@@ -240,5 +240,82 @@ html, body {
   transition: all 0.25s ease-in-out;
 }
 
+/* MSN-Inspired Bento Portal Layout Styles */
+.bento-portal-wrapper {
+  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.07);
+}
+.dark .bento-portal-wrapper {
+  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.45);
+}
+
+/* Glassmorphic Video Play Overlay Button */
+.video-play-btn {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.video-play-btn:hover {
+  transform: scale(1.15);
+  background: rgba(220, 38, 38, 0.9);
+  border-color: #ffffff;
+  box-shadow: 0 0 25px rgba(220, 38, 38, 0.7);
+}
+
+/* Interactive Weather Chart Bars */
+.weather-bar-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 68px;
+  gap: 6px;
+}
+.weather-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+.weather-bar-fill {
+  width: 100%;
+  max-width: 20px;
+  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+  border-radius: 4px;
+  transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.weather-bar-fill.precip {
+  background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+}
+.weather-bar-fill.aqi {
+  background: linear-gradient(180deg, #34d399 0%, #059669 100%);
+}
+
+/* Reaction Button Pop Animation */
+.reaction-pill {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reaction-pill:active {
+  transform: scale(1.22);
+}
+.reaction-pill.active {
+  color: #dc2626 !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Publisher Follow Button States */
+.publisher-follow-btn {
+  transition: all 0.2s ease-in-out;
+}
+.publisher-follow-btn.following {
+  background-color: #059669 !important;
+  color: #ffffff !important;
+  border-color: #059669 !important;
+}
+
+
 
 

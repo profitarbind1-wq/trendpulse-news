@@ -94,25 +94,38 @@ async function runE2ETests() {
     await page.waitForTimeout(500);
 
     // ----------------------------------------------------
-    // TEST 4: Cricket Match Center & India Highlights
+    // TEST 4: MSN-Style Bento Portal Hub (Weather, Sports & Scorecard Removal)
     // ----------------------------------------------------
-    console.log('\n[TEST 4/6] Testing Cricket Match Center & Tab Filtering...');
-    const cricketCenter = page.locator('#cricket-match-center');
-    await cricketCenter.waitFor({ state: 'visible', timeout: 5000 });
-
-    const indiaTab = page.locator('#cricket-tab-india');
-    await indiaTab.click();
-    await page.waitForTimeout(1000);
-
-    const cardsContainer = page.locator('#cricket-cards-container');
-    const cardsCount = await cardsContainer.locator('> div').count();
-    console.log(`  -> Clicked India Highlights Tab | Cards Rendered: ${cardsCount}`);
+    console.log('\n[TEST 4/6] Testing MSN Bento Portal Widgets & Scorecard Removal...');
     
-    if (cardsCount > 0) {
-      console.log('  ✅ Passed: Cricket Match Center displays active highlight cards.');
+    // 1. Verify Cricket scorecard is completely removed as requested
+    const cricketCenterCount = await page.locator('#cricket-match-center').count();
+    if (cricketCenterCount === 0) {
+      console.log('  ✅ Verified: Cricket live scorecard section has been cleanly removed from active display.');
+    } else {
+      throw new Error('Cricket match center is still present in DOM.');
+    }
+
+    // 2. Verify Bento Weather Widget is visible and interactive
+    const weatherWidget = page.locator('#bento-weather-widget');
+    await weatherWidget.waitFor({ state: 'visible', timeout: 5000 });
+    const weatherSelect = page.locator('#weather-city-select');
+    await weatherSelect.selectOption('Mumbai');
+    await page.waitForTimeout(600);
+    const weatherDesc = await page.locator('#weather-desc').innerText();
+    console.log(`  -> Switched Weather City to Mumbai | Condition: ${weatherDesc}`);
+
+    // 3. Verify Bento Sports Fixtures Widget is visible
+    const sportsWidget = page.locator('#bento-sports-widget');
+    await sportsWidget.waitFor({ state: 'visible', timeout: 5000 });
+    const fixturesCount = await page.locator('#sports-fixtures-list > div').count();
+    console.log(`  -> Sports Fixtures Rendered: ${fixturesCount}`);
+
+    if (fixturesCount > 0) {
+      console.log('  ✅ Passed: Bento Portal widgets (Weather & Sports Fixtures) operational.');
       passedTests++;
     } else {
-      throw new Error('No cricket match cards rendered.');
+      throw new Error('No sports fixtures rendered in Bento Portal.');
     }
 
     // ----------------------------------------------------

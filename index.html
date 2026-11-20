@@ -278,26 +278,76 @@
     </div>
   </div>
 
-  <!-- Live Cricket Scores & Fixtures Marquee (100% Automated Live Center) -->
-  <div id="cricket-ticker-section" class="bg-slate-900 text-white border-b border-slate-800 shadow-md">
-    <div class="max-w-7xl mx-auto px-3 sm:px-4 flex items-center gap-2 sm:gap-3 py-2">
-      <div class="flex items-center gap-1.5 sm:gap-2 bg-red-600 text-white font-extrabold text-[10px] sm:text-[11px] px-2 sm:px-2.5 py-1 rounded-md uppercase tracking-wider whitespace-nowrap shadow-sm shrink-0">
-        <span class="w-2 h-2 rounded-full bg-white animate-ping mr-0.5"></span>
-        🏏 Live
-      </div>
-      <div class="flex-1 overflow-hidden relative">
-        <div id="cricket-ticker-track" class="flex items-center gap-3 sm:gap-4 overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap py-0.5">
-          <span class="text-xs text-slate-400">Loading live cricket scores &amp; fixtures...</span>
+  <!-- Top Quick Search & Launchpad Area (MSN-Inspired Bento Portal Launchpad) -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 w-full">
+    <!-- Top Pill Search Bar -->
+    <div class="relative max-w-2xl mx-auto mb-3">
+      <div class="relative flex items-center bg-white dark:bg-gray-800/95 rounded-full shadow-md hover:shadow-lg border border-gray-200/90 dark:border-gray-700/80 p-1.5 transition-all focus-within:ring-2 focus-within:ring-red-500/40 focus-within:border-red-500">
+        <span class="pl-3.5 pr-2 text-gray-400 text-sm">🔍</span>
+        <input 
+          type="text" 
+          id="search-input-bento" 
+          placeholder="Search news, topics, companies, sports or ask AI..." 
+          class="flex-1 bg-transparent border-none text-xs sm:text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none"
+          oninput="App.onSearch(this.value)"
+        >
+        <div class="flex items-center gap-1.5 pr-1">
+          <button 
+            id="voice-search-btn" 
+            onclick="App.startVoiceSearch()" 
+            class="p-2 rounded-full text-gray-500 hover:text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" 
+            title="Search with Voice (बोलकर खोजें)"
+          >
+            🎙️
+          </button>
+          <button 
+            onclick="App.openAiSearch()" 
+            class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-indigo-600 text-white font-bold text-[11px] shadow-sm hover:opacity-95 transition-all" 
+            title="Ask AI Summary"
+          >
+            <span>✨</span> <span class="hidden sm:inline">AI Pulse</span>
+          </button>
         </div>
       </div>
-      <button onclick="Cricket.openScorecard('ind-wi-3rd-odi');" class="text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1 rounded bg-red-600 hover:bg-red-500 text-white flex items-center gap-1 transition-all whitespace-nowrap cursor-pointer shrink-0 shadow-sm animate-pulse" title="Watch India vs West Indies Live Score & Stream">
-        <span>🔴</span> <span class="hidden sm:inline">IND vs WI</span> Live
+    </div>
+
+    <!-- Quick Shortcuts Launchpad (MSN Style) -->
+    <div class="flex items-center justify-start sm:justify-center gap-3 sm:gap-5 overflow-x-auto no-scrollbar py-1 text-xs font-semibold px-2">
+      <button onclick="App.setCategory('trending')" class="flex flex-col items-center gap-1 min-w-[54px] group cursor-pointer">
+        <span class="w-10 h-10 rounded-2xl bg-red-100 dark:bg-red-950/60 text-red-600 flex items-center justify-center text-lg shadow-sm group-hover:scale-110 transition-transform">🔥</span>
+        <span class="text-[11px] text-gray-700 dark:text-gray-300 group-hover:text-red-600 whitespace-nowrap">Trending</span>
       </button>
-      <button onclick="Cricket.openIndiaHighlights('men');" class="text-[11px] sm:text-xs font-black px-2 sm:px-2.5 py-1 rounded bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white flex items-center gap-1 transition-all whitespace-nowrap cursor-pointer shrink-0 shadow-sm" title="India Match Highlights">
-        <span>🇮🇳</span> <span class="hidden sm:inline">India</span> Highlights
+      <button onclick="App.setCategory('tech')" class="flex flex-col items-center gap-1 min-w-[54px] group cursor-pointer">
+        <span class="w-10 h-10 rounded-2xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 flex items-center justify-center text-lg shadow-sm group-hover:scale-110 transition-transform">🤖</span>
+        <span class="text-[11px] text-gray-700 dark:text-gray-300 group-hover:text-indigo-600 whitespace-nowrap">AI &amp; Tech</span>
       </button>
-      <button onclick="Cricket.toggleCricketCenter()" class="text-[11px] sm:text-xs font-semibold px-2 sm:px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1 transition-all whitespace-nowrap cursor-pointer shrink-0">
-        <span>📊</span> <span class="hidden sm:inline">Match</span> Center
+      <button onclick="App.setCategory('share-market')" class="flex flex-col items-center gap-1 min-w-[54px] group cursor-pointer">
+        <span class="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center text-lg shadow-sm group-hover:scale-110 transition-transform">📈</span>
+        <span class="text-[11px] text-gray-700 dark:text-gray-300 group-hover:text-emerald-600 whitespace-nowrap">Markets</span>
+      </button>
+      <button onclick="App.setCategory('sports')" class="flex flex-col items-center gap-1 min-w-[54px] group cursor-pointer">
+        <span class="w-10 h-10 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 flex items-center justify-center text-lg shadow-sm group-hover:scale-110 transition-transform">⚽</span>
+        <span class="text-[11px] text-gray-700 dark:text-gray-300 group-hover:text-amber-600 whitespace-nowrap">Sports</span>
+      </button>
+      <button onclick="App.setCategory('entertainment')" class="flex flex-col items-center gap-1 min-w-[54px] group cursor-pointer">
+        <span class="w-10 h-10 rounded-2xl bg-purple-100 dark:bg-purple-950/60 text-purple-600 flex items-center justify-center text-lg shadow-sm group-hover:scale-110 transition-transform">🎬</span>
+        <span class="text-[11px] text-gray-700 dark:text-gray-300 group-hover:text-purple-600 whitespace-nowrap">Cinema</span>
+      </button>
+      <button onclick="App.setViewMode('inshorts')" class="flex flex-col items-center gap-1 min-w-[54px] group cursor-pointer">
+        <span class="w-10 h-10 rounded-2xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 flex items-center justify-center text-lg shadow-sm group-hover:scale-110 transition-transform">⚡</span>
+        <span class="text-[11px] text-gray-700 dark:text-gray-300 group-hover:text-rose-600 whitespace-nowrap">60s Briefs</span>
+      </button>
+      <button onclick="App.playAudioBulletin()" class="flex flex-col items-center gap-1 min-w-[54px] group cursor-pointer">
+        <span class="w-10 h-10 rounded-2xl bg-blue-100 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center text-lg shadow-sm group-hover:scale-110 transition-transform">🎧</span>
+        <span class="text-[11px] text-gray-700 dark:text-gray-300 group-hover:text-blue-600 whitespace-nowrap">Audio News</span>
+      </button>
+      <button onclick="App.scrollToWeather()" class="flex flex-col items-center gap-1 min-w-[54px] group cursor-pointer">
+        <span class="w-10 h-10 rounded-2xl bg-sky-100 dark:bg-sky-950/60 text-sky-600 flex items-center justify-center text-lg shadow-sm group-hover:scale-110 transition-transform">⛅</span>
+        <span class="text-[11px] text-gray-700 dark:text-gray-300 group-hover:text-sky-600 whitespace-nowrap">Weather</span>
+      </button>
+      <button onclick="App.scrollToPoll()" class="flex flex-col items-center gap-1 min-w-[54px] group cursor-pointer">
+        <span class="w-10 h-10 rounded-2xl bg-orange-100 dark:bg-orange-950/60 text-orange-600 flex items-center justify-center text-lg shadow-sm group-hover:scale-110 transition-transform">🗳️</span>
+        <span class="text-[11px] text-gray-700 dark:text-gray-300 group-hover:text-orange-600 whitespace-nowrap">Live Poll</span>
       </button>
     </div>
   </div>
@@ -327,130 +377,233 @@
     </div>
   </div>
 
-  <!-- Main Content Layout -->
-  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
+  <!-- Main Content Layout - MSN-Inspired High-CTR Bento Portal Frame -->
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
 
-    <!-- Dedicated Cricket Match Center Section -->
-    <section id="cricket-match-center" class="mb-8 scroll-mt-24">
-      <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-indigo-900/50 rounded-2xl shadow-xl overflow-hidden text-white">
-        <!-- Section Header -->
-        <div class="p-4 sm:p-5 border-b border-indigo-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center text-xl shadow-lg">
-              🏏
-            </div>
+    <!-- Bento Portal Container Frame -->
+    <div class="bento-portal-wrapper bg-white/95 dark:bg-gray-900/95 border border-gray-200/80 dark:border-gray-800 rounded-3xl p-4 sm:p-6 lg:p-7 mb-8 transition-all">
+      
+      <!-- Bento Portal Sub-Nav / Filter Tabs -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 mb-5 border-b border-gray-100 dark:border-gray-800 gap-3">
+        <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar w-full sm:w-auto">
+          <div class="flex items-center gap-1.5 font-black text-sm sm:text-base mr-2 text-red-600 shrink-0">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></span>
+            TrendPulse <span class="text-[10px] bg-red-100 dark:bg-red-950/80 text-red-600 px-1.5 py-0.5 rounded font-bold">PORTAL</span>
+          </div>
+          <button onclick="App.setCategory('trending')" id="bento-tab-discover" class="bento-nav-tab px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-red-600 text-white shadow-sm whitespace-nowrap cursor-pointer">✨ Discover</button>
+          <button onclick="App.setCategory('world')" id="bento-tab-world" class="bento-nav-tab px-3.5 py-1.5 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all whitespace-nowrap cursor-pointer">🌍 World</button>
+          <button onclick="App.setCategory('politics')" id="bento-tab-politics" class="bento-nav-tab px-3.5 py-1.5 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all whitespace-nowrap cursor-pointer">🏛️ Politics</button>
+          <button onclick="App.setCategory('share-market')" id="bento-tab-markets" class="bento-nav-tab px-3.5 py-1.5 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all whitespace-nowrap cursor-pointer">📈 Markets</button>
+          <button onclick="App.setCategory('tech')" id="bento-tab-tech" class="bento-nav-tab px-3.5 py-1.5 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all whitespace-nowrap cursor-pointer">🤖 Tech &amp; AI</button>
+          <button onclick="App.setCategory('sports')" id="bento-tab-sports" class="bento-nav-tab px-3.5 py-1.5 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all whitespace-nowrap cursor-pointer">⚽ Sports</button>
+          <button onclick="App.setCategory('entertainment')" id="bento-tab-entertainment" class="bento-nav-tab px-3.5 py-1.5 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all whitespace-nowrap cursor-pointer">🎬 Cinema</button>
+        </div>
+        <div class="flex items-center gap-2 self-end sm:self-auto shrink-0">
+          <div id="results-count" class="text-xs font-semibold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
+            Loading stories...
+          </div>
+          <button onclick="App.openPersonalizeFeed()" class="inline-flex items-center gap-1 px-3 py-1 rounded-full border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <span>⚙️</span> Personalize
+          </button>
+        </div>
+      </div>
+
+      <!-- Bento 12-Column Grid Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+        
+        <!-- Left & Center Main Stream (Cols 1 to 8) -->
+        <div class="lg:col-span-8 space-y-6">
+          <!-- Section Title (Dynamic) -->
+          <div class="flex items-center justify-between pb-2">
             <div>
-              <h3 class="font-serif-headline text-lg sm:text-xl font-bold flex items-center gap-2">
-                Cricket Live Match Center
-                <span class="text-[10px] uppercase font-sans tracking-wider bg-red-600 text-white px-2 py-0.5 rounded-full font-bold animate-pulse">
-                  Live 24/7
-                </span>
-              </h3>
-              <p class="text-xs text-slate-400">
-                Real-time scores, detailed scorecards, upcoming fixtures, and official live streaming links.
+              <h2 id="section-title" class="font-serif-headline text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+                Worldwide Trending Feeds
+              </h2>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                Real-time verified journalism powered by verified global press wires.
               </p>
             </div>
           </div>
 
-          <!-- Filter Tabs: Live First (as requested), Team India Highlights, Upcoming, Recent -->
-          <div class="flex items-center gap-1.5 bg-slate-800/80 p-1 rounded-xl border border-slate-700/60 self-start sm:self-auto overflow-x-auto no-scrollbar max-w-full">
-            <button onclick="Cricket.setTab('live')" id="cricket-tab-live" class="px-3.5 py-1.5 rounded-lg text-xs font-black transition-all bg-red-600 text-white shadow-md flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
-              <span class="w-2 h-2 rounded-full bg-white animate-ping mr-0.5"></span> 🔴 Live Matches (<span id="count-live-tab">0</span>)
-            </button>
-            <button onclick="Cricket.setTab('india')" id="cricket-tab-india" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
-              <span>🇮🇳</span> India Match Highlights (<span id="count-india-tab">10</span>)
-            </button>
-            <button onclick="Cricket.setTab('upcoming')" id="cricket-tab-upcoming" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
-              <span>📅</span> Upcoming (<span id="count-upcoming-tab">0</span>)
-            </button>
-            <button onclick="Cricket.setTab('recent')" id="cricket-tab-recent" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
-              <span>🏆</span> Results (<span id="count-recent-tab">0</span>)
-            </button>
+          <!-- Global Loading Indicator -->
+          <div id="global-loader" class="hidden flex-col items-center justify-center py-20">
+            <div class="w-10 h-10 border-4 border-red-200 border-t-red-600 rounded-full animate-spin mb-3"></div>
+            <p class="text-xs font-semibold text-gray-600 dark:text-gray-300">Curating Bento Portal Feeds...</p>
+          </div>
+
+          <!-- Magazine / Bento Feed Container -->
+          <div id="magazine-view" class="w-full">
+            <!-- Rendered dynamically by App.renderMagazineMode() in js/app.js -->
+          </div>
+
+          <!-- Inshorts 60s Briefs View Container -->
+          <div id="inshorts-view" class="hidden w-full">
+            <!-- Injected by js/app.js -->
           </div>
         </div>
 
-        <!-- Match Cards Grid -->
-        <div id="cricket-cards-container" class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <!-- Rendered dynamically by js/cricket.js -->
-        </div>
-      </div>
-    </section>
+        <!-- Right Bento Sidebar Widgets Column (Cols 9 to 12) -->
+        <aside class="lg:col-span-4 space-y-5">
 
-    <!-- Interactive Fan Poll & Opinion Meter Section -->
-    <section id="interactive-poll-section" class="mb-8">
-      <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-amber-500/30 rounded-2xl p-4 sm:p-5 shadow-xl text-white">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-indigo-900/50">
-          <div class="flex items-center gap-3">
-            <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-xl shadow-lg">🗳️</span>
-            <div>
+          <!-- Widget 1: Interactive Live Weather & Hourly Forecast (MSN Style) -->
+          <div id="bento-weather-widget" class="rounded-2xl p-4 sm:p-5 bg-gradient-to-br from-sky-50 to-blue-50 dark:from-slate-800/90 dark:to-slate-900 border border-sky-200/80 dark:border-slate-700 shadow-sm text-gray-900 dark:text-white">
+            <!-- Weather Header -->
+            <div class="flex items-center justify-between mb-3 pb-2 border-b border-sky-100 dark:border-slate-700/60">
               <div class="flex items-center gap-2">
-                <span class="text-[10px] uppercase font-bold tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/40 px-2 py-0.5 rounded-full">
-                  LIVE FAN POLL
-                </span>
-                <span id="poll-category-badge" class="text-xs text-slate-400">Cricket &amp; Trending</span>
+                <span class="text-xl">📍</span>
+                <select id="weather-city-select" onchange="App.switchWeatherCity(this.value)" class="bg-transparent font-bold text-sm text-gray-800 dark:text-gray-100 border-none focus:outline-none cursor-pointer">
+                  <option value="New Delhi" class="dark:bg-gray-800 text-gray-900 dark:text-white">New Delhi (नई दिल्ली)</option>
+                  <option value="Mumbai" class="dark:bg-gray-800 text-gray-900 dark:text-white">Mumbai (मुंबई)</option>
+                  <option value="Bengaluru" class="dark:bg-gray-800 text-gray-900 dark:text-white">Bengaluru (बेंगलुरु)</option>
+                  <option value="Kolkata" class="dark:bg-gray-800 text-gray-900 dark:text-white">Kolkata (कोलकाता)</option>
+                  <option value="New York" class="dark:bg-gray-800 text-gray-900 dark:text-white">New York (USA)</option>
+                  <option value="London" class="dark:bg-gray-800 text-gray-900 dark:text-white">London (UK)</option>
+                </select>
               </div>
-              <h3 id="poll-title-text" class="text-base sm:text-lg font-bold font-serif-headline mt-0.5 text-white">
-                🏏 Who will win today's match? (आज का मैच कौन जीतेगा?)
-              </h3>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-200/70 dark:bg-sky-900/60 text-sky-800 dark:text-sky-300">Live Weather</span>
+            </div>
+
+            <!-- Big Temp & Condition Row -->
+            <div class="flex items-center justify-between my-2">
+              <div>
+                <div class="flex items-baseline gap-1">
+                  <span id="weather-temp-main" class="text-4xl font-extrabold font-serif-headline">24°</span>
+                  <span class="text-base text-gray-500 dark:text-gray-400 font-semibold">C</span>
+                </div>
+                <div id="weather-desc" class="text-xs font-semibold text-sky-600 dark:text-sky-400 flex items-center gap-1 mt-0.5">
+                  <span>⛅</span> <span>Partly Cloudy • Humidity 48%</span>
+                </div>
+              </div>
+              <div id="weather-icon-big" class="text-4xl drop-shadow-sm">⛅</div>
+            </div>
+
+            <!-- Sub Tabs (Hourly / Precipitation / AQI) -->
+            <div class="flex items-center gap-1 my-3 bg-white/70 dark:bg-slate-800/80 p-1 rounded-xl text-xs font-semibold border border-sky-100 dark:border-slate-700">
+              <button onclick="App.switchWeatherTab('hourly')" id="weather-tab-hourly" class="flex-1 py-1 rounded-lg bg-sky-600 text-white font-bold transition-all text-center cursor-pointer">Hourly</button>
+              <button onclick="App.switchWeatherTab('precipitation')" id="weather-tab-precip" class="flex-1 py-1 rounded-lg text-gray-600 dark:text-gray-300 hover:text-sky-600 transition-all text-center cursor-pointer">Precipitation</button>
+              <button onclick="App.switchWeatherTab('aqi')" id="weather-tab-aqi" class="flex-1 py-1 rounded-lg text-gray-600 dark:text-gray-300 hover:text-sky-600 transition-all text-center cursor-pointer">AQI Air</button>
+            </div>
+
+            <!-- Hourly / Precipitation Visual Bar Chart -->
+            <div id="weather-chart-container" class="pt-1">
+              <!-- Rendered dynamically by App.renderWeatherWidget() -->
+            </div>
+
+            <!-- Bottom Forecast Details -->
+            <div class="mt-3 pt-2.5 border-t border-sky-100 dark:border-slate-700/60 flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400">
+              <span id="weather-rain-notice" class="flex items-center gap-1">
+                <span>💧</span> <span>0% rain probability</span>
+              </span>
+              <span id="weather-aqi-pill" class="font-bold text-emerald-600 dark:text-emerald-400">
+                ● AQI 72 (Good)
+              </span>
             </div>
           </div>
-          <!-- Poll Tabs / Switcher -->
-          <div class="flex items-center gap-1.5 bg-slate-800/80 p-1 rounded-xl border border-slate-700/60 self-start sm:self-auto text-xs font-semibold">
-            <button onclick="Poll.switchPoll('cricket')" id="poll-tab-cricket" class="px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold transition-all cursor-pointer">🏏 Cricket</button>
-            <button onclick="Poll.switchPoll('market')" id="poll-tab-market" class="px-3 py-1 rounded-lg text-slate-300 hover:text-white transition-all cursor-pointer">📈 Market</button>
+
+          <!-- Widget 2: Sports & Fixtures Live Center (Premier League / Football / Sports MSN Style) -->
+          <div id="bento-sports-widget" class="rounded-2xl p-4 sm:p-5 bg-white dark:bg-gray-800/90 border border-gray-200 dark:border-gray-700 shadow-sm text-gray-900 dark:text-white">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-100 dark:border-gray-700">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">⚽</span>
+                <select id="sports-league-select" onchange="App.switchSportsLeague(this.value)" class="bg-transparent font-bold text-sm text-gray-800 dark:text-gray-100 border-none focus:outline-none cursor-pointer">
+                  <option value="premier" class="dark:bg-gray-800 text-gray-900 dark:text-white">Premier League ▾</option>
+                  <option value="champions" class="dark:bg-gray-800 text-gray-900 dark:text-white">Champions League</option>
+                  <option value="cricket_fixtures" class="dark:bg-gray-800 text-gray-900 dark:text-white">International Cricket</option>
+                  <option value="laliga" class="dark:bg-gray-800 text-gray-900 dark:text-white">La Liga</option>
+                </select>
+              </div>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">Fixtures</span>
+            </div>
+
+            <!-- Fixtures Rows List -->
+            <div id="sports-fixtures-list" class="space-y-2.5 text-xs">
+              <!-- Rendered dynamically by App.renderSportsWidget() -->
+            </div>
+
+            <div class="mt-3 pt-2.5 border-t border-gray-100 dark:border-gray-700 text-center">
+              <button onclick="App.setCategory('sports')" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1 cursor-pointer">
+                <span>See all fixtures &amp; standings</span> <span>↗</span>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <!-- Options Container -->
-        <div id="poll-options-container" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <!-- Rendered dynamically by js/poll.js -->
-        </div>
+          <!-- Widget 3: Live Financial Markets & Indices Tracker -->
+          <div id="bento-markets-widget" class="rounded-2xl p-4 sm:p-5 bg-white dark:bg-gray-800/90 border border-gray-200 dark:border-gray-700 shadow-sm text-gray-900 dark:text-white">
+            <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-100 dark:border-gray-700">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">📈</span>
+                <h3 class="font-bold text-sm">Markets &amp; Indices</h3>
+              </div>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 animate-pulse">Live</span>
+            </div>
 
-        <!-- Poll Footer -->
-        <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2">
-          <div class="flex items-center gap-2">
-            <span>👥 <strong id="poll-total-votes" class="text-slate-200">1,930</strong> votes recorded</span>
-            <span>•</span>
-            <span class="text-emerald-400 font-semibold flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Live Updating
-            </span>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div class="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
+                <div class="text-[11px] text-gray-500 dark:text-gray-400 font-semibold">NIFTY 50</div>
+                <div class="font-bold text-sm mt-0.5">24,180.80</div>
+                <div class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">+104.20 (+0.43%) ▲</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
+                <div class="text-[11px] text-gray-500 dark:text-gray-400 font-semibold">SENSEX</div>
+                <div class="font-bold text-sm mt-0.5">79,482.15</div>
+                <div class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">+312.40 (+0.39%) ▲</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
+                <div class="text-[11px] text-gray-500 dark:text-gray-400 font-semibold">NASDAQ</div>
+                <div class="font-bold text-sm mt-0.5">18,079.20</div>
+                <div class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">+154.60 (+0.86%) ▲</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
+                <div class="text-[11px] text-gray-500 dark:text-gray-400 font-semibold">BITCOIN</div>
+                <div class="font-bold text-sm mt-0.5">$94,250</div>
+                <div class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">+2.15% ▲</div>
+              </div>
+            </div>
+
+            <div class="mt-3 pt-2 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400">
+              <span>Gold 24K: ₹78,450/10g</span>
+              <span class="text-emerald-600 dark:text-emerald-400 font-bold">● Active</span>
+            </div>
           </div>
-          <button onclick="Poll.sharePoll()" class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 transition-all font-semibold cursor-pointer">
-            <span>📢</span> Share Poll to WhatsApp
-          </button>
-        </div>
+
+          <!-- Widget 4: Live Fan Poll & Opinion Meter Section -->
+          <div id="interactive-poll-section" class="rounded-2xl p-4 sm:p-5 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-amber-500/30 text-white shadow-xl">
+            <div class="flex flex-col gap-2 pb-3 border-b border-indigo-900/50">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">🗳️</span>
+                  <span class="text-[10px] uppercase font-bold tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/40 px-2 py-0.5 rounded-full">
+                    LIVE FAN POLL
+                  </span>
+                </div>
+                <div class="flex items-center gap-1 bg-slate-800/80 p-0.5 rounded-lg border border-slate-700 text-xs">
+                  <button onclick="Poll.switchPoll('cricket')" id="poll-tab-cricket" class="px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-bold transition-all cursor-pointer">🏏 Sports</button>
+                  <button onclick="Poll.switchPoll('market')" id="poll-tab-market" class="px-2 py-0.5 rounded text-slate-300 hover:text-white transition-all cursor-pointer">📈 Market</button>
+                </div>
+              </div>
+              <h3 id="poll-title-text" class="text-sm sm:text-base font-bold font-serif-headline text-white mt-1">
+                🏏 Who will win today's match?
+              </h3>
+            </div>
+
+            <!-- Options Container -->
+            <div id="poll-options-container" class="mt-3 space-y-2">
+              <!-- Rendered dynamically by js/poll.js -->
+            </div>
+
+            <!-- Poll Footer -->
+            <div class="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+              <span>👥 <strong id="poll-total-votes" class="text-slate-200">1,930</strong> votes</span>
+              <button onclick="Poll.sharePoll()" class="text-emerald-400 hover:underline flex items-center gap-1 font-semibold cursor-pointer">
+                <span>📢</span> Share
+              </button>
+            </div>
+          </div>
+
+        </aside>
+
       </div>
-    </section>
-
-    <!-- Section Header & Filter Meta -->
-    <div class="flex items-center justify-between mb-6 pb-3 border-b border-gray-200 dark:border-gray-800">
-      <div>
-        <h2 id="section-title" class="font-serif-headline text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
-          Worldwide Trending Feeds
-        </h2>
-        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-          Curated automatically from leading verified global press wires.
-        </p>
-      </div>
-      <div id="results-count" class="text-xs font-semibold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-full">
-        Loading stories...
-      </div>
-    </div>
-
-    <!-- Global Loading Indicator -->
-    <div id="global-loader" class="hidden flex-col items-center justify-center py-24">
-      <div class="w-12 h-12 border-4 border-red-200 border-t-red-600 rounded-full animate-spin mb-4"></div>
-      <p class="text-sm font-semibold text-gray-600 dark:text-gray-300">Fetching Worldwide Headlines...</p>
-    </div>
-
-    <!-- Magazine View Container -->
-    <div id="magazine-view" class="w-full">
-      <!-- Injected by js/app.js -->
-    </div>
-
-    <!-- Inshorts View Container -->
-    <div id="inshorts-view" class="hidden w-full">
-      <!-- Injected by js/app.js -->
     </div>
 
   </main>
@@ -462,48 +615,7 @@
     </div>
   </div>
 
-  <!-- Interactive Cricket Scorecard Modal -->
-  <div id="cricket-scorecard-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
-    <div class="relative w-full max-w-4xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden my-6 max-h-[90vh] flex flex-col text-gray-900 dark:text-gray-100">
-      
-      <!-- Modal Header -->
-      <div class="p-4 sm:p-6 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex items-start justify-between border-b border-indigo-900/50">
-        <div id="scorecard-modal-header" class="w-full">
-          <!-- Populated dynamically by js/cricket.js -->
-        </div>
-        <button onclick="Cricket.closeScorecard()" class="p-2 ml-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer text-base leading-none shrink-0" title="Close Scorecard (Esc)">
-          ✕
-        </button>
-      </div>
-
-      <!-- Quick Action Streaming & Highlights Bar inside Modal -->
-      <div id="scorecard-actions-bar" class="bg-gray-100 dark:bg-gray-800/80 px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 dark:border-gray-700/60 text-xs">
-        <!-- Injected dynamically: Watch Live Stream button & Highlights button -->
-      </div>
-
-      <!-- Innings Tabs (e.g. Bangladesh Innings / Pakistan Innings / Match Info) -->
-      <div class="flex items-center gap-2 px-4 sm:px-6 pt-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 overflow-x-auto no-scrollbar" id="scorecard-innings-tabs">
-        <!-- Injected dynamically -->
-      </div>
-
-      <!-- Scorecard Tables Body -->
-      <div id="scorecard-modal-body" class="p-4 sm:p-6 overflow-y-auto flex-1 space-y-6">
-        <!-- Injected dynamically -->
-      </div>
-
-      <!-- Modal Footer -->
-      <div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700/60 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-        <div class="flex items-center gap-1.5 font-medium">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-          <span>Live Scores &amp; Ball-by-Ball Auto-Synced (60s)</span>
-        </div>
-        <button onclick="Cricket.closeScorecard()" class="px-4 py-1.5 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-bold transition-all cursor-pointer">
-          Close (Esc)
-        </button>
-      </div>
-
-    </div>
-  </div>
+  <!-- Interactive Cricket Scorecard Modal Removed as requested -->
 
   <!-- Breaking News Alert Subscription Banner -->
   <div id="push-prompt-banner" class="fixed bottom-4 right-4 max-w-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl p-4 z-40 flex items-start gap-3 transition-transform hidden">
@@ -603,9 +715,9 @@
       <span class="text-base">🔥</span>
       <span class="font-medium">Trending</span>
     </button>
-    <button onclick="Cricket.toggleCricketCenter()" class="flex flex-col items-center gap-0.5 text-gray-700 dark:text-gray-300 hover:text-red-600 transition-colors cursor-pointer">
-      <span class="text-base">🏏</span>
-      <span class="font-medium">Cricket</span>
+    <button onclick="App.scrollToWeather()" class="flex flex-col items-center gap-0.5 text-gray-700 dark:text-gray-300 hover:text-red-600 transition-colors cursor-pointer">
+      <span class="text-base">⛅</span>
+      <span class="font-medium">Weather</span>
     </button>
     <button onclick="App.toggleViewMode()" class="flex flex-col items-center gap-0.5 text-gray-700 dark:text-gray-300 hover:text-red-600 transition-colors cursor-pointer">
       <span class="text-base">🗂️</span>
@@ -625,10 +737,9 @@
   <div id="google_translate_element" style="display:none;"></div>
 
   <!-- SEO & Application Scripts -->
-  <script src="js/seo.js?v=2.2.0"></script>
-  <script src="js/cricket.js?v=2.2.0"></script>
-  <script src="js/poll.js?v=2.2.0"></script>
-  <script src="js/app.js?v=2.2.0"></script>
+  <script src="js/seo.js?v=2.3.0"></script>
+  <script src="js/poll.js?v=2.3.0"></script>
+  <script src="js/app.js?v=2.3.0"></script>
   <script>
     // Client-side cache purge: delete legacy caches immediately to prevent stale F5 loads
     if ('caches' in window) {

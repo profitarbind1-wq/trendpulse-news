@@ -101,10 +101,14 @@ const App = {
   async init() {
     this.initTheme();
     this.initBookmarks();
+    this.initLikes();
+    this.initFollowedPublishers();
     this.initLanguage();
     this.bindEvents();
     if (window.SEO) window.SEO.init();
     await this.loadData();
+    this.renderWeatherWidget();
+    this.renderSportsWidget();
     this.handleInitialRouting();
     this.initNotificationPrompt();
   },
@@ -525,6 +529,7 @@ const App = {
       }
     }
 
+    this.updateBentoNavTabs(catId);
     this.renderCategoriesNav();
     this.filterArticles();
     if (window.SEO) {
@@ -610,11 +615,11 @@ const App = {
     const articles = this.data.filteredArticles;
     if (!articles.length) {
       magazineView.innerHTML = `
-        <div class="col-span-full text-center py-20">
+        <div class="col-span-full text-center py-16 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
           <div class="text-5xl mb-3">📰</div>
           <h3 class="text-xl font-bold text-gray-700 dark:text-gray-200">No stories found</h3>
           <p class="text-gray-500 text-sm mt-1">Try another category or clear your search query.</p>
-          <button onclick="App.setCategory('trending')" class="mt-4 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold">
+          <button onclick="App.setCategory('trending')" class="mt-4 px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm font-semibold cursor-pointer">
             Back to Trending
           </button>
         </div>
@@ -630,53 +635,78 @@ const App = {
     let heroHtml = '';
     if (hero) {
       const isSaved = this.isBookmarked(hero.id);
+      const isLiked = this.isLiked(hero.id);
+      const likesCount = this.getLikeCount(hero.id, 240);
+      const commentsCount = (Math.abs(this.hashCode(hero.id)) % 45) + 8;
+      const readingNow = ((Math.abs(this.hashCode(hero.id)) % 120 + 80) / 10).toFixed(1);
+
       heroHtml = `
-        <div class="col-span-full mb-8">
-          <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl transition-all hover:shadow-2xl grid grid-cols-1 lg:grid-cols-12 cursor-pointer" onclick="App.openArticleModal('${hero.id}')">
-            <div class="lg:col-span-7 h-64 sm:h-80 lg:h-auto relative overflow-hidden bg-gray-900">
-              <img src="${hero.image}" alt="${hero.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80';">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent lg:hidden"></div>
-              <div class="absolute top-4 left-4 flex gap-2">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-red-600 text-white pulse-badge">
-                  🔥 Lead Story
-                </span>
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-black/60 backdrop-blur-md text-white">
-                  ${hero.categoryName}
-                </span>
-              </div>
-            </div>
-            <div class="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-3">
-                  <span class="font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">${hero.source}</span>
-                  <span>${hero.readTime}</span>
+        <div class="mb-6">
+          <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-xl transition-all cursor-pointer" onclick="App.openArticleModal('${hero.id}')">
+            <div class="grid grid-cols-1 md:grid-cols-12">
+              <div class="md:col-span-7 h-64 sm:h-72 md:h-auto relative overflow-hidden bg-gray-900">
+                <img src="${hero.image}" alt="${hero.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80';">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent md:hidden"></div>
+                <div class="absolute top-3 left-3 flex flex-wrap items-center gap-2">
+                  <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-red-600 text-white shadow-md">
+                    🔥 Lead Story
+                  </span>
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-black/60 backdrop-blur-md text-white border border-white/20">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>${readingNow}k Reading Now</span>
+                  </span>
                 </div>
-                <h2 class="font-serif-headline text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-tight mb-4">
-                  ${hero.title}
-                </h2>
-                <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 mb-6">
-                  ${hero.summary}
-                </p>
               </div>
-              <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
-                <span class="text-xs text-gray-400">${hero.publishedAt}</span>
-                <div class="flex items-center gap-1.5 sm:gap-2">
-                  <button onclick="App.playAudio('${hero.id}', event)" title="Listen (ऑडियो सुनें)" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors">
-                    🔊
+              <div class="md:col-span-5 p-5 sm:p-6 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-2.5">
+                    <span class="font-extrabold text-red-600 dark:text-red-400 uppercase tracking-wider flex items-center gap-1">
+                      <span>📰</span> ${hero.source}
+                    </span>
+                    <span class="font-semibold">${hero.readTime}</span>
+                  </div>
+                  <h2 class="font-serif-headline text-xl sm:text-2xl font-black text-gray-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors leading-tight mb-2.5">
+                    ${hero.title}
+                  </h2>
+                  <p class="text-gray-600 dark:text-gray-300 text-xs sm:text-sm line-clamp-3 mb-4 leading-relaxed">
+                    ${hero.summary}
+                  </p>
+
+                  <!-- 3-Sec Takeaways Accordion Toggle -->
+                  <button onclick="App.toggleCardBullets('${hero.id}', event)" class="inline-flex items-center gap-1 text-xs font-bold text-red-600 dark:text-red-400 hover:underline mb-2 cursor-pointer">
+                    <span>⚡</span> <span>3-Sec Takeaways</span>
                   </button>
-                  <button onclick="App.toggleBookmark('${hero.id}', event)" title="Bookmark (सेव करें)" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${isSaved ? 'text-amber-500' : 'text-gray-400'} transition-colors">
-                    ${isSaved ? '★' : '☆'}
-                  </button>
-                  <button onclick="App.shareToWhatsApp('${hero.id}', event)" title="Share to WhatsApp" class="p-2 rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 transition-colors">
-                    💬
-                  </button>
-                  <button onclick="App.copyArticleLink('${hero.id}', event)" title="Copy Link" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
-                    📋
-                  </button>
-                  <button onclick="App.shareArticle('${hero.id}', event)" title="Share" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-indigo-600 transition-colors">
-                    ↗️
-                  </button>
+                  <div id="card-bullets-${hero.id}" class="hidden mb-3 p-2.5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-xs text-gray-700 dark:text-gray-300 space-y-1">
+                    ${(hero.bullets || []).map(b => `<div class="flex items-start gap-1.5"><span class="text-emerald-500 font-bold shrink-0">✔</span><span class="leading-tight">${b}</span></div>`).join('')}
+                  </div>
                 </div>
+
+                <!-- High-CTR Reaction & Share Bar -->
+                <div class="pt-3 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between text-xs">
+                  <div class="flex items-center gap-2">
+                    <button onclick="App.toggleLike('${hero.id}', event)" class="reaction-pill like-btn-${hero.id} ${isLiked ? 'text-red-600 active' : 'text-gray-600 dark:text-gray-300'} flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700/80 dark:hover:bg-gray-700 font-bold cursor-pointer transition-all" title="Like">
+                      <span>👍</span> <span class="like-count-${hero.id}">${likesCount}</span>
+                    </button>
+                    <button onclick="App.openArticleModal('${hero.id}'); event.stopPropagation();" class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700/80 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 font-bold cursor-pointer transition-all" title="Comments">
+                      <span>💬</span> <span>${commentsCount}</span>
+                    </button>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <button onclick="App.playAudio('${hero.id}', event)" title="Listen Audio" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors">
+                      🔊
+                    </button>
+                    <button onclick="App.toggleBookmark('${hero.id}', event)" title="Save" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${isSaved ? 'text-amber-500 font-bold' : 'text-gray-400'} transition-colors">
+                      ${isSaved ? '★' : '☆'}
+                    </button>
+                    <button onclick="App.shareToWhatsApp('${hero.id}', event)" title="WhatsApp Share" class="p-1.5 rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-emerald-600 transition-colors">
+                      💬
+                    </button>
+                    <button onclick="App.shareArticle('${hero.id}', event)" title="Share" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-indigo-600 transition-colors">
+                      ↗️
+                    </button>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -684,62 +714,165 @@ const App = {
       `;
     }
 
-    // Grid of remaining articles with In-Feed Native Ad Slot
-    const cardsHtml = remaining.map((art, idx) => {
-      const isSaved = this.isBookmarked(art.id);
-      const cardMarkup = `
-        <article class="card-hover flex flex-col justify-between rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm cursor-pointer" onclick="App.openArticleModal('${art.id}')">
-          <div>
-            <div class="relative h-48 w-full overflow-hidden bg-gray-100 dark:bg-gray-900">
-              <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80';">
+    // Video Bento Card (Second item)
+    let videoCardHtml = '';
+    const videoStory = (showHero && remaining.length > 0) ? remaining[0] : null;
+    const storiesAfterVideo = (showHero && remaining.length > 0) ? remaining.slice(1) : remaining;
+
+    if (videoStory) {
+      const isLiked = this.isLiked(videoStory.id);
+      const likesCount = this.getLikeCount(videoStory.id, 120);
+      videoCardHtml = `
+        <div class="mb-6">
+          <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-xl transition-all cursor-pointer" onclick="App.openArticleModal('${videoStory.id}')">
+            <div class="relative h-56 sm:h-64 w-full overflow-hidden bg-gray-950">
+              <img src="${videoStory.image}" alt="${videoStory.title}" class="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80';">
+              <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <button class="video-play-btn w-14 h-14 rounded-full flex items-center justify-center text-white text-2xl pl-1 shadow-2xl cursor-pointer" title="Watch Video">
+                  ▶
+                </button>
+              </div>
               <div class="absolute top-3 left-3">
-                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-black/60 backdrop-blur-md text-white">
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-bold bg-red-600 text-white shadow-sm">
+                  <span>🎥</span> Watch Video
+                </span>
+              </div>
+              <div class="absolute top-3 right-3">
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-bold bg-black/70 backdrop-blur-md text-white border border-white/20">
+                  ▶ HD Video • 03:20
+                </span>
+              </div>
+              <div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/95 via-black/60 to-transparent">
+                <div class="text-[11px] font-bold text-amber-400 mb-1 flex items-center gap-2">
+                  <span>${videoStory.source}</span>
+                  <span>•</span>
+                  <span>Trending Video</span>
+                </div>
+                <h3 class="font-serif-headline text-lg sm:text-xl font-extrabold text-white line-clamp-2 leading-snug">
+                  ${videoStory.title}
+                </h3>
+              </div>
+            </div>
+            <div class="p-4 flex items-center justify-between text-xs border-t border-gray-100 dark:border-gray-700/80">
+              <div class="flex items-center gap-2">
+                <button onclick="App.toggleLike('${videoStory.id}', event)" class="reaction-pill like-btn-${videoStory.id} ${isLiked ? 'text-red-600 active' : 'text-gray-600 dark:text-gray-300'} flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700/80 dark:hover:bg-gray-700 font-bold cursor-pointer transition-all">
+                  <span>👍</span> <span class="like-count-${videoStory.id}">${likesCount}</span>
+                </button>
+                <span class="text-gray-400 text-[11px]">${videoStory.readTime}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button onclick="App.playAudio('${videoStory.id}', event)" title="Listen" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 transition-colors">
+                  🔊
+                </button>
+                <button onclick="App.shareToWhatsApp('${videoStory.id}', event)" title="Share" class="p-1.5 rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-emerald-600 transition-colors">
+                  💬
+                </button>
+                <button onclick="App.shareArticle('${videoStory.id}', event)" title="Share" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-indigo-600 transition-colors">
+                  ↗️
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Follow Publishers Card (MSN Style)
+    const publishersCardHtml = (showHero && storiesAfterVideo.length > 0) ? `
+      <div class="mb-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-indigo-50/70 via-purple-50/50 to-pink-50/40 dark:from-gray-800 dark:to-gray-800/90 border border-indigo-100 dark:border-gray-700 shadow-sm text-gray-900 dark:text-white">
+        <div class="flex items-center justify-between mb-3 pb-2 border-b border-indigo-100/80 dark:border-gray-700/60">
+          <div>
+            <h3 class="font-bold text-sm sm:text-base flex items-center gap-1.5">
+              <span>⭐</span> Suggested for you
+            </h3>
+            <p class="text-[11px] text-gray-500 dark:text-gray-400">
+              Follow publishers to see more of what you like
+            </p>
+          </div>
+          <button onclick="App.openPersonalizeFeed()" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">
+            Personalize feed
+          </button>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+          ${this.publishersData.map(pub => {
+            const isFollowing = this.isFollowingPublisher(pub.id);
+            return `
+              <div class="p-2.5 rounded-xl bg-white dark:bg-gray-900/90 border border-gray-200/80 dark:border-gray-700 flex items-center justify-between gap-2 shadow-xs">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-sm shrink-0 shadow-xs">${pub.avatar}</span>
+                  <div class="min-w-0">
+                    <div class="font-bold text-xs truncate">${pub.name}</div>
+                    <div class="text-[10px] text-gray-400 truncate">${pub.readers}</div>
+                  </div>
+                </div>
+                <button onclick="App.toggleFollowPublisher('${pub.id}', event)" class="publisher-follow-btn follow-btn-${pub.id} ${isFollowing ? 'following' : ''} px-2.5 py-1 rounded-full text-[11px] font-bold border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 cursor-pointer whitespace-nowrap shrink-0">
+                  ${isFollowing ? '✓ Following' : '+ Follow'}
+                </button>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    ` : '';
+
+    // 2-Column Bento News Cards Grid
+    const cardsHtml = storiesAfterVideo.map((art, idx) => {
+      const isSaved = this.isBookmarked(art.id);
+      const isLiked = this.isLiked(art.id);
+      const likesCount = this.getLikeCount(art.id, 45);
+
+      const cardMarkup = `
+        <article class="card-hover flex flex-col justify-between rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md cursor-pointer transition-all" onclick="App.openArticleModal('${art.id}')">
+          <div>
+            <div class="relative h-44 w-full overflow-hidden bg-gray-100 dark:bg-gray-900">
+              <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80';">
+              <div class="absolute top-2.5 left-2.5">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-black/60 backdrop-blur-md text-white">
                   ${art.categoryIcon || '📰'} ${art.categoryName || 'News'}
                 </span>
               </div>
               <div class="absolute bottom-2 right-2">
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/90 text-white backdrop-blur-sm">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500 text-slate-950 backdrop-blur-sm">
                   Trending: ${art.trendingScore}%
                 </span>
               </div>
             </div>
-            <div class="p-5">
-              <div class="flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400 mb-2 font-medium">
-                <span class="text-indigo-600 dark:text-indigo-400 font-semibold truncate max-w-[150px]">${art.source}</span>
+            <div class="p-4">
+              <div class="flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400 mb-1.5 font-medium">
+                <span class="text-indigo-600 dark:text-indigo-400 font-bold truncate max-w-[140px]">${art.source}</span>
                 <span>${art.readTime}</span>
               </div>
-              <h3 class="font-serif-headline text-lg font-bold text-gray-900 dark:text-white line-clamp-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-2">
+              <h3 class="font-serif-headline text-base font-bold text-gray-900 dark:text-white line-clamp-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-2 leading-snug">
                 ${art.title}
               </h3>
               <p class="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mb-2 leading-relaxed">
                 ${art.summary}
               </p>
 
-              <!-- Instant 3-Sec Takeaways Accordion (Engagement Driver) -->
-              <button onclick="App.toggleCardBullets('${art.id}', event)" class="inline-flex items-center gap-1 text-[11px] font-bold text-red-600 dark:text-red-400 hover:underline mb-2 cursor-pointer">
+              <!-- Instant 3-Sec Takeaways Accordion -->
+              <button onclick="App.toggleCardBullets('${art.id}', event)" class="inline-flex items-center gap-1 text-[11px] font-bold text-red-600 dark:text-red-400 hover:underline mb-1.5 cursor-pointer">
                 <span>⚡</span> <span>3-Sec Takeaways</span>
               </button>
-              <div id="card-bullets-${art.id}" class="hidden mb-2 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-[11px] text-gray-700 dark:text-gray-300 space-y-1">
+              <div id="card-bullets-${art.id}" class="hidden mb-2 p-2 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-[11px] text-gray-700 dark:text-gray-300 space-y-1">
                 ${(art.bullets || []).map(b => `<div class="flex items-start gap-1.5"><span class="text-emerald-500 font-bold shrink-0">✔</span><span class="leading-tight">${b}</span></div>`).join('')}
               </div>
             </div>
           </div>
-          <div class="px-5 pb-4 pt-2 flex items-center justify-between border-t border-gray-100 dark:border-gray-700 text-xs">
-            <span class="text-gray-400 text-[11px] truncate max-w-[120px]">${art.publishedAt.split(' ').slice(0, 4).join(' ')}</span>
+          <div class="px-4 pb-3 pt-2 flex items-center justify-between border-t border-gray-100 dark:border-gray-700 text-xs">
+            <button onclick="App.toggleLike('${art.id}', event)" class="reaction-pill like-btn-${art.id} ${isLiked ? 'text-red-600 active' : 'text-gray-500 dark:text-gray-400'} flex items-center gap-1 text-[11px] font-bold cursor-pointer hover:text-red-600">
+              <span>👍</span> <span class="like-count-${art.id}">${likesCount}</span>
+            </button>
             <div class="flex items-center gap-1">
-              <button onclick="App.playAudio('${art.id}', event)" title="Listen" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 transition-colors">
+              <button onclick="App.playAudio('${art.id}', event)" title="Listen" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 transition-colors">
                 🔊
               </button>
-              <button onclick="App.toggleBookmark('${art.id}', event)" title="Save" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${isSaved ? 'text-amber-500 font-bold' : 'text-gray-400'} transition-colors">
+              <button onclick="App.toggleBookmark('${art.id}', event)" title="Save" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${isSaved ? 'text-amber-500 font-bold' : 'text-gray-400'} transition-colors">
                 ${isSaved ? '★' : '☆'}
               </button>
-              <button onclick="App.shareToWhatsApp('${art.id}', event)" title="Share on WhatsApp" class="p-1.5 rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 transition-colors">
+              <button onclick="App.shareToWhatsApp('${art.id}', event)" title="Share on WhatsApp" class="p-1 rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-emerald-600 transition-colors">
                 💬
               </button>
-              <button onclick="App.copyArticleLink('${art.id}', event)" title="Copy Link" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 transition-colors">
-                📋
-              </button>
-              <button onclick="App.shareArticle('${art.id}', event)" title="Share" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-indigo-600 transition-colors">
+              <button onclick="App.shareArticle('${art.id}', event)" title="Share" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-indigo-600 transition-colors">
                 ↗️
               </button>
             </div>
@@ -747,24 +880,24 @@ const App = {
         </article>
       `;
 
-      // In-Feed Native Ad Card after 3rd story
-      const inFeedAd = (idx === 2) ? `
-        <article class="card-hover flex flex-col justify-between rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-gray-800 dark:to-gray-900 border border-amber-200 dark:border-amber-900/50 overflow-hidden shadow-sm p-5 text-gray-900 dark:text-white">
+      // In-Feed Native Ad Card after 2nd story
+      const inFeedAd = (idx === 1) ? `
+        <article class="card-hover flex flex-col justify-between rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-gray-800 dark:to-gray-900 border border-amber-200 dark:border-amber-900/50 overflow-hidden shadow-sm p-4 text-gray-900 dark:text-white">
           <div>
-            <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center justify-between mb-2">
               <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-amber-500 text-slate-950">Promoted / प्रायोजित</span>
               <span class="text-[11px] text-gray-400">Ad</span>
             </div>
-            <h3 class="font-serif-headline text-lg font-bold mb-2">
-              💼 High-Growth Mutual Fund SIPs with ₹500/Month
+            <h3 class="font-serif-headline text-base font-bold mb-1.5">
+              💼 Zero Brokerage Equity &amp; Mutual Fund SIPs
             </h3>
-            <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
               Direct Mutual Funds deliver up to 1.5% higher annual returns. 100% paperless KYC and automated monthly investments.
             </p>
           </div>
-          <div class="pt-3 border-t border-amber-200/60 dark:border-gray-700 flex items-center justify-between">
+          <div class="pt-2 border-t border-amber-200/60 dark:border-gray-700 flex items-center justify-between">
             <span class="text-xs text-amber-700 dark:text-amber-400 font-bold">Trusted by 2 Cr+ Indians</span>
-            <a href="https://groww.in" target="_blank" rel="noopener sponsored" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm">
+            <a href="https://groww.in" target="_blank" rel="noopener sponsored" class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm">
               Start SIP ↗
             </a>
           </div>
@@ -774,7 +907,552 @@ const App = {
       return cardMarkup + inFeedAd;
     }).join('');
 
-    magazineView.innerHTML = heroHtml + `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full">${cardsHtml}</div>`;
+    magazineView.innerHTML = `
+      ${heroHtml}
+      ${videoCardHtml}
+      ${publishersCardHtml}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        ${cardsHtml}
+      </div>
+    `;
+  },
+
+  updateBentoNavTabs(catId) {
+    const bentoTabs = {
+      'trending': 'bento-tab-discover',
+      'world': 'bento-tab-world',
+      'politics': 'bento-tab-politics',
+      'share-market': 'bento-tab-markets',
+      'tech': 'bento-tab-tech',
+      'sports': 'bento-tab-sports',
+      'entertainment': 'bento-tab-entertainment'
+    };
+    Object.keys(bentoTabs).forEach(key => {
+      const el = document.getElementById(bentoTabs[key]);
+      if (el) {
+        if (key === catId) {
+          el.className = 'bento-nav-tab px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-red-600 text-white shadow-sm whitespace-nowrap cursor-pointer';
+        } else {
+          el.className = 'bento-nav-tab px-3.5 py-1.5 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all whitespace-nowrap cursor-pointer';
+        }
+      }
+    });
+  },
+
+  // ----------------------------------------------------
+  // Bento Portal Modules: Weather, Sports, Publishers, Likes
+  // ----------------------------------------------------
+  weatherData: {
+    selectedCity: 'New Delhi',
+    activeTab: 'hourly',
+    cities: {
+      'New Delhi': {
+        temp: 24,
+        desc: 'Partly Cloudy • Humidity 48%',
+        icon: '⛅',
+        rainNotice: '0% rain probability',
+        aqi: 'AQI 72 (Good)',
+        aqiColor: 'text-emerald-600 dark:text-emerald-400',
+        hourly: [
+          { time: '11 AM', val: '23°', height: 60 },
+          { time: '12 PM', val: '25°', height: 75 },
+          { time: '1 PM', val: '26°', height: 85 },
+          { time: '2 PM', val: '26°', height: 85 },
+          { time: '3 PM', val: '24°', height: 70 },
+          { time: '4 PM', val: '22°', height: 55 }
+        ],
+        precipitation: [
+          { time: '11 AM', val: '0%', height: 10 },
+          { time: '12 PM', val: '5%', height: 20 },
+          { time: '1 PM', val: '5%', height: 20 },
+          { time: '2 PM', val: '10%', height: 30 },
+          { time: '3 PM', val: '0%', height: 10 },
+          { time: '4 PM', val: '0%', height: 10 }
+        ],
+        aqiBars: [
+          { time: '11 AM', val: '68', height: 50 },
+          { time: '12 PM', val: '72', height: 55 },
+          { time: '1 PM', val: '75', height: 60 },
+          { time: '2 PM', val: '78', height: 65 },
+          { time: '3 PM', val: '74', height: 58 },
+          { time: '4 PM', val: '70', height: 52 }
+        ]
+      },
+      'Mumbai': {
+        temp: 29,
+        desc: 'Sunny & Humid • Humidity 72%',
+        icon: '☀️',
+        rainNotice: '5% rain probability',
+        aqi: 'AQI 84 (Moderate)',
+        aqiColor: 'text-amber-500',
+        hourly: [
+          { time: '11 AM', val: '28°', height: 65 },
+          { time: '12 PM', val: '30°', height: 80 },
+          { time: '1 PM', val: '31°', height: 90 },
+          { time: '2 PM', val: '30°', height: 80 },
+          { time: '3 PM', val: '29°', height: 70 },
+          { time: '4 PM', val: '28°', height: 65 }
+        ],
+        precipitation: [
+          { time: '11 AM', val: '5%', height: 20 },
+          { time: '12 PM', val: '5%', height: 20 },
+          { time: '1 PM', val: '10%', height: 30 },
+          { time: '2 PM', val: '5%', height: 20 },
+          { time: '3 PM', val: '5%', height: 20 },
+          { time: '4 PM', val: '0%', height: 10 }
+        ],
+        aqiBars: [
+          { time: '11 AM', val: '80', height: 60 },
+          { time: '12 PM', val: '84', height: 65 },
+          { time: '1 PM', val: '88', height: 70 },
+          { time: '2 PM', val: '85', height: 68 },
+          { time: '3 PM', val: '82', height: 62 },
+          { time: '4 PM', val: '79', height: 58 }
+        ]
+      },
+      'Bengaluru': {
+        temp: 22,
+        desc: 'Passing Showers • Humidity 65%',
+        icon: '🌦️',
+        rainNotice: 'Rain starting in ~35 mins',
+        aqi: 'AQI 38 (Clean & Fresh)',
+        aqiColor: 'text-emerald-500',
+        hourly: [
+          { time: '11 AM', val: '21°', height: 55 },
+          { time: '12 PM', val: '22°', height: 65 },
+          { time: '1 PM', val: '23°', height: 70 },
+          { time: '2 PM', val: '22°', height: 65 },
+          { time: '3 PM', val: '21°', height: 55 },
+          { time: '4 PM', val: '20°', height: 50 }
+        ],
+        precipitation: [
+          { time: '11 AM', val: '40%', height: 50 },
+          { time: '12 PM', val: '75%', height: 85 },
+          { time: '1 PM', val: '60%', height: 70 },
+          { time: '2 PM', val: '30%', height: 40 },
+          { time: '3 PM', val: '15%', height: 25 },
+          { time: '4 PM', val: '10%', height: 20 }
+        ],
+        aqiBars: [
+          { time: '11 AM', val: '35', height: 35 },
+          { time: '12 PM', val: '38', height: 40 },
+          { time: '1 PM', val: '40', height: 42 },
+          { time: '2 PM', val: '36', height: 38 },
+          { time: '3 PM', val: '34', height: 34 },
+          { time: '4 PM', val: '32', height: 32 }
+        ]
+      },
+      'Kolkata': {
+        temp: 26,
+        desc: 'Hazy Sunshine • Humidity 58%',
+        icon: '🌤️',
+        rainNotice: '0% rain probability',
+        aqi: 'AQI 89 (Moderate)',
+        aqiColor: 'text-amber-500',
+        hourly: [
+          { time: '11 AM', val: '25°', height: 65 },
+          { time: '12 PM', val: '27°', height: 75 },
+          { time: '1 PM', val: '28°', height: 80 },
+          { time: '2 PM', val: '27°', height: 75 },
+          { time: '3 PM', val: '25°', height: 65 },
+          { time: '4 PM', val: '24°', height: 60 }
+        ],
+        precipitation: [
+          { time: '11 AM', val: '0%', height: 10 },
+          { time: '12 PM', val: '0%', height: 10 },
+          { time: '1 PM', val: '0%', height: 10 },
+          { time: '2 PM', val: '0%', height: 10 },
+          { time: '3 PM', val: '0%', height: 10 },
+          { time: '4 PM', val: '0%', height: 10 }
+        ],
+        aqiBars: [
+          { time: '11 AM', val: '85', height: 65 },
+          { time: '12 PM', val: '89', height: 70 },
+          { time: '1 PM', val: '92', height: 75 },
+          { time: '2 PM', val: '88', height: 68 },
+          { time: '3 PM', val: '84', height: 64 },
+          { time: '4 PM', val: '80', height: 60 }
+        ]
+      },
+      'New York': {
+        temp: 12,
+        desc: 'Crisp & Clear • Humidity 42%',
+        icon: '🍂',
+        rainNotice: '0% precipitation expected',
+        aqi: 'AQI 28 (Good)',
+        aqiColor: 'text-emerald-500',
+        hourly: [
+          { time: '11 AM', val: '11°', height: 45 },
+          { time: '12 PM', val: '13°', height: 55 },
+          { time: '1 PM', val: '14°', height: 60 },
+          { time: '2 PM', val: '13°', height: 55 },
+          { time: '3 PM', val: '12°', height: 50 },
+          { time: '4 PM', val: '10°', height: 40 }
+        ],
+        precipitation: [
+          { time: '11 AM', val: '0%', height: 10 },
+          { time: '12 PM', val: '0%', height: 10 },
+          { time: '1 PM', val: '0%', height: 10 },
+          { time: '2 PM', val: '0%', height: 10 },
+          { time: '3 PM', val: '0%', height: 10 },
+          { time: '4 PM', val: '0%', height: 10 }
+        ],
+        aqiBars: [
+          { time: '11 AM', val: '25', height: 25 },
+          { time: '12 PM', val: '28', height: 30 },
+          { time: '1 PM', val: '30', height: 32 },
+          { time: '2 PM', val: '28', height: 30 },
+          { time: '3 PM', val: '26', height: 28 },
+          { time: '4 PM', val: '24', height: 25 }
+        ]
+      },
+      'London': {
+        temp: 9,
+        desc: 'Light Rain • Humidity 84%',
+        icon: '🌧️',
+        rainNotice: 'Intermittent rain all afternoon',
+        aqi: 'AQI 22 (Good)',
+        aqiColor: 'text-emerald-500',
+        hourly: [
+          { time: '11 AM', val: '8°', height: 40 },
+          { time: '12 PM', val: '9°', height: 45 },
+          { time: '1 PM', val: '10°', height: 50 },
+          { time: '2 PM', val: '9°', height: 45 },
+          { time: '3 PM', val: '8°', height: 40 },
+          { time: '4 PM', val: '8°', height: 40 }
+        ],
+        precipitation: [
+          { time: '11 AM', val: '80%', height: 85 },
+          { time: '12 PM', val: '70%', height: 75 },
+          { time: '1 PM', val: '50%', height: 60 },
+          { time: '2 PM', val: '40%', height: 50 },
+          { time: '3 PM', val: '30%', height: 40 },
+          { time: '4 PM', val: '20%', height: 30 }
+        ],
+        aqiBars: [
+          { time: '11 AM', val: '20', height: 20 },
+          { time: '12 PM', val: '22', height: 22 },
+          { time: '1 PM', val: '25', height: 25 },
+          { time: '2 PM', val: '23', height: 23 },
+          { time: '3 PM', val: '21', height: 21 },
+          { time: '4 PM', val: '20', height: 20 }
+        ]
+      }
+    }
+  },
+
+  renderWeatherWidget() {
+    const cityData = this.weatherData.cities[this.weatherData.selectedCity] || this.weatherData.cities['New Delhi'];
+    const tempEl = document.getElementById('weather-temp-main');
+    const descEl = document.getElementById('weather-desc');
+    const iconEl = document.getElementById('weather-icon-big');
+    const rainEl = document.getElementById('weather-rain-notice');
+    const aqiEl = document.getElementById('weather-aqi-pill');
+    const chartContainer = document.getElementById('weather-chart-container');
+    const citySelect = document.getElementById('weather-city-select');
+
+    if (citySelect && citySelect.value !== this.weatherData.selectedCity) {
+      citySelect.value = this.weatherData.selectedCity;
+    }
+    if (tempEl) tempEl.textContent = `${cityData.temp}°`;
+    if (descEl) descEl.innerHTML = `<span>${cityData.icon}</span> <span>${cityData.desc}</span>`;
+    if (iconEl) iconEl.textContent = cityData.icon;
+    if (rainEl) rainEl.innerHTML = `<span>💧</span> <span>${cityData.rainNotice}</span>`;
+    if (aqiEl) {
+      aqiEl.className = `font-bold ${cityData.aqiColor}`;
+      aqiEl.textContent = `● ${cityData.aqi}`;
+    }
+
+    if (chartContainer) {
+      const activeTab = this.weatherData.activeTab;
+      let bars = [];
+      let fillClass = '';
+      if (activeTab === 'hourly') {
+        bars = cityData.hourly;
+        fillClass = 'weather-bar-fill';
+      } else if (activeTab === 'precipitation') {
+        bars = cityData.precipitation;
+        fillClass = 'weather-bar-fill precip';
+      } else {
+        bars = cityData.aqiBars;
+        fillClass = 'weather-bar-fill aqi';
+      }
+
+      chartContainer.innerHTML = `
+        <div class="weather-bar-container">
+          ${bars.map(b => `
+            <div class="weather-bar-col">
+              <span class="text-[10px] font-bold text-gray-700 dark:text-gray-300">${b.val}</span>
+              <div class="w-full flex items-end justify-center h-10">
+                <div class="${fillClass}" style="height: ${b.height}%;"></div>
+              </div>
+              <span class="text-[9px] text-gray-500 dark:text-gray-400 mt-0.5">${b.time}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+  },
+
+  switchWeatherCity(city) {
+    if (this.weatherData.cities[city]) {
+      this.weatherData.selectedCity = city;
+      this.renderWeatherWidget();
+    }
+  },
+
+  switchWeatherTab(tab) {
+    this.weatherData.activeTab = tab;
+    ['hourly', 'precip', 'aqi'].forEach(t => {
+      const btn = document.getElementById(`weather-tab-${t}`);
+      if (btn) {
+        if ((tab === 'hourly' && t === 'hourly') || (tab === 'precipitation' && t === 'precip') || (tab === 'aqi' && t === 'aqi')) {
+          btn.className = 'flex-1 py-1 rounded-lg bg-sky-600 text-white font-bold transition-all text-center cursor-pointer shadow-xs';
+        } else {
+          btn.className = 'flex-1 py-1 rounded-lg text-gray-600 dark:text-gray-300 hover:text-sky-600 transition-all text-center cursor-pointer';
+        }
+      }
+    });
+    this.renderWeatherWidget();
+  },
+
+  sportsData: {
+    selectedLeague: 'premier',
+    leagues: {
+      'premier': [
+        { home: 'Man City', away: 'Fulham', homeFlag: '🔵', awayFlag: '⚪', time: '6:00 PM', date: 'Today', status: 'Upcoming' },
+        { home: 'Aston Villa', away: 'Sunderland', homeFlag: '🟣', awayFlag: '🔴', time: '8:30 PM', date: 'Today', status: 'Upcoming' },
+        { home: 'Bournemouth', away: 'Nottingham F.', homeFlag: '🔴', awayFlag: '🌲', time: '8:30 PM', date: 'Today', status: 'Upcoming' },
+        { home: 'Arsenal', away: 'Chelsea', homeFlag: '🔴', awayFlag: '🔵', time: '10:00 PM', date: 'Tomorrow', status: 'Derby' }
+      ],
+      'champions': [
+        { home: 'Real Madrid', away: 'Bayern Munich', homeFlag: '⚪', awayFlag: '🔴', time: '12:30 AM', date: 'Tomorrow', status: 'Semi' },
+        { home: 'PSG', away: 'Liverpool', homeFlag: '🔵', awayFlag: '🔴', time: '12:30 AM', date: 'Wednesday', status: 'Quarter' },
+        { home: 'Inter Milan', away: 'Barcelona', homeFlag: '🔵', awayFlag: '🔴', time: '12:30 AM', date: 'Thursday', status: 'Group' }
+      ],
+      'cricket_fixtures': [
+        { home: 'India', away: 'Australia', homeFlag: '🇮🇳', awayFlag: '🇦🇺', time: '9:30 AM', date: '22 Nov', status: '1st Test' },
+        { home: 'England', away: 'New Zealand', homeFlag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', awayFlag: '🇳🇿', time: '3:30 AM', date: '28 Nov', status: '2nd Test' },
+        { home: 'South Africa', away: 'Sri Lanka', homeFlag: '🇿🇦', awayFlag: '🇱🇰', time: '1:30 PM', date: '27 Nov', status: '1st Test' }
+      ],
+      'laliga': [
+        { home: 'Barcelona', away: 'Celta Vigo', homeFlag: '🔴', awayFlag: '🩵', time: '1:30 AM', date: 'Sunday', status: 'Matchday' },
+        { home: 'Atletico', away: 'Alaves', homeFlag: '⚪', awayFlag: '🔵', time: '8:45 PM', date: 'Saturday', status: 'Matchday' }
+      ]
+    }
+  },
+
+  renderSportsWidget() {
+    const listEl = document.getElementById('sports-fixtures-list');
+    if (!listEl) return;
+    const league = this.sportsData.selectedLeague;
+    const fixtures = this.sportsData.leagues[league] || this.sportsData.leagues['premier'];
+
+    listEl.innerHTML = fixtures.map(f => `
+      <div class="flex items-center justify-between p-2 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-all">
+        <div class="flex items-center gap-2 flex-1 min-w-0 pr-2">
+          <div class="flex flex-col gap-0.5 min-w-0">
+            <span class="font-bold truncate text-gray-900 dark:text-gray-100 flex items-center gap-1">
+              <span>${f.homeFlag}</span> <span>${f.home}</span>
+            </span>
+            <span class="font-bold truncate text-gray-900 dark:text-gray-100 flex items-center gap-1">
+              <span>${f.awayFlag}</span> <span>${f.away}</span>
+            </span>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <div class="font-extrabold text-[11px] text-gray-800 dark:text-gray-200">${f.time}</div>
+          <div class="text-[10px] text-gray-400 font-semibold">${f.date} • ${f.status}</div>
+        </div>
+      </div>
+    `).join('');
+  },
+
+  switchSportsLeague(league) {
+    if (this.sportsData.leagues[league]) {
+      this.sportsData.selectedLeague = league;
+      this.renderSportsWidget();
+    }
+  },
+
+  publishersData: [
+    { id: 'toi', name: 'Times of India', tag: 'TOI', avatar: '🇮🇳', readers: '4.8M readers' },
+    { id: 'ndtv', name: 'NDTV News', tag: 'NDTV', avatar: '📺', readers: '3.2M readers' },
+    { id: 'it', name: 'India Today', tag: 'IT', avatar: '⚡', readers: '2.9M readers' },
+    { id: 'et', name: 'Economic Times', tag: 'ET', avatar: '📈', readers: '2.1M readers' },
+    { id: 'bbc', name: 'BBC News', tag: 'BBC', avatar: '🌍', readers: '6.4M readers' },
+    { id: 'reuters', name: 'Reuters Global', tag: 'Reuters', avatar: '🌐', readers: '5.1M readers' }
+  ],
+
+  initFollowedPublishers() {
+    try {
+      this.data.followedPublishers = JSON.parse(localStorage.getItem('tp_followed_publishers') || '[]');
+    } catch (e) {
+      this.data.followedPublishers = [];
+    }
+  },
+
+  isFollowingPublisher(pubId) {
+    return Array.isArray(this.data.followedPublishers) && this.data.followedPublishers.includes(pubId);
+  },
+
+  toggleFollowPublisher(pubId, e) {
+    if (e) e.stopPropagation();
+    if (!Array.isArray(this.data.followedPublishers)) this.data.followedPublishers = [];
+    const idx = this.data.followedPublishers.indexOf(pubId);
+    let isNowFollowing = false;
+    if (idx > -1) {
+      this.data.followedPublishers.splice(idx, 1);
+    } else {
+      this.data.followedPublishers.push(pubId);
+      isNowFollowing = true;
+    }
+    localStorage.setItem('tp_followed_publishers', JSON.stringify(this.data.followedPublishers));
+    
+    // Update all matching follow buttons
+    const btns = document.querySelectorAll(`.follow-btn-${pubId}`);
+    btns.forEach(btn => {
+      if (isNowFollowing) {
+        btn.textContent = '✓ Following';
+        btn.classList.add('following');
+      } else {
+        btn.textContent = '+ Follow';
+        btn.classList.remove('following');
+      }
+    });
+
+    const pub = this.publishersData.find(p => p.id === pubId);
+    const name = pub ? pub.name : 'Publisher';
+    if (isNowFollowing) {
+      this.showToast(`⭐ Following ${name}! Their coverage will appear first.`);
+    } else {
+      this.showToast(`Unfollowed ${name}`);
+    }
+  },
+
+  initLikes() {
+    try {
+      this.data.likes = JSON.parse(localStorage.getItem('tp_article_likes') || '{}');
+    } catch (e) {
+      this.data.likes = {};
+    }
+  },
+
+  getLikeCount(artId, defaultSeed = 18) {
+    if (this.data.likes && this.data.likes[artId] !== undefined) {
+      return this.data.likes[artId].count;
+    }
+    return (Math.abs(this.hashCode(artId)) % 150) + defaultSeed;
+  },
+
+  isLiked(artId) {
+    return !!(this.data.likes && this.data.likes[artId]?.userLiked);
+  },
+
+  toggleLike(artId, e) {
+    if (e) e.stopPropagation();
+    if (!this.data.likes) this.data.likes = {};
+    const current = this.data.likes[artId] || { count: this.getLikeCount(artId), userLiked: false };
+    
+    if (current.userLiked) {
+      current.count = Math.max(0, current.count - 1);
+      current.userLiked = false;
+    } else {
+      current.count += 1;
+      current.userLiked = true;
+    }
+    this.data.likes[artId] = current;
+    localStorage.setItem('tp_article_likes', JSON.stringify(this.data.likes));
+
+    const countEls = document.querySelectorAll(`.like-count-${artId}`);
+    countEls.forEach(el => el.textContent = current.count);
+    const btns = document.querySelectorAll(`.like-btn-${artId}`);
+    btns.forEach(btn => {
+      if (current.userLiked) {
+        btn.classList.add('text-red-600', 'active');
+      } else {
+        btn.classList.remove('text-red-600', 'active');
+      }
+    });
+
+    if (current.userLiked) {
+      this.showToast('👍 Liked! We will prioritize similar stories in your feed.');
+    }
+  },
+
+  startVoiceSearch() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      this.showToast('🎙️ Voice search is not supported in this browser. Please type your query.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = this.data.currentLang === 'hi' ? 'hi-IN' : 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    const voiceBtn = document.getElementById('voice-search-btn');
+    if (voiceBtn) voiceBtn.classList.add('animate-pulse', 'text-red-600');
+    this.showToast('🎙️ Listening... Speak now (बोलें)...');
+
+    recognition.onresult = (event) => {
+      const speechResult = event.results[0][0].transcript;
+      const bentoInput = document.getElementById('search-input-bento');
+      const desktopInput = document.getElementById('search-input');
+      const mobileInput = document.getElementById('search-input-mobile');
+
+      if (bentoInput) bentoInput.value = speechResult;
+      if (desktopInput) desktopInput.value = speechResult;
+      if (mobileInput) mobileInput.value = speechResult;
+
+      this.onSearch(speechResult);
+      this.showToast(`🔍 Searching for: "${speechResult}"`);
+    };
+
+    recognition.onerror = () => {
+      if (voiceBtn) voiceBtn.classList.remove('animate-pulse', 'text-red-600');
+      this.showToast('⚠️ Could not hear audio. Please try again.');
+    };
+
+    recognition.onend = () => {
+      if (voiceBtn) voiceBtn.classList.remove('animate-pulse', 'text-red-600');
+    };
+
+    try {
+      recognition.start();
+    } catch (e) {
+      if (voiceBtn) voiceBtn.classList.remove('animate-pulse', 'text-red-600');
+    }
+  },
+
+  scrollToWeather() {
+    const widget = document.getElementById('bento-weather-widget');
+    if (widget) {
+      widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      widget.classList.add('ring-2', 'ring-sky-500');
+      setTimeout(() => widget.classList.remove('ring-2', 'ring-sky-500'), 1800);
+    }
+  },
+
+  scrollToPoll() {
+    const widget = document.getElementById('interactive-poll-section');
+    if (widget) {
+      widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      widget.classList.add('ring-2', 'ring-amber-500');
+      setTimeout(() => widget.classList.remove('ring-2', 'ring-amber-500'), 1800);
+    }
+  },
+
+  openAiSearch() {
+    const bentoInput = document.getElementById('search-input-bento');
+    const query = (bentoInput ? bentoInput.value.trim() : '') || 'trending world news';
+    this.showToast(`✨ Asking TrendPulse AI to summarize latest developments on "${query}"...`);
+    this.onSearch(query);
+  },
+
+  openPersonalizeFeed() {
+    this.showToast('⚙️ Tip: Click "+ Follow" on any publisher to prioritize their coverage in your daily feed.');
   },
 
   renderInshortsMode() {
@@ -1458,22 +2136,25 @@ const App = {
   },
 
   bindEvents() {
-    // Synchronize Desktop and Mobile search inputs
-    const setupSearch = (id, otherId) => {
+    // Synchronize Desktop, Mobile and Bento search inputs
+    const searchInputIds = ['search-input-bento', 'search-input', 'search-input-mobile'];
+    searchInputIds.forEach(id => {
       const input = document.getElementById(id);
-      const other = document.getElementById(otherId);
       if (input) {
         let timeout = null;
         input.addEventListener('input', (e) => {
           clearTimeout(timeout);
           const val = e.target.value;
-          if (other && other.value !== val) other.value = val;
+          searchInputIds.forEach(otherId => {
+            if (otherId !== id) {
+              const other = document.getElementById(otherId);
+              if (other && other.value !== val) other.value = val;
+            }
+          });
           timeout = setTimeout(() => this.onSearch(val), 200);
         });
       }
-    };
-    setupSearch('search-input', 'search-input-mobile');
-    setupSearch('search-input-mobile', 'search-input');
+    });
 
     // Scroll progress bar and back-to-top button
     window.addEventListener('scroll', () => {
