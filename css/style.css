@@ -316,6 +316,65 @@ html, body {
   border-color: #059669 !important;
 }
 
+/* Viral Multi-Emotional Reactions System */
+.reaction-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.reaction-emoji-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.reaction-emoji-btn:hover {
+  transform: scale(1.12);
+}
+.reaction-emoji-btn:active {
+  transform: scale(1.3);
+}
+.reaction-emoji-btn.active {
+  background-color: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #dc2626;
+}
+
+/* Up-Next Countdown Progress Bar */
+.countdown-progress {
+  height: 4px;
+  background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981);
+  border-radius: 9999px;
+  transition: width 0.1s linear;
+}
+
+/* Floating Real-Time Social Proof Pill */
+.social-proof-pill {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  animation: floatSubtle 4s ease-in-out infinite alternate;
+}
+@keyframes floatSubtle {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-4px); }
+}
+
+/* Story Navigation Buttons */
+.story-nav-btn {
+  transition: all 0.2s ease-in-out;
+}
+.story-nav-btn:hover:not(:disabled) {
+  transform: translateX(2px);
+}
+
+
 
 
 

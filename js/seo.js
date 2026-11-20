@@ -6,7 +6,7 @@
 
 const SEO = {
   siteName: "TrendPulse 360",
-  siteUrl: window.location.origin || "https://trendpulse360.web.app",
+  siteUrl: (window.location.origin && window.location.origin.includes('http')) ? window.location.origin : "https://trendpulse-live.web.app",
   defaultTitle: "TrendPulse 360 - Real-Time Worldwide Trending News & Viral Briefs",
   defaultDesc: "Read real-time trending news across Politics, Business, Stock Market, Tech & AI, Sports, Entertainment, Education & Motivational stories.",
   defaultImage: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&auto=format&fit=crop&q=80",

@@ -14,6 +14,13 @@ const App = {
     searchQuery: '',
     viewMode: 'magazine', // 'magazine' or 'inshorts'
     bookmarks: [],
+    likes: {},
+    reactions: {},
+    upNextTimer: null,
+    upNextCountdown: 5,
+    upNextPaused: false,
+    bulletinSpeed: 1.0,
+    socialProofInterval: null,
     isSpeaking: false,
     currentSpeechUtterance: null,
     activeArticleModal: null,
@@ -102,6 +109,7 @@ const App = {
     this.initTheme();
     this.initBookmarks();
     this.initLikes();
+    this.initReactions();
     this.initFollowedPublishers();
     this.initLanguage();
     this.bindEvents();
@@ -109,6 +117,7 @@ const App = {
     await this.loadData();
     this.renderWeatherWidget();
     this.renderSportsWidget();
+    this.initSocialProof();
     this.handleInitialRouting();
     this.initNotificationPrompt();
   },
@@ -645,7 +654,7 @@ const App = {
           <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-xl transition-all cursor-pointer" onclick="App.openArticleModal('${hero.id}')">
             <div class="grid grid-cols-1 md:grid-cols-12">
               <div class="md:col-span-7 h-64 sm:h-72 md:h-auto relative overflow-hidden bg-gray-900">
-                <img src="${hero.image}" alt="${hero.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80';">
+                <img src="${hero.image}" alt="${hero.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="eager" fetchpriority="high" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80';">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent md:hidden"></div>
                 <div class="absolute top-3 left-3 flex flex-wrap items-center gap-2">
                   <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-red-600 text-white shadow-md">
@@ -682,16 +691,14 @@ const App = {
                 </div>
 
                 <!-- High-CTR Reaction & Share Bar -->
-                <div class="pt-3 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between text-xs">
+                <div class="pt-3 border-t border-gray-100 dark:border-gray-700 flex flex-wrap items-center justify-between gap-2 text-xs">
                   <div class="flex items-center gap-2">
-                    <button onclick="App.toggleLike('${hero.id}', event)" class="reaction-pill like-btn-${hero.id} ${isLiked ? 'text-red-600 active' : 'text-gray-600 dark:text-gray-300'} flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700/80 dark:hover:bg-gray-700 font-bold cursor-pointer transition-all" title="Like">
-                      <span>👍</span> <span class="like-count-${hero.id}">${likesCount}</span>
-                    </button>
+                    ${this.renderReactionsHtml(hero.id, false)}
                     <button onclick="App.openArticleModal('${hero.id}'); event.stopPropagation();" class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700/80 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 font-bold cursor-pointer transition-all" title="Comments">
                       <span>💬</span> <span>${commentsCount}</span>
                     </button>
                   </div>
-                  <div class="flex items-center gap-1">
+                  <div class="flex items-center gap-1 ml-auto">
                     <button onclick="App.playAudio('${hero.id}', event)" title="Listen Audio" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors">
                       🔊
                     </button>
@@ -700,6 +707,9 @@ const App = {
                     </button>
                     <button onclick="App.shareToWhatsApp('${hero.id}', event)" title="WhatsApp Share" class="p-1.5 rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-emerald-600 transition-colors">
                       💬
+                    </button>
+                    <button onclick="App.copyFormattedStory('${hero.id}', event)" title="Copy Formatted Brief" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 transition-colors">
+                      📋
                     </button>
                     <button onclick="App.shareArticle('${hero.id}', event)" title="Share" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-indigo-600 transition-colors">
                       ↗️
@@ -858,11 +868,9 @@ const App = {
               </div>
             </div>
           </div>
-          <div class="px-4 pb-3 pt-2 flex items-center justify-between border-t border-gray-100 dark:border-gray-700 text-xs">
-            <button onclick="App.toggleLike('${art.id}', event)" class="reaction-pill like-btn-${art.id} ${isLiked ? 'text-red-600 active' : 'text-gray-500 dark:text-gray-400'} flex items-center gap-1 text-[11px] font-bold cursor-pointer hover:text-red-600">
-              <span>👍</span> <span class="like-count-${art.id}">${likesCount}</span>
-            </button>
-            <div class="flex items-center gap-1">
+          <div class="px-4 pb-3 pt-2 flex flex-wrap items-center justify-between gap-1 border-t border-gray-100 dark:border-gray-700 text-xs">
+            ${this.renderReactionsHtml(art.id, false)}
+            <div class="flex items-center gap-1 ml-auto">
               <button onclick="App.playAudio('${art.id}', event)" title="Listen" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 transition-colors">
                 🔊
               </button>
@@ -871,6 +879,9 @@ const App = {
               </button>
               <button onclick="App.shareToWhatsApp('${art.id}', event)" title="Share on WhatsApp" class="p-1 rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-emerald-600 transition-colors">
                 💬
+              </button>
+              <button onclick="App.copyFormattedStory('${art.id}', event)" title="Copy Formatted Brief" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 transition-colors">
+                📋
               </button>
               <button onclick="App.shareArticle('${art.id}', event)" title="Share" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-indigo-600 transition-colors">
                 ↗️
@@ -1380,6 +1391,116 @@ const App = {
     }
   },
 
+  initReactions() {
+    try {
+      this.data.reactions = JSON.parse(localStorage.getItem('tp_article_reactions') || '{}');
+    } catch (e) {
+      this.data.reactions = {};
+    }
+  },
+
+  getReactionData(artId) {
+    if (!this.data.reactions) this.data.reactions = {};
+    if (!this.data.reactions[artId]) {
+      const seed = Math.abs(this.hashCode(artId));
+      this.data.reactions[artId] = {
+        counts: {
+          fire: (seed % 45) + 18,
+          mindblown: ((seed * 3) % 35) + 8,
+          bulb: ((seed * 7) % 40) + 12,
+          clap: ((seed * 11) % 50) + 15
+        },
+        userReaction: null
+      };
+    }
+    return this.data.reactions[artId];
+  },
+
+  toggleReaction(artId, type, e) {
+    if (e) e.stopPropagation();
+    const data = this.getReactionData(artId);
+    const prev = data.userReaction;
+
+    if (prev === type) {
+      data.counts[type] = Math.max(0, data.counts[type] - 1);
+      data.userReaction = null;
+    } else {
+      if (prev && data.counts[prev] !== undefined) {
+        data.counts[prev] = Math.max(0, data.counts[prev] - 1);
+      }
+      data.counts[type] = (data.counts[type] || 0) + 1;
+      data.userReaction = type;
+    }
+
+    try {
+      localStorage.setItem('tp_article_reactions', JSON.stringify(this.data.reactions));
+    } catch (err) {}
+
+    this.updateReactionUI(artId);
+
+    if (data.userReaction === type) {
+      const messages = {
+        fire: '🔥 Marked as Trending story!',
+        mindblown: '🤯 Mind blown! Added to Shocking list.',
+        bulb: '💡 Insightful! Saved to your reading preferences.',
+        clap: '👏 Respect! Shared with community.'
+      };
+      this.showToast(messages[type] || '👍 Reaction registered!');
+    }
+  },
+
+  updateReactionUI(artId) {
+    const data = this.getReactionData(artId);
+    ['fire', 'mindblown', 'bulb', 'clap'].forEach(type => {
+      const countEls = document.querySelectorAll(`.rxn-count-${artId}-${type}`);
+      countEls.forEach(el => el.textContent = data.counts[type]);
+      const btns = document.querySelectorAll(`.rxn-btn-${artId}-${type}`);
+      btns.forEach(btn => {
+        if (data.userReaction === type) {
+          btn.classList.add('active', 'ring-1', 'ring-red-500/40', 'bg-red-50', 'dark:bg-red-950/50');
+        } else {
+          btn.classList.remove('active', 'ring-1', 'ring-red-500/40', 'bg-red-50', 'dark:bg-red-950/50');
+        }
+      });
+    });
+  },
+
+  renderReactionsHtml(artId, isModal = false) {
+    const data = this.getReactionData(artId);
+    const items = [
+      { type: 'fire', emoji: '🔥', label: 'Trending', count: data.counts.fire },
+      { type: 'mindblown', emoji: '🤯', label: 'Shocking', count: data.counts.mindblown },
+      { type: 'bulb', emoji: '💡', label: 'Insightful', count: data.counts.bulb },
+      { type: 'clap', emoji: '👏', label: 'Respect', count: data.counts.clap }
+    ];
+
+    if (isModal) {
+      return `
+        <div class="reaction-group flex flex-wrap items-center gap-2 py-2">
+          <span class="text-xs font-bold text-gray-500 dark:text-gray-400 mr-1">Audience Reactions:</span>
+          ${items.map(it => `
+            <button onclick="App.toggleReaction('${artId}', '${it.type}', event)" class="reaction-emoji-btn rxn-btn-${artId}-${it.type} ${data.userReaction === it.type ? 'active ring-1 ring-red-500/40 bg-red-50 dark:bg-red-950/50' : 'bg-gray-100 dark:bg-gray-800'} px-3 py-1.5 rounded-full text-xs font-bold text-gray-700 dark:text-gray-200 hover:scale-105 transition-all cursor-pointer flex items-center gap-1.5 shadow-xs">
+              <span class="text-sm">${it.emoji}</span>
+              <span>${it.label}</span>
+              <span class="rxn-count-${artId}-${it.type} ml-0.5 px-1.5 py-0.2 rounded-full bg-black/5 dark:bg-white/10 text-[10px]">${it.count}</span>
+            </button>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    return `
+      <div class="reaction-group flex items-center gap-1">
+        ${items.map(it => `
+          <button onclick="App.toggleReaction('${artId}', '${it.type}', event)" title="${it.label}" class="reaction-emoji-btn rxn-btn-${artId}-${it.type} ${data.userReaction === it.type ? 'active ring-1 ring-red-500/40 bg-red-50 dark:bg-red-950/50' : 'bg-gray-100/80 dark:bg-gray-700/60'} px-2 py-1 rounded-full text-[11px] font-bold text-gray-600 dark:text-gray-300 hover:scale-110 transition-all cursor-pointer flex items-center gap-1">
+            <span>${it.emoji}</span>
+            <span class="rxn-count-${artId}-${it.type} text-[10px]">${it.count}</span>
+          </button>
+        `).join('')}
+      </div>
+    `;
+  },
+
   startVoiceSearch() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -1441,6 +1562,13 @@ const App = {
       widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
       widget.classList.add('ring-2', 'ring-amber-500');
       setTimeout(() => widget.classList.remove('ring-2', 'ring-amber-500'), 1800);
+    }
+  },
+
+  scrollToTopStory() {
+    const el = document.getElementById('main-bento-grid') || document.getElementById('magazine-view');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   },
 
@@ -1546,6 +1674,10 @@ const App = {
     if (!modal || !content) return;
 
     const isSaved = this.isBookmarked(article.id);
+    const allArts = this.data.articles;
+    const currentIndex = allArts.findIndex(a => a.id === article.id);
+    const nextArticle = allArts.length > 1 ? allArts[(currentIndex + 1) % allArts.length] : null;
+    const prevArticle = allArts.length > 1 ? allArts[(currentIndex - 1 + allArts.length) % allArts.length] : null;
 
     const related = this.data.articles
       .filter(a => a.id !== article.id)
@@ -1581,13 +1713,23 @@ const App = {
         <header class="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm py-2.5 px-3 sm:px-8">
           <div class="max-w-5xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
             
-            <!-- Left: Back Button & Category -->
-            <div class="flex items-center gap-1.5 sm:gap-3">
+            <!-- Left: Back Button, Category & Prev/Next Navigation -->
+            <div class="flex items-center gap-1.5 sm:gap-2">
               <button onclick="App.closeArticleModal()" class="flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-bold text-xs sm:text-sm transition-all shadow-sm group cursor-pointer">
                 <span class="text-base sm:text-lg group-hover:-translate-x-1 transition-transform">←</span>
                 <span class="hidden sm:inline">Back</span>
               </button>
-              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 truncate max-w-[120px] sm:max-w-none">
+              ${prevArticle ? `
+                <button onclick="App.openArticleModal('${prevArticle.id}')" class="story-nav-btn px-2.5 py-1.5 sm:py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs font-bold text-gray-700 dark:text-gray-300 flex items-center gap-1 cursor-pointer" title="Previous Story">
+                  <span>◀</span> <span class="hidden md:inline">Prev</span>
+                </button>
+              ` : ''}
+              ${nextArticle ? `
+                <button onclick="App.openArticleModal('${nextArticle.id}')" class="story-nav-btn px-2.5 py-1.5 sm:py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs font-bold text-gray-700 dark:text-gray-300 flex items-center gap-1 cursor-pointer" title="Next Story">
+                  <span class="hidden md:inline">Next</span> <span>▶</span>
+                </button>
+              ` : ''}
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 truncate max-w-[100px] sm:max-w-none">
                 ${article.categoryIcon || '🔥'} ${article.categoryName}
               </span>
             </div>
@@ -1612,8 +1754,12 @@ const App = {
                 💬 <span class="hidden sm:inline">WhatsApp</span>
               </button>
 
+              <button onclick="App.copyFormattedStory('${article.id}', event)" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold text-xs sm:text-sm shadow-sm transition-colors cursor-pointer" title="Copy Formatted Brief">
+                📋 <span class="hidden lg:inline">Copy Brief</span>
+              </button>
+
               <button onclick="App.copyArticleLink('${article.id}', event)" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold text-xs sm:text-sm shadow-sm transition-colors cursor-pointer" title="Copy Link">
-                📋
+                🔗
               </button>
 
               <button onclick="App.shareArticle('${article.id}', event)" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-colors cursor-pointer" title="Share">
@@ -1650,7 +1796,7 @@ const App = {
           </h1>
 
           <!-- Hero Image (Full-Width High-Res) -->
-          <div class="relative w-full h-72 sm:h-96 lg:h-[480px] rounded-3xl overflow-hidden shadow-2xl mb-8 bg-gray-900">
+          <div class="relative w-full h-72 sm:h-96 lg:h-[480px] rounded-3xl overflow-hidden shadow-2xl mb-6 bg-gray-900">
             <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&auto=format&fit=crop&q=80';">
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
             <div class="absolute bottom-4 left-6 right-6 flex items-center justify-between text-xs text-white/90">
@@ -1661,6 +1807,11 @@ const App = {
                 Verified Global Wire
               </span>
             </div>
+          </div>
+
+          <!-- Multi-Emotional Reactions Bar (Modal) -->
+          <div class="mb-6 pb-2 border-b border-gray-100 dark:border-gray-800">
+            ${this.renderReactionsHtml(article.id, true)}
           </div>
 
           <!-- Summary Body Text with resizable font -->
@@ -1688,6 +1839,37 @@ const App = {
             </ul>
           </div>
 
+          <!-- Infinite Reading Loop (Up Next Auto-Advance) -->
+          ${nextArticle ? `
+            <div id="up-next-banner" class="mb-8 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-red-500/10 via-amber-500/10 to-emerald-500/10 border border-red-200/80 dark:border-gray-800 relative overflow-hidden shadow-xs">
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                  <div class="w-11 h-11 rounded-xl bg-red-600 text-white font-black flex flex-col items-center justify-center shrink-0 shadow-md">
+                    <span id="countdown-seconds" class="text-base leading-none">5</span>
+                    <span class="text-[8px] uppercase tracking-wider">SEC</span>
+                  </div>
+                  <div class="min-w-0">
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-red-600 dark:text-red-400 flex items-center gap-1">
+                      <span>⚡</span> <span>Up Next Story (अगली खबर)</span>
+                    </span>
+                    <h4 class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white truncate max-w-md">${nextArticle.title}</h4>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                  <button id="countdown-pause-btn" onclick="App.toggleUpNextPause('${nextArticle.id}')" class="px-3 py-1.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-xs font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                    ⏸ Pause
+                  </button>
+                  <button onclick="App.openArticleModal('${nextArticle.id}')" class="px-4 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-black shadow-md cursor-pointer flex items-center gap-1.5">
+                    <span>Read Now</span> <span>→</span>
+                  </button>
+                </div>
+              </div>
+              <div class="w-full bg-gray-200 dark:bg-gray-800 h-1.5 rounded-full overflow-hidden mt-3">
+                <div id="countdown-progress-bar" class="countdown-progress w-full h-full"></div>
+              </div>
+            </div>
+          ` : ''}
+
           <!-- Publisher Link & Share Strip -->
           <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
             <div class="text-center sm:text-left">
@@ -1700,8 +1882,8 @@ const App = {
               <button onclick="App.shareToWhatsApp('${article.id}')" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm cursor-pointer">
                 💬 WhatsApp
               </button>
-              <button onclick="App.copyArticleLink('${article.id}', event)" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm cursor-pointer">
-                📋 Copy Link
+              <button onclick="App.copyFormattedStory('${article.id}', event)" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm cursor-pointer">
+                📋 Copy Brief
               </button>
               <button onclick="App.shareArticle('${article.id}', event)" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm cursor-pointer">
                 ↗ Share
@@ -1755,9 +1937,14 @@ const App = {
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
     modal.scrollTo({ top: 0, behavior: 'instant' });
+
+    if (nextArticle) {
+      this.startUpNextCountdown(nextArticle.id);
+    }
   },
 
   closeArticleModal(updateHash = true) {
+    this.cancelUpNextCountdown();
     const modal = document.getElementById('article-modal');
     if (modal) {
       modal.classList.add('hidden');
@@ -1767,6 +1954,46 @@ const App = {
     this.stopAudio();
     if (updateHash) {
       window.location.hash = this.data.activeCategory ? `category=${this.data.activeCategory}` : '';
+    }
+  },
+
+  startUpNextCountdown(nextId) {
+    this.cancelUpNextCountdown();
+    this.data.upNextCountdown = 5;
+    this.data.upNextPaused = false;
+
+    let remainingMs = 5000;
+    const interval = 100;
+
+    this.data.upNextTimer = setInterval(() => {
+      if (this.data.upNextPaused) return;
+
+      remainingMs -= interval;
+      const secs = Math.ceil(remainingMs / 1000);
+      const countEl = document.getElementById('countdown-seconds');
+      const barEl = document.getElementById('countdown-progress-bar');
+      if (countEl) countEl.textContent = secs > 0 ? secs : 0;
+      if (barEl) barEl.style.width = `${Math.max(0, (remainingMs / 5000) * 100)}%`;
+
+      if (remainingMs <= 0) {
+        this.cancelUpNextCountdown();
+        this.openArticleModal(nextId);
+      }
+    }, interval);
+  },
+
+  toggleUpNextPause(nextId) {
+    this.data.upNextPaused = !this.data.upNextPaused;
+    const pauseBtn = document.getElementById('countdown-pause-btn');
+    if (pauseBtn) {
+      pauseBtn.textContent = this.data.upNextPaused ? '▶ Resume' : '⏸ Pause';
+    }
+  },
+
+  cancelUpNextCountdown() {
+    if (this.data.upNextTimer) {
+      clearInterval(this.data.upNextTimer);
+      this.data.upNextTimer = null;
     }
   },
 
@@ -1829,6 +2056,18 @@ const App = {
   },
 
   // Continuous Audio News Bulletin (Plays Top 5 Headlines Sequentially)
+  playAudioBulletin() {
+    this.startAudioBulletin();
+  },
+
+  setBulletinSpeed(rate) {
+    this.data.bulletinSpeed = rate;
+    this.showToast(`🎧 Audio speed: ${rate}x`);
+    if (this.data.bulletin.isPlaying) {
+      this.playBulletinCurrentStory();
+    }
+  },
+
   startAudioBulletin() {
     if (!('speechSynthesis' in window)) {
       alert("Text-to-Speech audio reader is not supported on this browser.");
@@ -1876,7 +2115,7 @@ const App = {
     window.speechSynthesis.cancel();
     const text = `Story ${b.currentIndex + 1}: ${art.title}. ${art.summary}`;
     const utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 1.0;
+    utter.rate = this.data.bulletinSpeed || 1.0;
 
     utter.onend = () => {
       if (b.isPlaying) {
@@ -2028,8 +2267,78 @@ const App = {
     const article = this.data.articles.find(a => a.id === articleId);
     if (!article) return;
     const shareUrl = `${window.location.origin}/#news=${article.id}`;
-    const text = encodeURIComponent(`🔥 Breaking News: ${article.title}\n\n${article.summary}\n\n👉 Read 60-second brief on TrendPulse 360:\n${shareUrl}`);
-    window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+    const bulletsText = (article.bullets || [])
+      .slice(0, 3)
+      .map(b => `• ${b}`)
+      .join('\n');
+
+    const msg = 
+`⚡ *BREAKING NEWS* | TrendPulse 360
+━━━━━━━━━━━━━━━━━━━
+📌 *${article.title}*
+
+${bulletsText ? `*Key Takeaways (मुख्य बिंदु):*\n${bulletsText}\n\n` : ''}👉 *Read 60-Second Full Story:*
+${shareUrl}
+
+📢 *Join Official WhatsApp Channel for Instant Alerts:*
+https://whatsapp.com/channel/0029Vb9ILQT6RGJFRiIuu80T`;
+
+    const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+    window.open(waUrl, '_blank');
+    this.showToast('💬 Opening WhatsApp with formatted brief!');
+  },
+
+  copyFormattedStory(articleId, e) {
+    if (e) e.stopPropagation();
+    const article = this.data.articles.find(a => a.id === articleId);
+    if (!article) return;
+    const shareUrl = `${window.location.origin}/#news=${article.id}`;
+    const bulletsText = (article.bullets || [])
+      .slice(0, 3)
+      .map(b => `• ${b}`)
+      .join('\n');
+
+    const textToCopy = 
+`⚡ *BREAKING NEWS* | TrendPulse 360
+📌 *${article.title}*
+
+${bulletsText ? `*Key Highlights:*\n${bulletsText}\n\n` : ''}👉 Read more: ${shareUrl}`;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        this.showToast('📋 Formatted story brief copied to clipboard!');
+      }).catch(() => {
+        this.showToast('📋 Story brief ready to share!');
+      });
+    } else {
+      this.showToast('📋 Story copied to clipboard!');
+    }
+  },
+
+  initSocialProof() {
+    const toast = document.getElementById('social-proof-toast');
+    const textEl = document.getElementById('social-proof-text');
+    if (!toast || !textEl) return;
+
+    const messages = [
+      '🔥 <strong class="text-red-600">1,480</strong> reading worldwide right now',
+      '⚡ <strong class="text-amber-500">420</strong> reading Lead Story right now',
+      '📢 <strong class="text-emerald-500">118</strong> readers joined WhatsApp channel today',
+      '📈 <strong class="text-blue-500">Share Market & Tech</strong> trending #1 in Mumbai & Delhi',
+      '🎧 <strong class="text-purple-500">260</strong> listening to Daily Audio Bulletin'
+    ];
+
+    let msgIdx = 0;
+    if (this.data.socialProofInterval) clearInterval(this.data.socialProofInterval);
+
+    this.data.socialProofInterval = setInterval(() => {
+      msgIdx = (msgIdx + 1) % messages.length;
+      textEl.style.opacity = '0';
+      setTimeout(() => {
+        textEl.innerHTML = messages[msgIdx];
+        textEl.style.opacity = '1';
+      }, 300);
+    }, 7000);
   },
 
   shareToTwitter(articleId, e) {

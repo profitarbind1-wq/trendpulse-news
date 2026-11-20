@@ -4,12 +4,11 @@
  * Guarantees zero stale caching on normal F5 refresh.
  */
 
-const CACHE_NAME = 'trendpulse-v3.2.0';
+const CACHE_NAME = 'trendpulse-v3.3.0';
 const OFFLINE_FALLBACK = [
   '/',
   '/index.html',
   '/css/style.css',
-  '/js/cricket.js',
   '/js/poll.js',
   '/js/app.js',
   '/js/seo.js',
